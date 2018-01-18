@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6e8c1becfd0da1a7f9550c6274fff0a",
+    "content-hash": "b5180ed4e34ccd2ff850ab9d446089a0",
     "packages": [
         {
             "name": "2amigos/yii2-tinymce-widget",
@@ -612,6 +612,58 @@
                 "MIT"
             ],
             "time": "2017-10-12T10:11:14+00:00"
+        },
+        {
+            "name": "cbackup/yii2-console-runner-extension",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cBackup/yii2-console-runner-extension.git",
+                "reference": "7952f6b02d97132ee32403057cd53eba7f0054ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cBackup/yii2-console-runner-extension/zipball/7952f6b02d97132ee32403057cd53eba7f0054ae",
+                "reference": "7952f6b02d97132ee32403057cd53eba7f0054ae",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "yiisoft/yii2-debug": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "cbackup\\console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Crudu Vasile",
+                    "email": "bazillio07@yandex.ru"
+                },
+                {
+                    "name": "Olegs Capligins",
+                    "email": "shader@dautkom.lv"
+                }
+            ],
+            "description": "An extension for running console commands on background in Yii framework.",
+            "homepage": "https://github.com/cBackup/yii2-console-runner-extension",
+            "keywords": [
+                "background",
+                "commands",
+                "console",
+                "runner",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2018-01-18T13:03:54+00:00"
         },
         {
             "name": "cbackup/yii2-group-grid-view",
@@ -1640,51 +1692,6 @@
                 "yii2"
             ],
             "time": "2017-10-30T11:31:57+00:00"
-        },
-        {
-            "name": "vova07/yii2-console-runner-extension",
-            "version": "0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vova07/yii2-console-runner-extension.git",
-                "reference": "9d4d6f0e0adeaf851d4eb0a2fa9b9584dc337013"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vova07/yii2-console-runner-extension/zipball/9d4d6f0e0adeaf851d4eb0a2fa9b9584dc337013",
-                "reference": "9d4d6f0e0adeaf851d4eb0a2fa9b9584dc337013",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "vova07\\console\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Crudu Vasile",
-                    "email": "bazillio07@yandex.ru"
-                }
-            ],
-            "description": "An extension for running console commands on background in Yii framework.",
-            "homepage": "https://github.com/vova07/yii2-console-runner-extension",
-            "keywords": [
-                "background",
-                "commands",
-                "console",
-                "runner",
-                "yii 2",
-                "yii2"
-            ],
-            "time": "2017-12-10T21:41:28+00:00"
         },
         {
             "name": "yii2mod/yii2-sweet-alert",

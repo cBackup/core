@@ -318,7 +318,7 @@ class Plugin extends ActiveRecord
                 $this->plugin_full_name = $this->file->baseName . '.' . $this->file->extension;
                 $this->plugin_name      = $this->prepareName($this->file->baseName);
 
-                /** Create dir if not exists */
+                /** Create dir if does not exist */
                 if (!file_exists($this->plugin_path) && !@mkdir($this->plugin_path)) {
                     throw new \Exception("Could not create plugin directory {$this->plugin_path}");
                 }
@@ -400,7 +400,7 @@ class Plugin extends ActiveRecord
             }
 
             if (!empty($errors)) {
-                throw new \Exception("Required fields:\n<b>" . implode("\n", $errors) . "</b>\n does not exists or fields are empty.");
+                throw new \Exception("Required fields:\n<b>" . implode("\n", $errors) . "</b>\n do not exist or fields are empty.");
             }
 
             if ($this->plugin_config['metadata']['name'] != $this->file->baseName) {
@@ -415,7 +415,7 @@ class Plugin extends ActiveRecord
             return true;
 
         } else {
-            throw new \Exception("Plugin config file {$this->file->baseName}.json does not exists.");
+            throw new \Exception("Plugin config file {$this->file->baseName}.json does not exist.");
         }
 
     }
@@ -509,7 +509,7 @@ class Plugin extends ActiveRecord
                     $class  = 'app\\modules\\plugins\\' . $this->plugin_name . '\\sql\\' . $this->prepareName($this->file->baseName, false) . 'Tables';
                     $object = (new \ReflectionClass($class))->newInstance();
 
-                    /** If plugin do not exists run installation method */
+                    /** If plugin does not exist run installation method */
                     if ($this->previous_version == null) {
                         $status = $object->install();
                     }

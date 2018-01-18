@@ -135,7 +135,7 @@ class CoreController extends Controller
 
     /**
      * Discovery node
-     * If device not exists, create device_attributes_unknown
+     * If device does not exist, create device_attributes_unknown
      * Else create/update node and nodes alt interfaces
      *
      * POST example:
@@ -438,7 +438,7 @@ class CoreController extends Controller
             $model  = Schedule::find()->where(['task_name' => $task_name]);
             $exists = $model->exists();
 
-            /** Set schedule_id_text and schedule_id if task executed manually or task does not exists */
+            /** Set schedule_id_text and schedule_id if task executed manually or task does not exist */
             if (empty($schedule_id) || is_null($schedule_id) || !$exists) {
                 $schedule_id      = null;
                 $schedule_id_text = 'NONE';
@@ -446,7 +446,7 @@ class CoreController extends Controller
 
             /** Check if schedule exists */
             if (!$exists){
-                throw new \Exception("Task {$task_name} does not exists in schedules table.");
+                throw new \Exception("Task {$task_name} does not exist in schedules table.");
             }
 
             /** Get entry data */
