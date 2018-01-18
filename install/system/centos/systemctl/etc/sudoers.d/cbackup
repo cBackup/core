@@ -1,0 +1,6 @@
+cbackup ALL= NOPASSWD: /bin/systemctl start cbackup
+cbackup ALL= NOPASSWD: /bin/systemctl stop cbackup
+cbackup ALL= NOPASSWD: /bin/systemctl status cbackup
+cbackup ALL= NOPASSWD: /bin/systemctl restart cbackup
+cbackup ALL= NOPASSWD: /bin/systemctl is-active cbackup
+cbackup ALL= NOPASSWD: /bin/systemctl is-enabled cbackup

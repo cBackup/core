@@ -1,0 +1,17 @@
+Package:        cbackup
+Provides:       cbackup
+Version:        1.0.0
+Maintainer:     cBackup Team <info@cbackup.me>
+Architecture:   all
+Section:        admin
+Build-Depends:  debhelper (>=10)
+Priority:       optional
+Installed-Size: 70000
+Origin:         http://cbackup.me
+Pre-Depends:    git, default-jre | java8-runtime | openjdk-8-jre, openssh-server, apache2, php (>= 7.0), mysql-server (>= 5.5), snmp, php-mbstring, php-intl, libapache2-mod-php, php-snmp, php-ssh2, php-zip, php-curl, php-gmp, php-mysql
+Description:    Network equipment configuration backup software
+ cBackup is an Open source network equipment configuration backup software
+ for multiple platforms and devices. It provides not only backing up data
+ but also version control for tracking changes in devices' configurations.
+ Our team provides support on forums http://cbackup.me. Also we are adding
+ new devices to supported equipment list.

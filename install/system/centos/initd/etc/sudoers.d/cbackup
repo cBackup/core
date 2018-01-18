@@ -1,0 +1,8 @@
+cbackup ALL= NOPASSWD: /etc/init.d/cbackup stop
+cbackup ALL= NOPASSWD: /etc/init.d/cbackup start
+cbackup ALL= NOPASSWD: /etc/init.d/cbackup restart
+cbackup ALL= NOPASSWD: /etc/init.d/cbackup status
+cbackup ALL= NOPASSWD: /sbin/service cbackup stop
+cbackup ALL= NOPASSWD: /sbin/service cbackup start
+cbackup ALL= NOPASSWD: /sbin/service cbackup restart
+cbackup ALL= NOPASSWD: /sbin/service cbackup status

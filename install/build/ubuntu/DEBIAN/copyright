@@ -1,0 +1,30 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: cBackup
+Upstream-Contact: cBackup Team <info@cbackup.me>
+Source: https://github.com/cBackup
+
+Files: docs/*
+License: CC Attribution-Noncommercial-Share Alike 4.0 International
+
+Files: vendor/*
+License: Inherited
+Disclaimer: Libraries under vendor folder contain composer packages. Please
+ refer to licenses included in every package separately.
+
+Files: web/plugins/*
+License: Inherited
+Disclaimer: Libraries under web/plugins folder contain bower packages and
+ jQuery libraries. Please refer to licenses included in every package
+ separately.
+
+Files: web/js/adminlte.js
+License: MIT
+
+Files: web/fonts/*
+License: SIL Open Font License
+
+Files: *
+License: AGPL-3
+Copyright: 2018, Olegs Capligins <olegs@cbackup.me>
+           2018, Imants Cernovs <imants@cbackup.me>
+           2018, Dmitrijs Galockins <dmitrijs@cbackup.me>

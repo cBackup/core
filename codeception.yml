@@ -1,0 +1,17 @@
+actor: Tester
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    helpers: tests/_support
+settings:
+    bootstrap: _bootstrap.php
+    memory_limit: 1024M
+    colors: true
+params:
+    - url: 'http://backup.local'
+modules:
+    config:
+        Yii2:
+            configFile: 'config/test.php'
+            cleanup: false

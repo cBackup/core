@@ -1,0 +1,14 @@
+# Codeception Test Suite Configuration
+#
+# suite for RESTful API tests.
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+
+actor: ApiTester
+modules:
+    enabled:
+        - \Helper\Api
+        - Asserts
+        - REST:
+              url: '%url%/index-test.php?r=' # Url can be set in main codeception.yml file
+              depends: PhpBrowser
+              part: Json

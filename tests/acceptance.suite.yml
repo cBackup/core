@@ -1,0 +1,24 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+#
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+             url: '%url%' # Url can be set in main codeception.yml file
+             window_size: false # disabled in ChromeDriver
+             port: 9515
+             browser: chrome
+             capabilities:
+                 chromeOptions:
+                    args: ["--headless", "--disable-gpu", "--disable-extensions"]
+        - \Helper\Acceptance
+        - Yii2:
+            part: orm
+            entryScript: index-test.php
+            cleanup: false

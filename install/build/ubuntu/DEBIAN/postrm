@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e # fail on any error
+set -u # treat unset variables as errors
+set -E # let shell functions inherit ERR trap
+
+# Trap non-normal exit signals:.
+# 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
+trap err_handler 1 2 3 15 ERR
+
+# Custom error handler to send all
+# unexpected termination cases to syslog
+function err_handler {
+    local exit_status=${1:-$?}
+    logger -s -p "syslog.err" -t "cbackup.deb" "cbackup.deb postrm script '$0' error code $exit_status (line $BASH_LINENO: '$BASH_COMMAND')"
+    exit $exit_status
+}
+
+# Error while creating user (e.g. password mismatch)
+case "$1" in
+    abort-install)
+        getent passwd cbackup >/dev/null && userdel cbackup
+        getent group cbackup >/dev/null && groupdel cbackup
+    ;;
+esac
+
+# Post remove
+systemctl daemon-reload
+apachectl graceful
+
+if [ -f /opt/cbackup/install.lock ]; then
+    rm -f /opt/cbackup/install.lock
+fi
+
+if [ -d /opt/cbackup/.git ]; then
+    rm -rf /opt/cbackup/.git
+fi
+
+# Graceful exit
+exit 0

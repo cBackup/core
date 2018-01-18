@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e # fail on any error
+set -u # treat unset variables as errors
+set -E # let shell functions inherit ERR trap
+
+# Trap non-normal exit signals:.
+# 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
+trap err_handler 1 2 3 15 ERR
+
+# Custom error handler to send all
+# unexpected termination cases to syslog
+function err_handler {
+    local exit_status=${1:-$?}
+    logger -s -p "syslog.err" -t "cbackup.deb" "cbackup.deb postinst script '$0' error code $exit_status (line $BASH_LINENO: '$BASH_COMMAND')"
+    exit $exit_status
+}
+
+# Postinstall
+if [ -d /opt/cbackup/web/assets ]; then
+    find /opt/cbackup/web/assets/. -mindepth 1 -maxdepth 1 -type d -exec rm -rf '{}' ';'
+fi
+
+# Chmod/Chown
+chmod +x /opt/cbackup/bin/cbackup.jar
+chmod +x /opt/cbackup/yii
+chmod 775 /opt/cbackup/bin
+chown -R www-data:www-data /opt/cbackup
+chown syslog:adm /var/log/cbackup
+
+# Enable site in apache
+if [ ! -f /etc/apache2/sites-enabled/cbackup.conf ]; then
+    ln -s /etc/apache2/sites-available/cbackup.conf /etc/apache2/sites-enabled/cbackup.conf
+fi
+
+# Upgrade scenario
+if [ -f /opt/cbackup/config/db.php.divert ]; then
+    mv -f /opt/cbackup/config/db.php.divert /opt/cbackup/config/db.php
+    systemctl start cbackup
+fi
+
+# Graceful exit
+exit 0

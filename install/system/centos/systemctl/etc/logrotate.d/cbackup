@@ -1,0 +1,10 @@
+/var/log/cbackup/cbackup.log {
+    weekly
+    missingok
+    notifempty
+    rotate 4
+    compress
+    postrotate
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

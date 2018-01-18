@@ -1,0 +1,33 @@
+# Set the default behavior
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and
+# converted to native line endings on checkout.
+*.php text
+*.json text
+
+# Composer
+composer.json text eol=lf
+composer.lock text eol=lf
+
+# Declare files' EOL format
+yii text eol=lf
+yii-prod text eol=lf
+
+*.sh text eol=lf
+*.key text eol=lf
+*.sql text eol=lf
+*.bat text eol=crlf
+*.htaccess text eol=lf
+*.properties text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.ico binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.eot binary
+*.otf binary
+*.ttf binary
+*.woff binary
+*.woff2 binary

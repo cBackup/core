@@ -1,0 +1,23 @@
+[Unit]
+Description=cBackup Scheduler Daemon
+Documentation=https://github.com/cbackup/main
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ProtectSystem=full
+ProtectHome=true
+
+SuccessExitStatus=143
+ExecStart=/opt/cbackup/bin/cbackup.jar
+ExecStop=/bin/kill -TERM $MAINPID
+ExecReload=
+TimeoutSec=300
+
+Restart=always
+
+User=cbackup
+Group=cbackup
+
+[Install]
+WantedBy=multi-user.target

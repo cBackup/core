@@ -1,0 +1,23 @@
+{
+  "Token copied to clipboard": "Токен доступа успешно скопирован",
+  "Empty token, nothing to copy": "Пустой токен, ничего копировать",
+  "Error while copying token": "Ошибка при копировании токена доступа",
+  "Token was successfully deleted.<br>Do not forget to save changes!": "Токен успешно удален.<br>Не забудьте сохранить изменения!",
+  "Confirm": "Подтвердить",
+  "Cancel": "Отмена",
+  "Warning!": "Внимание!",
+  "Yes": "Да",
+  "No": "Нет",
+  "<b>By changing worker protocol all created jobs will be deleted from worker permanently!</b> Are you sure you want to change protocol?": "<b>При изменении протокола обработчика все созданные операции будут удалены!</b> Вы уверены, что хотите изменить протокол?",
+  "<b>By changing task destination all saved data will be lost!</b></br>Are you sure you want to change task destination?": "<b>При изменении пути задачи все сохраненные данные будут потеряны!</b></br>Вы уверены, что хотите изменить путь задачи?",
+  "Wait...": "Подождите...",
+  "(not set)": "(не задано)",
+  "Configuration successfully copied": "Конфигурация успешно скопирована",
+  "An error occurred while copying configuration": "Ошибка при копировании конфигурации",
+  "Browse": "Обзор",
+  "Change": "Изменить",
+  "Field <b>{{field}}</b> is required": "Необходимо заполнить поле <b>{{field}}</b>",
+  "Field <b>{{field}}</b> does not match pattern {{pattern}}": "Поле <b>{{field}}</b> не соответствует шаблону {{pattern}}",
+  "Minimum length of field <b>{{field}}</b> must be at least {{min_length}} characters": "Минимальная длина поля <b>{{field}}</b> должен быть не менее {{min_length}} символов",
+  "Error in field <b>{{field}}</b>. {{error}}": "Ошибка в поле ввода <b>{{field}}</b>. {{error}}"
+}

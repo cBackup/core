@@ -1,0 +1,19 @@
+# phpstorm project files
+.idea
+
+# Installation lock file
+install.lock
+
+# netbeans project files
+nbproject
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# Composer
+/vendor
+
+# Key
+cbackup.private.key

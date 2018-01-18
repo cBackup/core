@@ -1,0 +1,18 @@
+term,pos,comment,translation_ru_RU,comment_ru_RU
+Credential,Noun,Authentication entity,Реквизит,
+Credentials,Noun,Authentication entities,Реквизиты,
+Dashboard,Noun,,Дайджест,
+Discovery,Noun,Process of finding new nodes in the corresponding network,Поиск,Также: обнаружение
+Job,Noun,Atomic operation. Can be also referred as 'command' sent by 'Worker' to the particular node as part of some 'Task'.,Операция,
+Jobs,Noun,Atomic operations. Can be also referred as 'commands' sent by 'Worker' to the particular node as part of some 'Task'.,Операции,
+Node,Noun,Piece of network equipment to be processed by cBackup appliance. Can also be referred as 'Host'.,Узел,
+Nodes,Noun,Pieces of network equipment to be processed by cBackup appliance. Can also be referred as 'Hosts'.,Узлы,
+Provisioning,Noun,,Инициализация,"Также: регистрация, подготовка (ко вводу в эксплуатация)"
+Schedule,Noun,"'Scheduler' entry, bound to the particular 'Task', determining when it is supposed to be run.",Расписание,
+Scheduler,Noun,Java sub-service processing defined 'Tasks',Планировщик,
+Task,Noun,"Set of 'Workers', i.e. set of command sequences that can be scheduled to run with certain periodicity.",Задача,
+Tasks,Noun,"Set of 'Workers', i.e. set of command sequences that can be scheduled to run with certain periodicity.",Задачи,
+Vendor,Noun,Network equipment manufacturer.,Производитель,
+Vendors,Noun,Network equipment manufacturers.,Производители,
+Worker,Noun,Set of 'Jobs'. Can also be referred ad 'command sequence'.,Обработчик,
+Workers,Noun,Sets of 'Jobs'. Can also be referred ad 'command sequences'.,Обработчики,

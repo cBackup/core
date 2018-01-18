@@ -1,0 +1,23 @@
+{
+  "Token copied to clipboard": "Token copied to clipboard",
+  "Empty token, nothing to copy": "Empty token, nothing to copy",
+  "Error while copying token": "Error while copying token",
+  "Token was successfully deleted.<br>Do not forget to save changes!": "Token was successfully deleted.<br>Do not forget to save changes!",
+  "Confirm": "Confirm",
+  "Cancel": "Cancel",
+  "Warning!": "Warning!",
+  "Yes": "Yes",
+  "No": "No",
+  "<b>By changing worker protocol all created jobs will be deleted from worker permanently!</b> Are you sure you want to change protocol?": "<b>By changing worker protocol all created jobs will be deleted from worker permanently!</b> Are you sure you want to change protocol?",
+  "<b>By changing task destination all saved data will be lost!</b></br>Are you sure you want to change task destination?": "<b>By changing task destination all saved data will be lost!</b></br>Are you sure you want to change task destination?",
+  "Wait...": "Wait...",
+  "(not set)": "(not set)",
+  "Configuration successfully copied": "Configuration successfully copied",
+  "An error occurred while copying configuration": "An error occurred while copying configuration",
+  "Browse": "Browse",
+  "Change": "Change",
+  "Field <b>{{field}}</b> is required": "Field <b>{{field}}</b> is required",
+  "Field <b>{{field}}</b> does not match pattern {{pattern}}": "Field <b>{{field}}</b> does not match pattern {{pattern}}",
+  "Minimum length of field <b>{{field}}</b> must be at least {{min_length}} characters": "Minimum length of field <b>{{field}}</b> must be at least {{min_length}} characters",
+  "Error in field <b>{{field}}</b>. {{error}}": "Error in field <b>{{field}}</b>. {{error}}"
+}

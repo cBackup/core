@@ -1,0 +1,74 @@
+#!/bin/bash
+
+set -e # fail on any error
+set -u # treat unset variables as errors
+set -E # let shell functions inherit ERR trap
+
+# Trap non-normal exit signals:.
+# 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
+trap err_handler 1 2 3 15 ERR
+
+# Custom error handler to send all
+# unexpected termination cases to syslog
+function err_handler {
+    local exit_status=${1:-$?}
+    logger -s -p "syslog.err" -t "cbackup.deb" "cbackup.deb preinst script '$0' error code $exit_status (line $BASH_LINENO: '$BASH_COMMAND')"
+    exit $exit_status
+}
+
+HOST=`hostname -f`
+
+if [ -d /opt/cbackup ]; then
+    if [ ! -z "$(ls -A /opt/cbackup)" ] && [ "$1" = "install" ]; then
+        echo "/opt/cbackup is not empty, unable to proceed"
+        exit 1
+    fi
+fi
+
+# Upgrade scenario
+if [ -f /opt/cbackup/config/db.php ]; then
+    mv /opt/cbackup/config/db.php /opt/cbackup/config/db.php.divert
+fi
+
+# Group
+if getent group cbackup > /dev/null 2>&1; then
+    echo "System usergroup 'cbackup' already exists"
+else
+    echo "Adding system usergroup 'cbackup'"
+    groupadd -r cbackup
+fi
+
+# User
+if getent passwd cbackup > /dev/null 2>&1; then
+    echo "System user 'cbackup' already exists"
+else
+    echo "Adding system user 'cbackup'"
+    useradd -r -g cbackup -G www-data -d /opt/cbackup -s /bin/bash -c "cBackup System User" cbackup && echo "Set password for 'cbackup' system user" && passwd cbackup
+fi
+
+case "$1" in
+    install)
+        echo "Next steps: "
+        echo ""
+        echo "[restart web server]"
+        echo " sudo systemctl restart apache2"
+        echo ""
+        echo "[restart rsyslog]"
+        echo " sudo systemctl restart rsyslog"
+        echo ""
+        echo "[finish cBackup web core installation]"
+        echo " http://$HOST/cbackup/index.php"
+        echo ""
+        echo "[start and enable cbackup daemon]"
+        echo " sudo systemctl start cbackup"
+        echo " sudo systemctl enable cbackup"
+    ;;
+    upgrade|abort-upgrade)
+        if pkill -0 cbackup 2>/dev/null ; then
+            systemctl stop cbackup
+        fi
+    ;;
+esac
+
+# Graceful exit
+exit 0

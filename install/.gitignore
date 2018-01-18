@@ -1,0 +1,6 @@
+install.lock
+bin/application.properties
+bin/hostKey.ser
+config/db.php
+config/install.php
+config/settings.ini

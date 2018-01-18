@@ -1,0 +1,8 @@
+/var/log/cbackup.log {
+    weekly
+    missingok
+    notifempty
+    rotate 4
+    compress
+    copytruncate
+}
