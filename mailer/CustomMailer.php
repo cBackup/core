@@ -23,7 +23,7 @@ use yii\helpers\Inflector;
 use app\models\MailerEventsTasks;
 use app\models\MailerEvents;
 use toriphes\console\Runner;
-use vova07\console\ConsoleRunner;
+use cbackup\console\ConsoleRunner;
 
 
 /**
