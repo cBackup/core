@@ -66,15 +66,25 @@ class NetworkSearch extends Network
             'query' => $query,
             'sort'  => [
                 'defaultOrder' => [
-                    'credential_name' => SORT_ASC,
-                    'network'         => SORT_ASC
+                    'network'         => SORT_ASC,
+                    'credential_name' => SORT_ASC
                 ],
                 'attributes'   => [
                     'credential_name' => [
                         'asc'  => ['c.name' => SORT_ASC],
                         'desc' => ['c.name' => SORT_DESC],
                     ],
-                    'network'
+                    // natsort
+                    'network' => [
+                        'asc'  => [
+                            'LENGTH(network)' => SORT_ASC,
+                            'network'         => SORT_ASC
+                        ],
+                        'desc' => [
+                            'LENGTH(network)' => SORT_DESC,
+                            'network'         => SORT_DESC
+                        ],
+                    ],
                 ],
                 'enableMultiSort' => true
             ],
