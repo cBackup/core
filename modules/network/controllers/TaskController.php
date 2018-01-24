@@ -27,7 +27,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\search\TaskSearch;
 use app\models\Task;
 use app\models\TaskDestination;
@@ -276,7 +276,8 @@ class TaskController extends Controller
             $message = Yii::t('network', 'Task <b>{0}</b> was successfully deleted.', $model->name);
             $message.= "<br>{$drop_msg}<br>$files_msg";
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('network', 'An error occurred while deleting task <b>{0}</b>.', $model->name);
             $message.= '<br>'.$e->getMessage();
@@ -331,7 +332,9 @@ class TaskController extends Controller
             $message = Yii::t('network', 'Task <b>{0}</b> was successfully deleted.', $model->name);
             $message.= "<br>{$drop_msg}<br>$files_msg";
 
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
 
             $class   = 'error';
             $message = Yii::t('network', 'An error occurred while deleting task <b>{0}</b>.', $model->name);
@@ -370,7 +373,8 @@ class TaskController extends Controller
                         'status' => 'success',
                         'msg'    => Yii::t('network', 'New table was successfully created. Do not forget to save task.')
                     ]);
-                } else {
+                }
+                else {
                     $status = Json::encode([
                         'status' => 'error',
                         'msg'    => Yii::t('network', 'An error occurred while creating new table.')
@@ -379,7 +383,8 @@ class TaskController extends Controller
 
                 return $status;
 
-            } else {
+            }
+            else {
                 return Json::encode(['status' => 'validation_failed', 'error' => $validator->errors]);
             }
         }
@@ -492,7 +497,8 @@ class TaskController extends Controller
             $class   = 'success';
             $message = Yii::t('network', 'Table <b>out_{0}</b> was successfully deleted.', $model->name);
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
 
             $class   = 'error';
             $message = Yii::t('network', 'An error occurred while deleting table <b>out_{0}</b>.', $model->name);

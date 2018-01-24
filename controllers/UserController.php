@@ -264,7 +264,9 @@ class UserController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('user', 'User <b>{0}</b> was successfully deleted', $model->fullname)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('user', 'An error occurred while deleting user <b>{0}</b>', $model->fullname)
@@ -331,11 +333,11 @@ class UserController extends Controller
     }
 
 
-    /**
-     * User personalization settings
+    /** @noinspection PhpUndefinedClassInspection
+     *  User personalization settings
      *
      * @return string
-     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
     public function actionSettings()

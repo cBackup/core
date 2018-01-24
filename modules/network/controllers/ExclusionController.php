@@ -29,7 +29,7 @@ use app\models\Exclusion;
 use app\models\search\ExclusionSearch;
 use app\models\Node;
 use app\models\AltInterface;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 
 
 /**
@@ -201,7 +201,8 @@ class ExclusionController extends Controller
             $class   = 'success';
             $message = Yii::t('network', 'Exclusion <b>{0}</b> was successfully deleted.', $model->ip);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('network', 'An error occurred while deleting exclusion <b>{0}</b>.', $model->ip);
             $message.= '<br>'.$e->getMessage();
@@ -231,7 +232,9 @@ class ExclusionController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('network', 'Exclusion <b>{0}</b> was successfully deleted.',$model->ip)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('network', 'An error occurred while deleting exclusion <b>{0}</b>.', $model->ip)

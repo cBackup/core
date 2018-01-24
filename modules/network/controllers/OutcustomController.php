@@ -22,7 +22,7 @@ namespace app\modules\network\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\search\OutCustomSearch;
 use app\models\Task;
 

@@ -22,7 +22,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Config;
 use app\models\Task;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\mailer\CustomMailer;
 use app\models\Severity;
 use yii\filters\AccessControl;

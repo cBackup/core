@@ -25,7 +25,7 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\JobGlobalVariable;
 use app\models\search\JobGlobalVariableSearch;
 
@@ -182,7 +182,8 @@ class WorkervariablesController extends Controller
                 );
             }
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->var_name);
             $message.= '<br>'.$e->getMessage();
@@ -221,7 +222,9 @@ class WorkervariablesController extends Controller
                     )
                 ];
             }
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->var_name)

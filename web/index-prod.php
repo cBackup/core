@@ -34,4 +34,5 @@ if( !file_exists($config['basePath'].DIRECTORY_SEPARATOR.'install.lock') ) {
     exit();
 }
 
+/** @noinspection PhpUnhandledExceptionInspection */
 (new yii\web\Application($config))->run();

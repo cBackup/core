@@ -217,7 +217,9 @@ class AccessController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('rbac', 'Authorization item <b>{0}</b> was successfully deleted', strtoupper($model->name))
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('rbac', 'An error occurred while deleting authorization item <b>{0}</b>', strtoupper($model->name))

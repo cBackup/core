@@ -29,4 +29,6 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 require(__DIR__ . '/../helpers/Y.php');
 
 $config = require __DIR__ . '/../config/test.php';
+
+/** @noinspection PhpUnhandledExceptionInspection */
 (new yii\web\Application($config))->run();

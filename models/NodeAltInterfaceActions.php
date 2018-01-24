@@ -169,10 +169,10 @@ class NodeAltInterfaceActions extends Model
     }
 
 
-    /** @noinspection PhpUnusedPrivateMethodInspection
-     *  @throws \Exception
-     *  @throws \yii\db\StaleObjectException
-     *  @return bool
+    /** @noinspection PhpUnusedPrivateMethodInspection, PhpUndefinedClassInspection
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     * @return bool
      */
     private function removeExclusion(): bool
     {

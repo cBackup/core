@@ -25,7 +25,7 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\search\WorkerSearch;
 use app\models\Worker;
 use app\models\Job;
@@ -230,7 +230,9 @@ class WorkerController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('network', 'Worker <b>{0}</b> was successfully deleted.', $model->name)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('network', 'An error occurred while deleting worker <b>{0}</b>.', $model->name)
@@ -377,7 +379,9 @@ class WorkerController extends Controller
                     )
                 ];
             }
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('network', 'An error occurred while deleting job <b>{0}</b>.', $model->name)

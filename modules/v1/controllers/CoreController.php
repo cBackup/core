@@ -724,7 +724,9 @@ class CoreController extends Controller
 
             return true;
 
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $message = "An error occurred while deleting node\nSchedule id: {$sched_id}\nException:\n{$e->getMessage()}";
             Yii::error([$message, $schedule_id, 'NODE PROCESSING'], 'scheduler.writeLog');
             return false;

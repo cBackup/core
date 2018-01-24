@@ -26,7 +26,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\TasksHasDevices;
 use app\models\TasksHasNodes;
 use app\models\search\TasksHasDevicesSearch;
@@ -240,7 +240,8 @@ class AssigntaskController extends Controller
             $class   = 'success';
             $message = Yii::t('app', 'Record <b>{0} - {1}</b> has been successfully deleted.', [$model->device->vendor, $model->device->model]);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0} - {1}</b>.', [$model->device->vendor, $model->device->model]);
             $message.= '<br>'.$e->getMessage();
@@ -270,7 +271,9 @@ class AssigntaskController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('app', 'Record <b>{0} - {1}</b> has been successfully deleted.', [$model->device->vendor, $model->device->model])
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0} - {1}</b>.', [$model->device->vendor, $model->device->model])
@@ -380,7 +383,8 @@ class AssigntaskController extends Controller
             $class   = 'success';
             $message = Yii::t('app', 'Record <b>{0} - {1}</b> has been successfully deleted.', [$model->node->hostname, $model->node->ip]);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0} - {1}</b>.', [$model->node->hostname, $model->node->ip]);
             $message.= '<br>'.$e->getMessage();
@@ -410,7 +414,9 @@ class AssigntaskController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('app', 'Record <b>{0} - {1}</b> has been successfully deleted.', [$model->node->hostname, $model->node->ip])
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0} - {1}</b>.', [$model->node->hostname, $model->node->ip])
@@ -498,7 +504,8 @@ class AssigntaskController extends Controller
                     $model->node_id   = $node_id;
                     $model->task_name = $data['task_name'];
                     $save_status[]    = ($model->save()) ? true : false;
-                } else {
+                }
+                else {
                     $save_status[] = true;
                 }
 
@@ -507,10 +514,13 @@ class AssigntaskController extends Controller
                     try {
                         $record->one()->delete();
                         $delete_status[] = true;
-                    } catch (\Exception $e) {
+                    }
+                    /** @noinspection PhpUndefinedClassInspection */
+                    catch (\Throwable $e) {
                         $delete_status[] = false;
                     }
-                } else {
+                }
+                else {
                     $delete_status[] = true;
                 }
 
@@ -564,10 +574,12 @@ class AssigntaskController extends Controller
                     $model->worker_id = $data['worker_id'];
                     if ($model->validate()) {
                         $save_status[] = ($model->save()) ? true : false;
-                    } else {
+                    }
+                    else {
                         $errors = $model->errors;
                     }
-                } else {
+                }
+                else {
                     $save_status[] = true;
                 }
 
@@ -576,10 +588,13 @@ class AssigntaskController extends Controller
                     try {
                         $record->one()->delete();
                         $delete_status[] = true;
-                    } catch (\Exception $e) {
+                    }
+                    /** @noinspection PhpUndefinedClassInspection */
+                    catch (\Throwable $e) {
                         $delete_status[] = false;
                     }
-                } else {
+                }
+                else {
                     $delete_status[] = true;
                 }
 

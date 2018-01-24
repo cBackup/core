@@ -24,7 +24,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\Messages;
 use app\models\search\MessagesSearch;
 use app\models\User;
