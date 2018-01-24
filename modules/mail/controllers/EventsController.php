@@ -249,7 +249,13 @@ class EventsController extends Controller
                 if ($model->validate()) {
 
                     if ($model->save()) {
+
                         \Y::flash('success', Yii::t('app', 'Record <b>{0}</b> edited successfully.', $model->name));
+
+                        if( isset($_POST['saveandclose']) ) {
+                            return $this->redirect(['list']);
+                        }
+
                     } else {
                         \Y::flash('danger', Yii::t('app', 'An error occurred while editing record <b>{0}</b>.', $model->name));
                     }

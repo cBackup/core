@@ -25,6 +25,7 @@ $lang = array(
     'An error occurred while processing your request <b>{0}</b>' => 'An error occurred while processing your request <b>{0}</b>',
     'An error occurred while the Web server was processing your request' => 'An error occurred while the Web server was processing your request',
     'An error occurred while updating message status' => 'An error occurred while updating message status',
+    'Apply' => 'Apply',
     'Approved' => 'Approved',
     'Approved By' => 'Approved By',
     'Are you sure you want to delete record {0} {1}?' => 'Are you sure you want to delete record {0} {1}?',
