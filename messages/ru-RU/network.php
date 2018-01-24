@@ -102,6 +102,7 @@ $lang = array(
     'Column name <b>{0}</b> is reserved.<br> Please choose another column name' => 'Название колонки <b>{0}</b> зарезервировано.<br>Пожалуйста, выберите другое название колонки',
     'Command' => 'Команда',
     'Command variable' => 'Переменная команды',
+    'CLI custom prompt' => 'Строка приглашения',
     'Command variable <b>{value}</b> is system reserved variable.' => 'Переменная <b>{value}</b> зарезервировано системой.',
     'Command variable must start and end with - %%. Example %%TEST%%' => 'Переменная должна начинаться и заканчиваться - %%. Пример %%TEST%%',
     'Credential <b>{0}</b> is attached to one or more objects.' => 'Реквизиты <b>{0}</b> привязаны к одному или нескольким объектам.',

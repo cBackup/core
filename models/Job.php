@@ -76,7 +76,7 @@ class Job extends ActiveRecord
     {
         return [
             [['name', 'worker_id', 'command_value'], 'required'],
-            [['name', 'command_value', 'command_var', 'snmp_set_value', 'description'], 'filter', 'filter' => 'trim'],
+            [['name', 'command_value', 'command_var', 'cli_custom_prompt', 'snmp_set_value', 'description'], 'filter', 'filter' => 'trim'],
             [['command_var'], 'filter', 'filter' => 'strtoupper'],
             [['command_value'], 'filter', 'filter' => function ($value) {
                 return preg_replace_callback('/%%\w+%%/', function ($matches) { return strtoupper($matches[0]); }, $value);
@@ -92,7 +92,7 @@ class Job extends ActiveRecord
             ],
             [['worker_id', 'sequence_id', 'timeout', 'enabled'], 'integer'],
             [['timeout'], 'integer', 'min' => 1, 'max' => 60000],
-            [['name', 'command_value', 'command_var', 'snmp_set_value', 'table_field', 'description'], 'string', 'max' => 255],
+            [['name', 'command_value', 'command_var', 'cli_custom_prompt', 'snmp_set_value', 'table_field', 'description'], 'string', 'max' => 255],
             [['snmp_request_type', 'snmp_set_value_type'], 'string', 'max' => 32],
             [['snmp_request_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpRequestTypes::className(), 'targetAttribute' => ['snmp_request_type' => 'name']],
             [['snmp_set_value_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpTypes::className(), 'targetAttribute' => ['snmp_set_value_type' => 'name']],
@@ -131,6 +131,7 @@ class Job extends ActiveRecord
             'sequence_id'         => Yii::t('network', 'Sequence'),
             'command_value'       => Yii::t('network', 'Command'),
             'command_var'         => Yii::t('network', 'Command variable'),
+            'cli_custom_prompt'   => Yii::t('network', 'CLI custom prompt'),
             'snmp_request_type'   => Yii::t('network', 'SNMP request type'),
             'snmp_set_value'      => Yii::t('network', 'SNMP value'),
             'snmp_set_value_type' => Yii::t('network', 'SNMP value type'),
@@ -387,7 +388,7 @@ class Job extends ActiveRecord
     {
 
         $jobs = (new Query())
-            ->select(['sequence_id', 'command_value', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'timeout', 'table_field', 'command_var'])
+            ->select(['sequence_id', 'command_value', 'cli_custom_prompt', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'timeout', 'table_field', 'command_var'])
             ->from('{{%job}}')
             ->where(['worker_id' => $worker_id, 'enabled' => '1'])
             ->orderBy('sequence_id')
