@@ -941,12 +941,12 @@ class CoreController extends Controller
 
         $data   = Yii::$app->request->getBodyParams();
         $errors = [
-            'put'      => 'Data destination is not set. Cannot save result.',
-            'table'    => 'Target table is not set. Cannot save result.',
-            'data'     => 'Empty data. Cannot save result.',
-            'nodeId'   => 'Node id is not set. Cannot save result.',
-            'taskName' => 'Task name is not set. Cannot recognize task directory.',
-            'hash'     => 'Hash is not set. Cannot save result.',
+            'put'      => 'Data destination is not set. Can not save result.',
+            'table'    => 'Target table is not set. Can not save result.',
+            'data'     => 'Empty data. Can not save result.',
+            'nodeId'   => 'Node id is not set. Can not save result.',
+            'taskName' => 'Task name is not set. Can not recognize task directory.',
+            'hash'     => 'Hash is not set. Can not save result.',
         ];
 
         /*
@@ -976,19 +976,35 @@ class CoreController extends Controller
                 if( !file_exists($storagePath)) {
                     if( !mkdir($storagePath, 0755, true) ) {
                         Yii::$app->response->statusCode = 500;
-                        return ApiHelper::getResponseBodyByCode(500, "Cannot create directory $storagePath.");
+                        return ApiHelper::getResponseBodyByCode(500, "Can not create directory $storagePath.");
                     }
                 }
 
                 /*
                  * Writing file
                  */
+                $f_error = null;
                 $toWrite = $this->module->output->getFileData($data['data']);
+                $f_name  = $storagePath . DIRECTORY_SEPARATOR . $data['nodeId'] . '.txt';
 
-                if(!@file_put_contents($storagePath . DIRECTORY_SEPARATOR . $data['nodeId'] . '.txt', $toWrite)) {
+                set_error_handler(
+                    function(/** @noinspection PhpUnusedParameterInspection */$errno, $errstr, $errfile, $errline, array $errcontext) use (&$f_error) {
+                        $f_error = (!empty($errstr)) ? $errstr : "Can not write file";
+                    }
+                );
+
+                $f_write = file_put_contents($f_name, $toWrite);
+
+                if($f_write === false) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, "Cannot create directory $storagePath.");
+                    return ApiHelper::getResponseBodyByCode(500, $f_error);
                 }
+                elseif($f_write === 0) {
+                    Yii::$app->response->statusCode = 500;
+                    return ApiHelper::getResponseBodyByCode(500, "Empty file $f_name created. Check ");
+                }
+
+                restore_error_handler();
 
                 /** @noinspection PhpUndefinedFieldInspection
                  *  @var ActiveRecord $outputModel
@@ -999,12 +1015,12 @@ class CoreController extends Controller
 
                 if(!$outputModel->validate()) {
                     Yii::$app->response->statusCode = 422;
-                    return ApiHelper::getResponseBodyByCode(422, 'Cannot update result hash.');
+                    return ApiHelper::getResponseBodyByCode(422, 'Can not update result hash.');
                 }
 
                 if(!$outputModel->save()) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, 'Cannot update result hash. Check your data.');
+                    return ApiHelper::getResponseBodyByCode(500, 'Can not update result hash. Check your data.');
                 }
 
                 /*
@@ -1027,11 +1043,11 @@ class CoreController extends Controller
 
                 if(!$outputModel->validate()) {
                     Yii::$app->response->statusCode = 422;
-                    return ApiHelper::getResponseBodyByCode(422, 'Cannot save to database. Data validation is failed.');
+                    return ApiHelper::getResponseBodyByCode(422, 'Can not save to database. Data validation is failed.');
                 }
                 if(!$outputModel->save()) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, 'Cannot save to database. DB error. Check your data.');
+                    return ApiHelper::getResponseBodyByCode(500, 'Can not save to database. DB error. Check your data.');
                 }
 
                 // Success
