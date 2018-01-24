@@ -19,7 +19,7 @@
 
 namespace app\controllers;
 
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\Config;
 use app\models\Exclusion;
 use app\models\NodeAltInterfaceActions;
@@ -290,10 +290,11 @@ class NodeController extends Controller
     }
 
 
-    /**
-     * @param  int $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
+    /** @noinspection PhpUndefinedClassInspection
+     *  @param  int $id
+     *  @return \yii\web\Response
+     *  @throws NotFoundHttpException
+     *  @throws \Throwable
      */
     public function actionDelete($id)
     {

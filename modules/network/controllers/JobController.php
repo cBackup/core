@@ -24,7 +24,7 @@ use app\models\TasksHasDevices;
 use app\models\Worker;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 
 
 /**

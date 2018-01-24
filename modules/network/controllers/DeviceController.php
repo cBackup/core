@@ -28,7 +28,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\Vendor;
 use app\models\search\DeviceAttributesUnknownSearch;
 use app\models\DeviceAttributesUnknown;
@@ -166,7 +166,8 @@ class DeviceController extends Controller
         try {
             $model->delete();
         }
-        catch (\Exception $e) {
+            /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->model);
             if( $e->getCode() == 23000 ) {
                 $message.= '<br>'.Yii::t('network', 'This device is assigned to already existing nodes, please remove nodes first.');
@@ -241,7 +242,9 @@ class DeviceController extends Controller
 
                         return $this->redirect(['device/unknown-list']);
 
-                    } /** @noinspection PhpUndefinedClassInspection */ catch (\Throwable $e) {
+                    }
+                    /** @noinspection PhpUndefinedClassInspection */
+                    catch (\Throwable $e) {
                         $transaction->rollBack();
                         \Y::flashAndRedirect('warning', $e->getMessage(), 'device/unknown-list');
                     }
@@ -312,7 +315,8 @@ class DeviceController extends Controller
             $class   = 'success';
             $message = Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->sysobject_id);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->sysobject_id);
             $message.= '<br>'.$e->getMessage();
@@ -341,7 +345,9 @@ class DeviceController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->sys_description)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->sys_description)

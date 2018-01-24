@@ -24,7 +24,7 @@ use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\components\Updater;
 
 

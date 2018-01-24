@@ -163,7 +163,8 @@ class VendorController extends Controller
             $class   = 'success';
             $message = Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->name);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->name);
             $message.= '<br>'.$e->getMessage();

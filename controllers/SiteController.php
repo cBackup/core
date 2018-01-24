@@ -22,7 +22,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Json;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\widgets\ServiceWidget;
 use app\models\Node;
 use app\models\OutBackup;

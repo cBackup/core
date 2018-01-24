@@ -290,7 +290,9 @@ class Plugin extends ActiveRecord
             static::find()->where(['name' => $name])->one()->delete();
             FileHelper::removeDirectory($location);
 
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
         }
 
@@ -420,14 +422,14 @@ class Plugin extends ActiveRecord
 
     }
 
-    /** @noinspection PhpUnusedPrivateMethodInspection
+    /** @noinspection PhpUnusedPrivateMethodInspection, PhpUndefinedClassInspection
      *
      * Move plugin to plugins directory and add entry to database
-     *
      * Method is called dynamically in @see installPlugin() method
      *
      * @return  bool
      * @throws \Exception
+     * @throws \Throwable
      */
     private function addPlugin()
     {
@@ -480,14 +482,14 @@ class Plugin extends ActiveRecord
 
     }
 
-    /** @noinspection PhpUnusedPrivateMethodInspection
+    /** @noinspection PhpUnusedPrivateMethodInspection, PhpUndefinedClassInspection
      *
      * Process SQL if sql query found in plugin directory
-     *
      * Method is called dynamically in @see installPlugin() method
      *
      * @return  bool
      * @throws \Exception
+     * @throws \Throwable
      */
     private function processSql()
     {
@@ -580,6 +582,7 @@ class Plugin extends ActiveRecord
      * Get translation from specific plugin
      *
      * @return object
+     * @throws \ReflectionException
      */
     private function initPluginTranslation()
     {

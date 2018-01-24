@@ -25,7 +25,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\MailerEvents;
 use app\models\search\MailerEventsSearch;
 use app\models\search\MailerEventsTasksSearch;
@@ -289,7 +289,8 @@ class EventsController extends Controller
             $class   = 'success';
             $message = Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->name);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->name);
             $message.= '<br>'.$e->getMessage();
@@ -319,7 +320,9 @@ class EventsController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->name)
             ];
-        } catch (\Exception $e) {
+        }
+            /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->name)
@@ -347,7 +350,9 @@ class EventsController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->event_name)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record.</br>Exception:</br> {0}', $e->getMessage())
