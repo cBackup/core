@@ -169,7 +169,8 @@ $this->registerJs(
                 </div>
                 <div class="box-footer text-right">
                     <?= Html::a(Yii::t('app', 'Cancel'), ['list'], ['class' => 'btn btn-sm btn-default']) ?>
-                    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-primary']) ?>
+                    <?= Html::submitButton(Yii::t('app', 'Apply'), ['class' => 'btn btn-sm btn-primary', 'name' => 'saveandstay']) ?>
+                    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-primary', 'name' => 'saveandclose']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
         </div>
