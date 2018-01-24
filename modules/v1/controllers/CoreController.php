@@ -1001,7 +1001,7 @@ class CoreController extends Controller
                 }
                 elseif($f_write === 0) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, "Empty file $f_name created. Check ");
+                    return ApiHelper::getResponseBodyByCode(500, "Empty file $f_name created. Check 'Workers and Jobs' for warnings.");
                 }
 
                 restore_error_handler();
