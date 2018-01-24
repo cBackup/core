@@ -90,15 +90,13 @@ class NodeSearch extends Node
                         'asc'  => ['d.model' => SORT_ASC],
                         'desc' => ['d.model' => SORT_DESC]
                     ],
-                    // natsort
+                    // sort by IP
                     'ip' => [
                         'asc'  => [
-                            'LENGTH(ip)' => SORT_ASC,
-                            'ip'         => SORT_ASC
+                            'INET_ATON(ip)' => SORT_ASC
                         ],
                         'desc' => [
-                            'LENGTH(ip)' => SORT_DESC,
-                            'ip'         => SORT_DESC
+                            'INET_ATON(ip)' => SORT_DESC
                         ],
                     ],
                 ],
