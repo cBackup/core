@@ -387,8 +387,7 @@
                 "jquery",
                 "mask",
                 "plugins"
-            ],
-            "time": "2017-11-21T11:46:23+00:00"
+            ]
         },
         {
             "name": "bower-asset/jquery",

@@ -408,15 +408,27 @@ class NodeController extends Controller
 
     /**
      * @param  $id
+     * @param  string $put
      * @param  bool $crlf
      * @return Response
      * @throws \yii\web\RangeNotSatisfiableHttpException
      */
-    public function actionDownload($id, $crlf = false)
+    public function actionDownload($id, $put, $crlf = false)
     {
 
-        $file_path = $path_to_file = \Y::param('dataPath') . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . "{$id}.txt";
-        $config    = file_get_contents($file_path);
+        $config = '';
+
+        /** Get configuration backup based on put */
+        if ($put == 'file') {
+            $file_path = \Y::param('dataPath') . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . "{$id}.txt";
+            $config    = file_get_contents($file_path);
+        }
+        elseif ($put == 'db') {
+            $config = OutBackup::find()->select('config')->where(['node_id' => $id])->scalar();
+        }
+        else {
+            \Y::flashAndRedirect('warning', Yii::t('node', 'Unknown backup destination passed'), 'node/view', ['id' => $id]);
+        }
 
         if( isset($crlf) && $crlf == true ) {
             $config = preg_replace('~\R~u', "\r\n", $config);

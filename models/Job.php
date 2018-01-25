@@ -34,6 +34,7 @@ use \yii\helpers\ArrayHelper;
  * @property integer $sequence_id
  * @property string $command_value
  * @property string $command_var
+ * @property string $cli_custom_prompt
  * @property string $snmp_request_type
  * @property string $snmp_set_value
  * @property string $snmp_set_value_type
