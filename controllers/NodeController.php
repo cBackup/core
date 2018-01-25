@@ -350,7 +350,7 @@ class NodeController extends Controller
             }
         }
 
-        return Html::tag('pre', $response);
+        return Html::tag('pre', Html::encode($response));
 
     }
 
