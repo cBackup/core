@@ -26,6 +26,7 @@ $lang = array(
     'Added IP-addresses will be excluded from discovery and provisioning procedures. E.g. if there\'s a network 192.168.10.0/24 but you want to skip particular device from being discovered and polled, add its IP-address in this classificator.' => 'Добавленные IP-адреса будут исключены из процессов обнаружения новых узлов и резервного копирования уже существующих. Например, если в системе определена сеть 192.168.10.0/24, но вы хотите, чтобы какое-либо устройство не попадало в сBackup, добавьте его IP-адрес в этот классификатор.',
     'Advanced task assign' => 'Расширенное назначение задачи',
     'After job' => 'После операции',
+    'After making changes in schedules on the left, do not forget to apply them by restarting scheduler. Press <i class="fa fa-hdd-o text-info"></i> button in the top navigation bar and press <i class="fa fa-refresh text-warning"></i> button for <b>Java Scheduler</b>.' => 'После внесения изменений в расписания в левой части, не забудьте применить их, перезагрузив планировщик. Нажмите <i class="fa fa-hdd-o text-info"></i> кнопку в верхней навигационной панели и нажмите <i class="fa fa-refresh text-warning"></i> кнопку в ряду для <b>Java планировщика</b>.',
     'All protocols' => 'Все протоколы',
     'All statuses' => 'Все статусы',
     'All table fields' => 'Все поля таблицы',

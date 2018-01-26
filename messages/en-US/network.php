@@ -26,6 +26,7 @@ $lang = array(
     'Added IP-addresses will be excluded from discovery and provisioning procedures. E.g. if there\'s a network 192.168.10.0/24 but you want to skip particular device from being discovered and polled, add its IP-address in this classificator.' => 'Added IP-addresses will be excluded from discovery and provisioning procedures. E.g. if there\'s a network 192.168.10.0/24 but you want to skip particular device from being discovered and polled, add its IP-address in this classificator.',
     'Advanced task assign' => 'Advanced task assign',
     'After job' => 'After job',
+    'After making changes in schedules on the left, do not forget to apply them by restarting scheduler. Press <i class="fa fa-hdd-o text-info"></i> button in the top navigation bar and press <i class="fa fa-refresh text-warning"></i> button for <b>Java Scheduler</b>.' => 'After making changes in schedules on the left, do not forget to apply them by restarting scheduler. Press <i class="fa fa-hdd-o text-info"></i> button in the top navigation bar and press <i class="fa fa-refresh text-warning"></i> button for <b>Java Scheduler</b>.',
     'All protocols' => 'All protocols',
     'All statuses' => 'All statuses',
     'All table fields' => 'All table fields',
