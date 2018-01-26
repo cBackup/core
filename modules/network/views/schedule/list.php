@@ -76,7 +76,7 @@ $this->registerJs(
 ?>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active">
@@ -232,6 +232,15 @@ $this->registerJs(
                     <?php Pjax::end(); ?>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?= Yii::t('app', 'Information') ?></h3>
+            </div>
+            <div class="box-body text-justify">
+                <?= Yii::t('network', 'After making changes in schedules on the left, do not forget to apply them by restarting scheduler. Press <i class="fa fa-hdd-o text-info"></i> button in the top navigation bar and press <i class="fa fa-refresh text-warning"></i> button for <b>Java Scheduler</b>.') ?>
         </div>
     </div>
 </div>
