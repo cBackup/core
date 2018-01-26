@@ -782,7 +782,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             $conf_exists = Html::tag('i', '', [
                                                 'class'               => 'fa fa-warning text-danger cursor-question',
-                                                'title'               => Yii::t('node', 'File not found'),
+                                                'title'               => Yii::t('node', 'Configuration not found'),
                                                 'data-toggle'         => 'tooltip',
                                                 'data-placement'      => 'right',
                                             ]);
@@ -851,7 +851,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </table>
                     <?php else: ?>
                         <div class="callout callout-info" style="margin: 10px;">
-                            <p><?= Yii::t('node', 'File not found') ?></p>
+                            <p><?= Yii::t('node', 'Configuration not found') ?></p>
                         </div>
                     <?php endif; ?>
 
@@ -929,11 +929,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-xs-12">
                         <?php
-                            echo Html::a('&nbsp;&nbsp;LF&nbsp;&nbsp;', ['download', 'id' => $data->id], [
+                            echo Html::a('&nbsp;&nbsp;LF&nbsp;&nbsp;', ['download', 'id' => $data->id, 'put' => $task_info->put], [
                                 'class'   => 'btn btn-primary pull-left',
                                 'onclick' => '(function() { $("#download_modal").modal("hide"); })();'
                             ]);
-                            echo Html::a('CRLF', ['download', 'id' => $data->id, 'crlf' => true], [
+                            echo Html::a('CRLF', ['download', 'id' => $data->id, 'put' => $task_info->put, 'crlf' => true], [
                                 'class'   => 'btn btn-primary pull-right',
                                 'onclick' => '(function() { $("#download_modal").modal("hide"); })();'
                             ]);
