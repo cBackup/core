@@ -828,17 +828,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-clipboard-action' => 'copy'
                                         ]);
 
-                                        echo Html::a('<i class="fa fa-book"></i> ' . Yii::t('app', 'History'), '#diff_content', [
-                                            'id'          => 'show_history',
-                                            'class'       => 'btn btn-xs btn-default margin-r-5 ' . "{$disabled} {$com_status}",
-                                            'data-toggle' => "collapse",
-                                            'data-parent' => '#accordion',
-                                            'data-url'    => Url::to(['ajax-load-file-diff']),
-                                            'data-params' => json_encode([
-                                                'node_id' => $data->id,
-                                                'hash'    => $com_hash,
-                                            ])
-                                        ]);
+                                        if ($task_info->put == 'file') {
+                                            echo Html::a('<i class="fa fa-book"></i> ' . Yii::t('app', 'History'), '#diff_content', [
+                                                'id'          => 'show_history',
+                                                'class'       => 'btn btn-xs btn-default margin-r-5 ' . "{$disabled} {$com_status}",
+                                                'data-toggle' => "collapse",
+                                                'data-parent' => '#accordion',
+                                                'data-url'    => Url::to(['ajax-load-file-diff']),
+                                                'data-params' => json_encode([
+                                                    'node_id' => $data->id,
+                                                    'hash'    => $com_hash,
+                                                ])
+                                            ]);
+                                        }
 
                                         echo Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Download'), null, [
                                             'class'       => 'btn btn-xs btn-default ' . $disabled,
