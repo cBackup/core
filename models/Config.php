@@ -207,7 +207,7 @@ class Config extends ActiveRecord
 
         if(file_exists($file)) {
 
-            $props = parse_ini_file($file);
+            $props = parse_ini_file($file, false, INI_SCANNER_RAW);
 
             if(!empty($props)) {
 
