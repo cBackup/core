@@ -508,6 +508,13 @@ class CoreController extends Controller
             return false;
         }
 
+        /** Stop processing script if git is not initialized */
+        if (!Config::isGitRepo()) {
+            $message  = "Backup git repository is not initialized. To use git commit please initialize it in 'System settings'\nSchedule id: {$sched_id}";
+            Yii::warning([$message, $schedule_id, 'GIT COMMIT'], 'scheduler.writeLog');
+            return false;
+        }
+
         /** Execute git commands */
         try {
 

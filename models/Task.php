@@ -226,6 +226,9 @@ class Task extends ActiveRecord
                         $this->clean_up['disable_git'] = true;
                     }
 
+                    /** Clear cache after task destination change */
+                    Yii::$app->cache->delete('config_data');
+
                 } catch (\Exception $e) {
                     $this->clean_up['table']       = false;
                     $this->clean_up['files']       = false;

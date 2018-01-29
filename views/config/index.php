@@ -87,6 +87,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -109,6 +111,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -127,6 +131,19 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                             'label'       => Yii::t('config', 'Default prepend location'),
                                             'description' => Yii::t('config', 'String which will be prepended to actual node locations.'),
                                             'input'       => Html::textInput('Config[defaultPrependLocation]', $data['defaultPrependLocation'], ['class' => 'form-control']),
+                                        ])
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <?=
+                                        ConfigHelper::formGroup('gitPath', $errors, [
+                                            'label'       => Yii::t('config', 'Git path'),
+                                            'description' => Yii::t('config', 'Path to the Git executable'),
+                                            'input'       => Html::textInput('Config[gitPath]', $data['gitPath'], ['class' => 'form-control']),
                                         ])
                                     ?>
                                 </div>
@@ -224,6 +241,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -246,14 +265,16 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
-                                        ConfigHelper::formGroup('gitPath', $errors, [
-                                            'label'       => Yii::t('config', 'Git path'),
-                                            'description' => Yii::t('config', 'Path to the Git executable'),
-                                            'input'       => Html::textInput('Config[gitPath]', $data['gitPath'], ['class' => 'form-control git']),
-                                        ])
+                                    ConfigHelper::formGroup('gitDays', $errors, [
+                                        'label'       => Yii::t('config', 'Git log display period'),
+                                        'description' => Yii::t('config', 'For how long period in days will changes be displayed'),
+                                        'input'       => Html::textInput('Config[gitDays]', $data['gitDays'], ['class' => 'form-control git']),
+                                    ])
                                     ?>
                                 </div>
                             </div>
@@ -268,6 +289,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -305,20 +328,7 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <?=
-                                        ConfigHelper::formGroup('gitDays', $errors, [
-                                            'label'       => Yii::t('config', 'Git log display period'),
-                                            'description' => Yii::t('config', 'For how long period in days will changes be displayed'),
-                                            'input'       => Html::textInput('Config[gitDays]', $data['gitDays'], ['class' => 'form-control git']),
-                                        ])
-                                    ?>
-                                </div>
-                            </div>
                             <div class="col-lg-6">
                                 <div class="row">
                                     <div class="col-md-12 settings-label">
@@ -330,7 +340,6 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -390,6 +399,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -412,6 +423,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -441,6 +454,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -463,6 +478,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?php
@@ -494,6 +511,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -564,6 +583,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -586,6 +607,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -608,6 +631,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -664,6 +689,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
@@ -723,6 +750,8 @@ $this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\Alph
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="row">
                                     <?=
