@@ -21,6 +21,7 @@ namespace app\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
+use yii\db\Exception;
 use yii\helpers\Html;
 
 
@@ -52,7 +53,9 @@ class DeviceAttributesUnknown extends ActiveRecord
     {
         return [
             [['created'], 'safe'],
-            [['sysobject_id', 'hw', 'sys_description'], 'string', 'max' => 255],
+            [['sysobject_id', 'hw'], 'string', 'max' => 255],
+            [['sys_description'], 'string', 'max' => 1024],
+            [['sysobject_id'], 'unique', 'targetAttribute' => ['sysobject_id', 'hw', 'sys_description'], 'message' => Yii::t('network', 'Such combination of device attributes already exists!')],
         ];
     }
 
@@ -77,13 +80,17 @@ class DeviceAttributesUnknown extends ActiveRecord
      * @param $hw
      * @param $sys_description
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function addNewAttributes($sysobject_id, $hw, $sys_description)
     {
-        $success = true;
 
-        $unknownDeviceId = DeviceAttributesUnknown::find()->select(['id'])->where(['sysobject_id' => $sysobject_id, 'hw' => $hw, 'sys_description' => $sys_description])->scalar();
+        $success         = true;
+        $unknownDeviceId = DeviceAttributesUnknown::find()->select(['id'])->where([
+            'sysobject_id'    => $sysobject_id,
+            'hw'              => $hw,
+            'sys_description' => $sys_description
+        ])->scalar();
 
         if(empty($unknownDeviceId)) {
 
@@ -92,35 +99,38 @@ class DeviceAttributesUnknown extends ActiveRecord
             /*
              * Create new device attributes
              */
-            $deviceAttributesUnknown = new DeviceAttributesUnknown();
-            $deviceAttributesUnknown->sysobject_id = $sysobject_id;
-            $deviceAttributesUnknown->hw = $hw;
+            $deviceAttributesUnknown                  = new DeviceAttributesUnknown();
+            $deviceAttributesUnknown->sysobject_id    = $sysobject_id;
+            $deviceAttributesUnknown->hw              = $hw;
             $deviceAttributesUnknown->sys_description = $sys_description;
 
-            $success = $deviceAttributesUnknown->save();
+            try {
 
-            if($success) {
-                $unknownDeviceId = $deviceAttributesUnknown->getPrimaryKey();
+                $success = $deviceAttributesUnknown->save();
 
-                /*
-                 * Create message
-                 */
-                $messages = new Messages();
-                $messages->message = 'New device model found. ' .
-                    Html::a("Click here", ['/network/device/unknown-list', 'DeviceAttributesUnknownSearch[id]' => $unknownDeviceId]);
+                if ($success) {
+                    $unknownDeviceId   = $deviceAttributesUnknown->getPrimaryKey();
+                    $messages          = new Messages();
+                    $messages->message = 'New device model found. ' . Html::a("Click here", ['/network/device/unknown-list', 'DeviceAttributesUnknownSearch[id]' => $unknownDeviceId]);
+                    $success           = $messages->save();
+                }
 
-                $success = $messages->save();
+                if ($success) {
+                    $transaction->commit();
+                }
+                else {
+                    $transaction->rollBack();
+                }
+
             }
-
-            if($success) {
-                $transaction->commit();
-            }
-            else {
+            catch (Exception $e) {
                 $transaction->rollBack();
             }
+
         }
 
         return $success;
 
     }
+
 }
