@@ -211,8 +211,12 @@ class CoreController extends Controller
          */
         $deviceId = DeviceAttributes::find()
             ->select(['device_id'])
-            ->where(['sysobject_id' => $data['sysobject_id'], 'hw' => $data['hw'], 'sys_description' => $data['sys_description']])
-            ->scalar();
+            ->where([
+                'sysobject_id'    => $data['sysobject_id'],
+                'hw'              => $data['hw'],
+                'sys_description' => $data['sys_description']
+            ])->scalar()
+        ;
 
         /** Add new device attributes */
         if(empty($deviceId)) {
@@ -220,11 +224,14 @@ class CoreController extends Controller
         }
         /** Create-update node */
         else {
+
             $data['device_id'] = $deviceId;
-            $success = Node::createOrUpdateNode($data);
+            $success           = Node::createOrUpdateNode($data);
+
             if($success) {
                 $success = AltInterface::updateInterfaces($data['ip'], $ips);
             }
+
         }
 
         if($success) {
