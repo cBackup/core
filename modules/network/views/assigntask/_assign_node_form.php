@@ -99,7 +99,8 @@ $this->params['breadcrumbs'][] = ['label' => $page_name];
                             'options' => [
                                 'id'               => 'worker_list',
                                 'class'            => 'select2-clear',
-                                'data-placeholder' => Yii::t('network', 'Choose worker')
+                                'data-placeholder' => Yii::t('network', 'Choose worker'),
+                                'data-update-url'  => Url::to(['/network/assigntask/ajax-update-workers'])
                             ],
                             'pluginOptions' => [
                                 'depends'     => ['task_name'],
