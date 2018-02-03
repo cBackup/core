@@ -85,7 +85,7 @@ class AltInterface extends ActiveRecord
      * @param $ips    array
      * @param $nodeIp string
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
     public static function updateInterfaces($nodeIp, $ips)
     {
@@ -124,7 +124,8 @@ class AltInterface extends ActiveRecord
             }
             /** @noinspection PhpUndefinedClassInspection */
             catch (\Throwable $e) {
-                $success = false;
+                $error = "\nNode IP: {$nodeIp}\nAn error occurred while deleting old interfaces. {$e->getMessage()}";
+                throw new \Exception($error);
             }
         }
 
@@ -154,21 +155,14 @@ class AltInterface extends ActiveRecord
             }
             /** @noinspection PhpUndefinedClassInspection */
             catch (\Throwable $e) {
-                $success = false;
+                $error = "\nNode IP: {$nodeIp}\nAn error occurred while creating new interfaces. {$e->getMessage()}";
+                throw new \Exception($error);
             }
         }
 
-        /*
-         * Log write
-         */
-        if($success) {
-
-            $logNode = new LogNode();
-            $logNode->severity = 'INFO';
-            $logNode->node_id  = $nodeId;
-            $logNode->action  = 'UPDATE';
-            $logNode->message = 'Node alt interfaces changed.';
-            $success = $logNode->save();
+        /** Write log */
+        if ($success) {
+            Yii::info(['Node alt interfaces changed.', $nodeId, 'UPDATE'], 'node.writeLog');
         }
 
         if($success) {
@@ -176,6 +170,8 @@ class AltInterface extends ActiveRecord
         }
         else {
             $transaction->rollBack();
+            $error = "\nNode IP: {$nodeIp}\nAn error occurred while creating new interfaces.}";
+            throw new \Exception($error);
         }
 
         return $success;

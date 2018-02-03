@@ -152,4 +152,20 @@ class LogNode extends ActiveRecord
         ];
     }
 
+    /**
+     * Write custom log to DB
+     *
+     * @param array  $params
+     * @param string $level
+     */
+    public function writeLog($params, $level)
+    {
+        $this->userid      = Yii::$app->user->id;
+        $this->severity    = $level;
+        $this->message     = $params[0];
+        $this->node_id     = $params[1];
+        $this->action      = $params[2];
+        $this->save(false);
+    }
+
 }

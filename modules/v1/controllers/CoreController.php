@@ -155,7 +155,7 @@ class CoreController extends Controller
      *
      * @return array
      * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
     public function actionSetDiscoveryResult(): array
     {
@@ -218,29 +218,48 @@ class CoreController extends Controller
             ])->scalar()
         ;
 
-        /** Add new device attributes */
-        if(empty($deviceId)) {
-            $success = DeviceAttributesUnknown::addNewAttributes($data['sysobject_id'], $data['hw'], $data['sys_description']);
-        }
-        /** Create-update node */
-        else {
+        try {
 
-            $data['device_id'] = $deviceId;
-            $success           = Node::createOrUpdateNode($data);
+            /** Add new device attributes */
+            if (empty($deviceId)) {
+                $attributes = [
+                    'ip'              => $data['ip'],
+                    'sysobject_id'    => $data['sysobject_id'],
+                    'hw'              => $data['hw'],
+                    'sys_description' => $data['sys_description']
+                ];
 
-            if($success) {
-                $success = AltInterface::updateInterfaces($data['ip'], $ips);
+                $success = DeviceAttributesUnknown::addNewAttributes($attributes);
+
+                if (!$success) {
+                    $error = "\nAn error occurred while adding new device attributes.\nIP: {$data['ip']}\nHostname: {$data['hostname']}";
+                    throw new \Exception($error);
+                }
+
+            }
+            /** Create-update node */
+            else {
+
+                $data['device_id'] = $deviceId;
+                $success           = Node::createOrUpdateNode($data);
+
+                if ($success) {
+                    $success = AltInterface::updateInterfaces($data['ip'], $ips);
+                }
+
             }
 
-        }
+            if ($success) {
+                Yii::$app->response->statusCode = 201;
+                return [];
+            } else {
+                Yii::$app->response->statusCode = 500;
+                return ApiHelper::getResponseBodyByCode(500);
+            }
 
-        if($success) {
-            Yii::$app->response->statusCode = 201;
-            return [];
-        }
-        else {
+        } catch (\Exception $e) {
             Yii::$app->response->statusCode = 500;
-            return ApiHelper::getResponseBodyByCode(500);
+            return ApiHelper::getResponseBodyByCode(500, $e->getMessage());
         }
 
     }
