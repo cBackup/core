@@ -115,7 +115,7 @@ class Job extends ActiveRecord
             [['command_var'], 'isWorkerVariableUsed', 'skipOnEmpty' => false],
             [['command_value'], 'workerVariableExists'],
             [['command_value'], 'isWorkerJobPositionCorrect'],
-            [['timeout', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'table_field', 'command_var', 'description'], 'default', 'value' => null],
+            [['timeout', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'table_field', 'command_var', 'cli_custom_prompt', 'description'], 'default', 'value' => null],
             [['after_job'], 'safe'],
         ];
     }
