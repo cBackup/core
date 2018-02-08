@@ -146,6 +146,25 @@ if ($action == 'ajax-edit-job') {
                         </div>
                     </div>
 
+                    <?php if (!$snmp_view): ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?php
+                                    $info = Html::tag('span', ' <i class="fa fa-question-circle-o"></i>', [
+                                        'data-toggle'    => 'tooltip',
+                                        'data-placement' => 'right',
+                                        'title'          => Yii::t('network', 'Command completion wait prompt'),
+                                        'style'          => ['color' => '#3c8dbc', 'cursor' => 'pointer']
+                                    ]);
+                                    echo $form->field($model, 'cli_custom_prompt')->textInput([
+                                        'class'        => 'form-control',
+                                        'placeholder'  => FormHelper::label($model, 'cli_custom_prompt')
+                                    ])->label($model->getAttributeLabel('cli_custom_prompt') . $info);
+                                ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                     <?php if ($snmp_view): ?>
                         <div class="row">
                             <div class="col-md-4">
