@@ -103,6 +103,7 @@ $lang = array(
     'Column name <b>{0}</b> is reserved.<br> Please choose another column name' => 'Column name <b>{0}</b> is reserved.<br> Please choose another column name',
     'Command' => 'Command',
     'Command variable' => 'Command variable',
+    'Command completion wait prompt' => 'Command completion wait prompt',
     'CLI custom prompt' => 'CLI custom prompt',
     'Command variable <b>{value}</b> is system reserved variable.' => 'Command variable <b>{value}</b> is system reserved variable.',
     'Command variable must start and end with - %%. Example %%TEST%%' => 'Command variable must start and end with - %%. Example %%TEST%%',
