@@ -504,7 +504,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <table class="table">
                         <?php if(isset($data->device->tasksHasDevices) && !empty($data->device->tasksHasDevices)): ?>
                             <tr>
-                                <th colspan="5" class="bg-info"><?= Yii::t('node', 'Device-related tasks') ?></th>
+                                <th colspan="5" class="bg-info"><?= Yii::t('node', 'Device-related workers') ?></th>
                             </tr>
                             <tr>
                                 <th><?= Yii::t('network', 'Task') ?></th>
@@ -550,8 +550,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php foreach ($data->tasksHasNodes as $model): ?>
                         <tr>
                             <td><?= Html::a($model->task_name, ['/network/task/edit', 'name' => $model->task_name], []) ?></td>
-                            <td><?= isset($model->worker->name) ? $model->worker->name : '' ?></td>
-                            <td><?= isset($model->worker->protocol->name) ? strtoupper($model->worker->protocol->name) : '' ?></td>
+                            <td><?= isset($model->worker->name) ? $model->worker->name : Yii::t('app', 'inherited') ?></td>
+                            <td><?= isset($model->worker->protocol->name) ? strtoupper($model->worker->protocol->name) : Yii::t('app', 'inherited') ?></td>
                             <td><?= isset($model->taskName->destination->name) ? $model->taskName->destination->name : '' ?></td>
                             <td class="narrow text-right">
                                 <?php

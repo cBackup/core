@@ -121,7 +121,7 @@ $this->registerJs(
                 </li>
                 <li>
                     <a href="#device_tasks" class="test" data-toggle="tab" aria-expanded="false">
-                        <i class="fa fa-list"></i> <?= Yii::t('network', 'Device tasks')?></a>
+                        <i class="fa fa-list"></i> <?= Yii::t('network', 'Default device workers')?></a>
                 </li>
                 <li class="pull-right">
                     <div class="tab-links node-links">
@@ -134,8 +134,8 @@ $this->registerJs(
                         ?>
                     </div>
                     <div class="tab-links devices-links hidden">
-                        <?= Html::a(Yii::t('network', 'Assign task to device'), ['assign-device-task'], ['class' => 'btn btn-sm bg-light-blue']) ?>
-                        <?= Html::a(Yii::t('network', 'Advanced task assign'), 'javascript:;', [
+                        <?= Html::a(Yii::t('network', 'Assign worker to device'), ['assign-device-task'], ['class' => 'btn btn-sm bg-light-blue']) ?>
+                        <?= Html::a(Yii::t('network', 'Advanced worker assign'), 'javascript:;', [
                             'class'       => 'btn btn-sm bg-light-blue',
                             'data-toggle' => 'modal',
                             'data-target' => '#device_task_modal',
@@ -306,14 +306,14 @@ $this->registerJs(
 </div>
 
 
-<!-- assign task to devices -->
+<!-- assign worker to devices -->
 <div id="device_task_modal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title"><?= Yii::t('network', 'Redirect to advanced node assignment') ?></h4>
+                <h4 class="modal-title"><?= Yii::t('network', 'Redirect to advanced worker assignment') ?></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
