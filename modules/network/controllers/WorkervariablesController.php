@@ -134,6 +134,13 @@ class WorkervariablesController extends Controller
 
         $model = $this->findModel($id);
 
+        /** Prevent user from editing protected variables */
+        if ($model->protected == 1) {
+            \Y::flashAndRedirect('warning',
+                Yii::t('network', 'Permanent system variables can not be edited'), '/network/workervariables/list'
+            );
+        }
+
         if (isset($_POST['JobGlobalVariable'])) {
 
             if ($model->load(Yii::$app->request->post())) {
@@ -169,6 +176,12 @@ class WorkervariablesController extends Controller
     {
 
         $model = $this->findModel($id);
+
+        /** Prevent user from deleting protected variables */
+        if ($model->protected == 1) {
+            \Y::flash('warning', Yii::t('network', 'Permanent system variables can not be deleted'));
+            return $this->redirect(['/network/workervariables/list']);
+        }
 
         try {
             if ($model->delete()) {
@@ -206,6 +219,14 @@ class WorkervariablesController extends Controller
     {
 
         $model = $this->findModel($id);
+
+        /** Prevent user from deleting protected variables */
+        if ($model->protected == 1) {
+            return Json::encode([
+                'status' => 'warning',
+                'msg'    => Yii::t('network', 'Permanent system variables can not be deleted')
+            ]);
+        }
 
         try {
             if ($model->delete()) {
