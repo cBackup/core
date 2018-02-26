@@ -115,6 +115,7 @@ class Job extends ActiveRecord
             [['command_var'], 'isWorkerVariableUsed', 'skipOnEmpty' => false],
             [['command_value'], 'workerVariableExists'],
             [['command_value'], 'isWorkerJobPositionCorrect'],
+            [['command_value'], 'isKeySeqOnePerCommand'],
             [['timeout', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'table_field', 'command_var', 'cli_custom_prompt', 'description'], 'default', 'value' => null],
             [['after_job'], 'safe'],
         ];
@@ -142,6 +143,23 @@ class Job extends ActiveRecord
             'description'         => Yii::t('app', 'Description'),
             'after_job'           => Yii::t('network', 'After job')
         ];
+    }
+
+    /**
+     * Check if key sequence is one per line and not surrounded by other commands
+     *
+     * @param $attribute
+     */
+    public function isKeySeqOnePerCommand($attribute)
+    {
+        preg_match_all('/%%SEQ.*?%%/im', $this->command_value, $matches);
+
+        if (count($matches[0]) > 1) {
+            $this->addError($attribute, Yii::t('network', 'Only one key sequence is allowed per command'));
+        }
+        elseif (count($matches[0]) == 1 && !preg_match('/^%%SEQ\(\w+\)%%$/im', $this->command_value)) {
+            $this->addError($attribute, Yii::t('network', 'Key sequence can not be surrounded by other commands'));
+        }
     }
 
     /**

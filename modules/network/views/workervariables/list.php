@@ -55,9 +55,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Global worker variab
                                 [
                                     'format'    => 'raw',
                                     'attribute' => 'var_name',
-                                    'value'     => function($model) { /** @var $model \app\models\JobGlobalVariable */
-                                        return Html::a($model->var_name, ['edit', 'id' => $model->id], ['data-pjax' => '0']);
-                                    },
+                                    'value'     => 'varNameStyled',
                                 ],
                                 [
                                     'attribute' => 'var_value',
@@ -70,6 +68,15 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Global worker variab
                                     'class'          => 'yii\grid\ActionColumn',
                                     'contentOptions' => ['class' => 'narrow'],
                                     'template'       => '{edit} {delete}',
+                                    'visible'        => $searchModel::hasUnprotectedVar(),
+                                    'visibleButtons' => [
+                                        'edit' => function ($model) { /** @var $model \app\models\JobGlobalVariable */
+                                            return ($model->protected == 0) ? true : false;
+                                        },
+                                        'delete' => function ($model) { /** @var $model \app\models\JobGlobalVariable */
+                                            return ($model->protected == 0) ? true : false;
+                                        }
+                                    ],
                                     'buttons'        => [
                                         'edit' => function (/** @noinspection PhpUnusedParameterInspection */$url, $model) { /** @var $model \app\models\JobGlobalVariable */
                                             return Html::a('<i class="fa fa-pencil-square-o"></i>', ['edit', 'id' => $model->id], [
