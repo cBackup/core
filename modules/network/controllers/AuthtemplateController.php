@@ -26,6 +26,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\filters\AjaxFilter;
 use app\models\DeviceAuthTemplate;
+use app\models\JobGlobalVariable;
 use app\models\search\DeviceAuthTemplateSearch;
 
 
@@ -116,7 +117,8 @@ class AuthtemplateController extends Controller
         }
 
         return $this->render('_form', [
-            'model' => $model
+            'model' => $model,
+            'vars'  => JobGlobalVariable::find()->select(['description'])->where(['like', 'var_name', '%%SEQ'])->indexBy('var_name')->asArray()->column()
         ]);
 
     }
@@ -152,7 +154,8 @@ class AuthtemplateController extends Controller
         }
 
         return $this->render('_form', [
-            'model' => $model
+            'model' => $model,
+            'vars'  => JobGlobalVariable::find()->select(['description'])->where(['like', 'var_name', '%%SEQ'])->indexBy('var_name')->asArray()->column()
         ]);
 
     }

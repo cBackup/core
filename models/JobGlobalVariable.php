@@ -128,7 +128,7 @@ class JobGlobalVariable extends ActiveRecord
                 'style'               => 'cursor: help;',
                 'data-toggle'         => 'tooltip',
                 'data-placement'      => 'bottom',
-                'data-original-title' => Yii::t('network', 'Permanent system variable')
+                'data-original-title' => Yii::t('network', 'System variable')
             ]);
         }
 

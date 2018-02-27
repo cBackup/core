@@ -152,13 +152,14 @@ class Job extends ActiveRecord
      */
     public function isKeySeqOnePerCommand($attribute)
     {
+        $matches = [];
         preg_match_all('/%%SEQ.*?%%/im', $this->command_value, $matches);
 
         if (count($matches[0]) > 1) {
             $this->addError($attribute, Yii::t('network', 'Only one key sequence is allowed per command'));
         }
         elseif (count($matches[0]) == 1 && !preg_match('/^%%SEQ\(\w+\)%%$/im', $this->command_value)) {
-            $this->addError($attribute, Yii::t('network', 'Key sequence can not be surrounded by other commands'));
+            $this->addError($attribute, Yii::t('network', 'Key sequence must be used exclusively'));
         }
     }
 
