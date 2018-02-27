@@ -25,6 +25,7 @@ use app\helpers\FormHelper;
  * @var $this   yii\web\View
  * @var $model  app\models\DeviceAuthTemplate
  * @var $form   yii\bootstrap\ActiveForm
+ * @var $vars   array
  */
 
 /** @noinspection PhpUndefinedFieldInspection */
@@ -35,10 +36,14 @@ $this->title = Yii::t('app', 'Device auth templates');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Inventory')];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Device auth templates'), 'url' => ['list']];
 $this->params['breadcrumbs'][] = ['label' => $page_name];
+
+// Because firefox has 9 years of open bug with unsupported 'background-attachment: local' for textareas
+$this->registerJsFile('/js/plugins/autosize.min.js', ['depends' => \app\assets\AlphaAsset::className()]);
+$this->registerJs(/** @lang JavaScript */"autosize($('textarea'));");
 ?>
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="box box-default">
             <div class="box-header with-border">
                 <h3 class="box-title">
@@ -52,8 +57,8 @@ $this->params['breadcrumbs'][] = ['label' => $page_name];
                     'enableClientValidation' => false,
                     'fieldConfig' => [
                         'horizontalCssClasses' => [
-                            'label'   => 'col-sm-3',
-                            'wrapper' => 'col-sm-9'
+                            'label'   => 'col-sm-4',
+                            'wrapper' => 'col-sm-8'
                         ],
                     ],
                 ]);
@@ -107,7 +112,7 @@ $this->params['breadcrumbs'][] = ['label' => $page_name];
         </div>
     </div>
 
-    <div class="col-md-4">
-       <?= $this->render('_help_view', ['collapsed' => false]) ?>
+    <div class="col-md-5">
+       <?= $this->render('_help_view', ['collapsed' => false, 'vars' => $vars]) ?>
     </div>
 </div>

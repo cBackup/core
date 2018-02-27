@@ -55,9 +55,12 @@ class DeviceAuthTemplate extends ActiveRecord
             [['auth_sequence'], 'string'],
             [['name'], 'string', 'max' => 64],
             [['description'], 'string', 'max' => 255],
+            /** @see DeviceAuthTemplate::authSequenceValidator() */
             [['auth_sequence'], 'authSequenceValidator', 'params' => [
-                'prompt' => ['$', '>', '#', '~'],
-                'tags'   => ['{{telnet_login}}', '{{telnet_password}}', '{{enable_password}}']
+                'tags'   => [
+                    '{{telnet_login}}', '{{telnet_password}}', '{{enable_password}}', '%%SEQ(CTRLY)%%',
+                    '%%SEQ(CTRLC)%%', '%%SEQ(CTRLZ)%%', '%%SEQ(ESC)%%', '%%SEQ(SPACE)%%', '%%SEQ(ENTER)%%'
+                ]
             ]],
             [['description'], 'default', 'value' => null]
         ];
@@ -83,20 +86,21 @@ class DeviceAuthTemplate extends ActiveRecord
     {
 
         $tagUnique = array_fill_keys(array_values($params['tags']), 0);
-        $prompt    = '/^.*['. join('', $params['prompt']) .']$/m';
+        $prompt    = '/^.*['. join('', \Y::param('cli_prompts')) .']$/m';
         $sequence  = explode("\n", $this->auth_sequence);
         $sequence  = array_map(function($item) { return rtrim($item, "\n\r"); }, $sequence);
         $hasPrompt = false;
         $failedTag = false;
+        $tagRegex  = '(?:{{|%%)[\w\(\)]+(?:}}|%%)';
 
         foreach ($sequence as $row) {
-            if( preg_match('/^{{\w+}}$/im', $row) && !in_array($row, $params['tags']) ) {
+            if( preg_match('/^'.$tagRegex.'$/im', $row) && !in_array($row, $params['tags']) ) {
                 $failedTag = true;
             }
             if( preg_match('/^{{\w+}}$/im', $row) && array_key_exists($row, $tagUnique) ) {
                 $tagUnique[$row]++;
             }
-            if( preg_match('/^{{\w+}}.+$/im', $row) || preg_match('/^.+{{\w+}}$/im', $row) ) {
+            if( preg_match('/^'.$tagRegex.'.+$/im', $row) || preg_match('/^.+'.$tagRegex.'$/im', $row) ) {
                 $failedTag = true;
             }
         }
