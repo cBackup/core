@@ -48,12 +48,14 @@ return [
      * Example: 'Mikrotik' => ['RB123'], where 'Mikrotik' -> vendor, 'RB123' -> device model
      */
     'java_factory' => [
-        'Mikrotik' => []
+        'Mikrotik' => [],
+        'Nortel'   => []
     ],
 
-    /**
-     * List of dynamic system variables
-     */
-    'system_variables' => ['%%DATE%%', '%%NODE_ID%%', '%%TASK%%'],
+    /** List of dynamic system variables */
+    'system_variables' => ['%%DATE%%', '%%NODE_ID%%', '%%TASK%%', '%%NODE_IP%%'],
+
+    /** Devices' valid CLI prompts anchors*/
+    'cli_prompts' => ['$', '>', '#', '~'],
 
 ];
