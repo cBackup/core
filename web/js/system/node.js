@@ -67,8 +67,8 @@ $(document).on('click', '#show_config', function () {
 });
 
 /** Load git log for current node */
-$(document).on('click', '#show_history, #reload_history', function () {
-    if (diff_content.is(':hidden') || this.id === 'reload_history') {
+$(document).on('click', '#show_history, .reload_history', function () {
+    if (diff_content.is(':hidden') || this.className === 'reload_history') {
         $.ajax({
             url    : $(this).data('url'),
             type   : 'post',

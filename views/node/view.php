@@ -842,11 +842,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ]);
                                         }
 
-                                        echo Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Download'), null, [
-                                            'class'       => 'btn btn-xs btn-default ' . $disabled,
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#download_modal',
-                                        ])
+                                        echo Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Download'), Url::to(['ajax-download',
+                                            'id'   => $data->id,
+                                            'put'  => $task_info->put,
+                                            'hash' => null
+                                        ]), [
+                                            'class'         => 'btn btn-xs btn-default ' . $disabled,
+                                            'title'         => Yii::t('app', 'Download'),
+                                            'data-dismiss'  => 'modal',
+                                            'data-toggle'   => 'modal',
+                                            'data-target'   => '#download_modal',
+                                            'data-backdrop' => 'static',
+                                            'data-keyboard' => 'false'
+                                        ]);
                                     ?>
                                 </td>
                             </tr>
@@ -924,24 +932,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-light-blue-active">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title"><?= Yii::t('app', 'Choose end of line format') ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title"><?= Yii::t('app', 'Wait...') ?></h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <?php
-                            echo Html::a('&nbsp;&nbsp;LF&nbsp;&nbsp;', ['download', 'id' => $data->id, 'put' => $task_info->put], [
-                                'class'   => 'btn btn-primary pull-left',
-                                'onclick' => '(function() { $("#download_modal").modal("hide"); })();'
-                            ]);
-                            echo Html::a('CRLF', ['download', 'id' => $data->id, 'put' => $task_info->put, 'crlf' => true], [
-                                'class'   => 'btn btn-primary pull-right',
-                                'onclick' => '(function() { $("#download_modal").modal("hide"); })();'
-                            ]);
-                        ?>
-                    </div>
-                </div>
+                <span style="margin-left: 24%;"><?= Html::img('@web/img/modal_loading.gif', ['alt' => Yii::t('app', 'Loading...')]) ?></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
             </div>
         </div>
     </div>
@@ -983,10 +982,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <td class="hide-overflow"><?= $log[1] ?></td>
                                             <td><?= $log[2] ?></td>
                                             <td><?= preg_replace("/(\s+\+\d*)/i", '', $log[3]) ?></td>
-                                            <td>
+                                            <td style="white-space: nowrap">
                                                 <?php
-                                                    echo Html::a('<i class="fa fa-eye"></i>', null, [
-                                                        'id'          => 'reload_history',
+                                                    echo Html::a('<i class="fa fa-save"></i>', Url::to(['ajax-download',
+                                                        'id'   => $data->id,
+                                                        'put'  => $task_info->put,
+                                                        'hash' => $log[0],
+                                                    ]), [
+                                                        'style'         => 'cursor:pointer;',
+                                                        'title'         => Yii::t('app', 'Download'),
+                                                        'data-dismiss'  => 'modal',
+                                                        'data-toggle'   => 'modal',
+                                                        'data-target'   => '#download_modal',
+                                                        'data-backdrop' => 'static',
+                                                        'data-keyboard' => 'false'
+                                                    ]);
+                                                    echo '&nbsp;';
+                                                    echo Html::a('<i class="fa fa-eye"></i>', 'javascript:;', [
+                                                        'class'       => 'reload_history',
                                                         'data-url'    => Url::to(['ajax-load-file-diff']),
                                                         'style'       => 'cursor:pointer;',
                                                         'title'       => Yii::t('app', 'View'),
@@ -994,7 +1007,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'node_id' => $data->id,
                                                             'hash'    => $log[0],
                                                         ])
-                                                    ])
+                                                    ]);
                                                 ?>
                                             </td>
                                         </tr>
