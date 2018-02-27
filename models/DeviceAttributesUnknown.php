@@ -21,7 +21,6 @@ namespace app\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
-use yii\db\Exception;
 use yii\helpers\Html;
 
 
@@ -94,10 +93,9 @@ class DeviceAttributesUnknown extends ActiveRecord
 
         if(!$unknownDevice->exists()) {
 
-            $transaction = Yii::$app->db->beginTransaction();
-
             /** Create new device attributes */
             $deviceAttributesUnknown = new DeviceAttributesUnknown($attributes);
+            $transaction             = Yii::$app->db->beginTransaction();
 
             try {
 

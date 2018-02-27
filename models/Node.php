@@ -119,7 +119,7 @@ class Node extends ActiveRecord
             [['hostname', 'prepend_location', 'location', 'contact'], 'string', 'max' => 255],
             [['sys_description'], 'string', 'max' => 1024],
             [['serial'], 'string', 'max' => 45],
-            [['ip', 'mac'], 'unique'],
+            [['ip'], 'unique'],
             [['credential_id'], 'required', 'when' => function($model) {/** @var $model Node*/ return empty ($model->network_id); }],
             [['credential_id'], 'exist', 'skipOnError' => true, 'targetClass' => Credential::className(), 'targetAttribute' => ['credential_id' => 'id']],
             [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::className(), 'targetAttribute' => ['auth_template_name' => 'name']],

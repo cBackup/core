@@ -129,7 +129,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 INSERT INTO `vendor` (`name`) VALUES
   ('Arris'),
   ('Cisco'),
-  ('D-link'),
+  ('Dlink'),
   ('Extreme'),
   ('Mikrotik'),
   ('Zyxel');

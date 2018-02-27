@@ -213,8 +213,13 @@ if( isset($dashboard_stats['backup']->message) ) {
                             ?>
                             <div class="col-md-4 <?= $warn ?>">
                                 <?php
-                                    if( array_key_exists('failed', $backup) && $backup['failed'] > 0 ) {
-                                        echo Yii::t('app', 'Failed: {0}', $backup['failed']);
+                                    if( !array_key_exists('failed', $backup) && $backup['failed'] > 0 ) {
+                                        echo Html::a(Yii::t('app', 'Failed: {0}', $backup['failed']), [
+                                            '/log/scheduler/list',
+                                            'LogSchedulerSearch[severity]'    => 'ERROR',
+                                            'LogSchedulerSearch[date_from]'   => date('Y-m-d H:i', strtotime('midnight')),
+                                            'LogSchedulerSearch[date_to]'     => date('Y-m-d H:i', strtotime('now'))
+                                        ], ['class' => 'text-danger']);
                                     }
                                 ?>
                             </div>
