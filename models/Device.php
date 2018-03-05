@@ -70,8 +70,8 @@ class Device extends ActiveRecord
             [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::className(), 'targetAttribute' => ['auth_template_name' => 'name']],
             [['vendor'], 'exist', 'skipOnError' => true, 'targetClass' => Vendor::className(), 'targetAttribute' => ['vendor' => 'name']],
             [['vendor', 'model'], 'unique', 'targetAttribute' => ['vendor', 'model'], 'message' => 'The combination of Vendor and Model has already been taken.'],
-            [['model'], 'match', 'pattern' => '/^[a-z][\w_]*$/i',
-                'message' => Yii::t('network', 'Device name should start with letter and contain only a-z, 0-9 or underscore')
+            [['model'], 'match', 'pattern' => '/^[a-z](?!.*[\-_]{2,})[\w\-]*/i',
+                'message' => Yii::t('network', 'Device name should start with letter, contain only a-z, 0-9 and non-repeating hyphens and/or underscores')
             ],
         ];
     }

@@ -32,7 +32,6 @@ $config = [
     'name'           => 'cBackup',
     'id'             => 'cBackup',
     'basePath'       => dirname(__DIR__),
-    'sourceLanguage' => 'en-US',
     'version'        => require_once('version.php'),
     'bootstrap'      => ['log', 'app\helpers\ConfigHelper'],
 	'aliases'        => [

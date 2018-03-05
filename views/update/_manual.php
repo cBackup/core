@@ -40,7 +40,7 @@
             </li>
             <li>
                 <?= Yii::t('update', 'Download the latest update') ?><br>
-                $ <code>wget <?= $giturl ?>/archive/update.zip -P /opt</code>
+                $ <code>wget <?= str_replace('.git', '', $giturl) ?>/archive/master.zip -P /opt</code>
                 <br><br>
             </li>
             <li>
@@ -55,12 +55,12 @@
             </li>
             <li>
                 <?= Yii::t('update', 'Unpack downloaded archive to your cBackup installation overriding all files') ?><br>
-                $ <code>unzip -o /opt/update.zip -d <span class="path">/opt/cbackup</span></code>
+                $ <code>unzip -o /opt/master.zip -d <span class="path">/opt/cbackup</span></code>
                 <br><br>
             </li>
             <li>
                 <?= Yii::t('update', 'Remove archive') ?> <br>
-                $ <code>rm /opt/update.zip</code>
+                $ <code>rm /opt/master.zip</code>
                 <br><br>
             </li>
             <li>
