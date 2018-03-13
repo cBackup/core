@@ -103,7 +103,7 @@ $form = ActiveForm::begin([
             <div class="col-md-6"><?php echo $form->field($model, 'server_login')->textInput(['value' => (empty($model->server_login)) ? 'cbackup' : $model->server_login]); ?></div>
             <div class="col-md-6"><?php echo $form->field($model, 'server_password')->textInput(['value' => (empty($model->server_password)) ? null : $model->server_password]); ?></div>
             <div class="col-md-6"><?php echo $form->field($model, 'server_port')->textInput(['value' => (empty($model->server_port)) ? 22 : $model->server_port]); ?></div>
-            <div class="col-md-6"><?php echo $form->field($model, 'systeminit')->dropDownList(['system.d' => 'Systemd', 'init.d' => 'SysVinit)'], ['value' => (empty($model->systeminit)) ? 'system.d' : $model->systeminit]); ?></div>
+            <div class="col-md-6"><?php echo $form->field($model, 'systeminit')->dropDownList(['system.d' => 'Systemd', 'init.d' => 'SysVinit'], ['value' => (empty($model->systeminit)) ? 'system.d' : $model->systeminit]); ?></div>
         </div>
     </div>
     <table class="table check" style="margin-bottom: 0">

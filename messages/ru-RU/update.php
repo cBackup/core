@@ -15,6 +15,7 @@ $lang = array(
     'Error while creating SQL dump' => 'Ошибка при создании SQL дампа',
     'Finish update errors' => 'Ошибки при завершении обновления',
     'Finishing update process' => 'Завершение процесса обновления',
+    'If you have nginx or running web server with another user:group - adjust corresponding data' => 'Если у вас nginx или веб-сервер запущен под другим пользователем или группой - укажите соответствующие данные',
     'Initialize updater' => 'Проинициализировать обновления',
     'Install updates' => 'Установить обновления',
     'Installed cBackup version' => 'Установленная версия cBackup',

@@ -65,7 +65,8 @@
             </li>
             <li>
                 <?= Yii::t('update', 'Restore permissions') ?> <br>
-                $ <code><span class="path">/opt/cbackup</span>/setPermissions.sh</code>
+                <?= Yii::t('update', 'If you have nginx or running web server with another user:group - adjust corresponding data') ?><br>
+                $ <code>chown -R apache:apache <span class="path">/opt/cbackup</span></code>
                 <br><br>
             </li>
             <li>
