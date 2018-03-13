@@ -27,7 +27,7 @@ use yii\helpers\Json;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\search\CredentialSearch;
 use app\models\Credential;
 use app\models\CredentialTest;
@@ -193,7 +193,8 @@ class CredentialController extends Controller
             $class   = 'success';
             $message = Yii::t('network', 'Credential <b>{0}</b> was successfully deleted.', $model->name);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('network', 'An error occurred while deleting credential <b>{0}</b>.', $model->name);
             $message.= '<br>'.$e->getMessage();
@@ -231,7 +232,9 @@ class CredentialController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('network', 'Credential <b>{0}</b> was successfully deleted.', $model->name)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('network', 'An error occurred while deleting credential <b>{0}</b>.', $model->name)

@@ -58,7 +58,11 @@ class NetworkSearch extends Network
      */
     public function search($params)
     {
-        $query = Network::find();
+        $query = Network::find()->select([
+            'network.*',
+            'INET_ATON(SUBSTRING_INDEX(network, "/", 1)) as netaddr',
+            'SUBSTRING_INDEX(network, "/", -1) as netmask'
+        ]);
 
         $query->joinWith(['credential c']);
 
@@ -66,15 +70,25 @@ class NetworkSearch extends Network
             'query' => $query,
             'sort'  => [
                 'defaultOrder' => [
-                    'credential_name' => SORT_ASC,
-                    'network'         => SORT_ASC
+                    'network'         => SORT_ASC,
+                    'credential_name' => SORT_ASC
                 ],
                 'attributes'   => [
                     'credential_name' => [
                         'asc'  => ['c.name' => SORT_ASC],
                         'desc' => ['c.name' => SORT_DESC],
                     ],
-                    'network'
+                    // sort by network address via virtual columns `netaddr` and `netmask`
+                    'network' => [
+                        'asc'  => [
+                            'netaddr' => SORT_ASC,
+                            'netmask' => SORT_ASC
+                        ],
+                        'desc' => [
+                            'netaddr' => SORT_DESC,
+                            'netmask' => SORT_DESC
+                        ],
+                    ],
                 ],
                 'enableMultiSort' => true
             ],

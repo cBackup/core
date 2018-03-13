@@ -21,6 +21,7 @@ use yii\helpers\Html;
 
 /**
  * @var $collapsed boolean
+ * @var $vars      array
  */
 ?>
 
@@ -36,7 +37,7 @@ use yii\helpers\Html;
     </div>
     <div class="box-body text-justify" style="<?= ($collapsed) ? 'overflow-y: scroll; height:370px;' : '' ?>">
         <p>
-            <?= Yii::t('network', 'Auth sequence field represents the authentication sequence for the particular device. The following tags are available for usage in the sequence while being substituted by related values from credentials:') ?>
+            <?= /** @noinspection HtmlUnknownTarget */ Yii::t('network', 'Auth sequence field represents the authentication sequence for the particular device. The following tags are available for usage in the sequence while being substituted by related values from <a href="{0}">credentials</a>:', \yii\helpers\Url::to(['/network/credential'])) ?>
         </p>
         <table class="table table-condensed">
             <tr>
@@ -53,8 +54,14 @@ use yii\helpers\Html;
             </tr>
             <tr>
                 <td><code>{{enable_password}}</code></td>
-                <td><?= Yii::t('network', 'Privileged mode password') ?></td>
+                <td class="text-left"><?= Yii::t('network', 'Privileged mode password') ?></td>
             </tr>
+            <?php foreach($vars as $var => $description): ?>
+                <tr>
+                    <td><code><?= $var ?></code></td>
+                    <td><?= Yii::t('network', $description) ?></td>
+                </tr>
+            <?php endforeach; ?>
         </table>
         <br>
         <?= Yii::t('network', 'Also note the following:') ?>
@@ -67,20 +74,65 @@ use yii\helpers\Html;
 </div>
 
 <div class="nav-tabs-custom box box-default">
-    <ul class="nav nav-tabs pull-right ui-sortable-handle" style="margin-top: -3px">
-        <li class="active"><a href="#dlink" data-toggle="tab">D-Link</a></li>
-        <li><a href="#arris" data-toggle="tab">Arris Cadant</a></li>
-        <li><a href="#cisco" data-toggle="tab">Cisco</a></li>
+    <ul class="nav nav-tabs nav-justified ui-sortable-handle" style="margin-top: -3px">
+        <li><a href="#ssh_mikrotik" data-toggle="tab">SSH Mikrotik</a></li>
+        <li><a href="#ssh_cisco" data-toggle="tab">SSH Cisco</a></li>
+        <li><a href="#ssh_hp" data-toggle="tab">SSH HP</a></li>
+        <li><a href="#telnet_dlink" data-toggle="tab">Telnet D-Link</a></li>
+        <li><a href="#telnet_arris" data-toggle="tab">Telnet Arris</a></li>
+        <li class="active"><a href="#telnet_cisco" data-toggle="tab">Global Cisco</a></li>
     </ul>
     <div class="tab-content">
-        <div class="active tab-pane" id="dlink">
+        <div class="tab-pane" id="ssh_mikrotik">
+            <div class="row">
+                <div class="col-md-6">
+                    <?= Html::tag('pre', "#") ?>
+                </div>
+                <div class="col-md-6 text-justify" style="padding-right: 22px;">
+                    <?= Yii::t('network', 'You can define only <code>#</code> as initial expect after successful authentication.') ?>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="ssh_cisco">
+            <div class="row">
+                <div class="col-md-6">
+                    <?= Html::tag('pre', ">\nena\nord:\n{{enable_password}}\n#") ?>
+                </div>
+                <div class="col-md-6 text-justify" style="padding-right: 22px;">
+                    <?= Yii::t('network', 'Authentication sequence for plain SSH doesn\'t need (and will ignore) <code>{{telnet...}}</code> tags, so you may want not to use them in the template at all, starting with expect for privileged mode if necessary.') ?>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="ssh_hp">
+            <div class="row">
+                <div class="col-md-6">
+                    <?= Html::tag('pre', "Press any key to continue\n%%SEQ(ENTER)%%\n>\nena\nord:\n{{enable_password}}\n#") ?>
+                </div>
+                <div class="col-md-6 text-justify" style="padding-right: 22px;">
+                    <?= Yii::t('network', 'This is an example for device that uses to "press any key" or to to press certain key sequence (e.g. Juniper asks for CTRL+Y). You may use predefined tags to do so.') ?>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="telnet_dlink">
             <?= Html::tag('pre', "ame:\n{{telnet_login}}\nord:\n{{telnet_password}}\n#") ?>
         </div>
-        <div class="tab-pane" id="arris">
+        <div class="tab-pane" id="telnet_arris">
             <?= Html::tag('pre', "in:\n{{telnet_login}}\nord:\n{{telnet_password}}\n>\nenable\nord:\n{{enable_password}}\n#") ?>
         </div>
-        <div class="tab-pane" id="cisco">
-            <?= Html::tag('pre', "in:\n{{telnet_login}}\nord:\n{{telnet_password}}\n>\nena\nord:\n{{enable_password}}\n#") ?>
+        <div class="tab-pane active" id="telnet_cisco">
+            <div class="row">
+                <div class="col-md-6">
+                    <?= Html::tag('pre', "in:\n{{telnet_login}}\nord:\n{{telnet_password}}\n>\nena\nord:\n{{enable_password}}\n#") ?>
+                </div>
+                <div class="col-md-6 text-justify" style="padding-right: 22px;">
+                    <p>
+                        <?= Yii::t('network', 'As you know, SSH credentials are passed when the connection is established. Therefore you may want to use only prompt and <code>{{enable_password}}</code> if necessary or <code>%%SEQ</code> tags for sending sequences.') ?>
+                    </p>
+                    <p>
+                        <?= Yii::t('network', 'Both <code>{{telnet_login}}</code> and <code>{{telnet_ password}}</code> tags with corresponding prompts will be ignored, so you still may use the same authentication template for Telnet and SSH devices.') ?>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

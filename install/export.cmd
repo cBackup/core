@@ -6,7 +6,7 @@ for /f %%i in ('grep -Eo "([0-9\.]+)" ../config/version.php') do set VERSION=%%i
 REM :: Initialize variables
 set TDIR="E:\BUILD"
 set SDIR="E:\Github\cBackup\Core"
-set EXCL=--exclude=install --exclude=README.md --exclude=views/install --exclude=web/install --exclude=views/layouts/install.php --exclude=controllers/InstallController.php --exclude=config/db.php --exclude=config/install.php
+set EXCL=--exclude=install --exclude=./README.md --exclude=views/install --exclude=web/install --exclude=views/layouts/install.php --exclude=controllers/InstallController.php --exclude=config/db.php --exclude=config/install.php
 
 REM :: Create MySQL dump
 call dump.cmd
@@ -58,6 +58,7 @@ rm -vfr %TDIR%/modules/cds/content/.idea | grep "removed directory"
 rm -vfr %TDIR%/modules/cds/content/authtemplates | grep "removed directory"
 rm -vfr %TDIR%/modules/cds/content/devices | grep "removed directory"
 rm -vfr %TDIR%/modules/cds/content/workers | grep "removed directory"
+find %TDIR%/migrations/* -type f ! -name '*release.php' -delete
 
 REM :: Prepare production env
 cd /D "%TDIR%"
@@ -67,7 +68,9 @@ mv -vf %TDIR%/yii-prod %TDIR%/yii
 call composer install --no-dev
 call composer dumpautoload -o
 rm -f %TDIR%/composer.*
-tar --exclude=migrations --exclude=README.md -cf ../cbackup-%VERSION%.tar * .??*
+REM:: Create prod release package
+tar --exclude=migrations --exclude=./README.md -cf ../cbackup-%VERSION%.tar * .??*
+REM:: Create prod update package
 tar %EXCL% -cf ../cbackup-%VERSION%-update.tar * .??*
 
 REM :: Clean up production env and proceed with debug env
@@ -86,7 +89,9 @@ cp -fv %SDIR%/config/test.php %TDIR%/config/test.php
 cp -fv %SDIR%/config/test_db.php %TDIR%/config/test_db.php
 cp -fv %SDIR%/install/test.sql %TDIR%/install/test.sql
 call composer install
-tar --exclude=migrations --exclude=README.md -cf ../cbackup-%VERSION%-debug-release.tar * .??*
+REM:: Create devel release package
+tar --exclude=migrations --exclude=./README.md -cf ../cbackup-%VERSION%-debug-release.tar * .??*
+REM:: Create devel update package
 tar %EXCL% -cf ../cbackup-%VERSION%-debug-update.tar * .??*
 
 REM :: Compress tars

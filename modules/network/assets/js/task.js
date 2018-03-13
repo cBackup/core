@@ -54,7 +54,8 @@ $body.on('hidden.bs.modal', '.modal', function () {
     /** Reload select2 after record was added */
     if ($toast.find('.toast-success').is(':visible')) {
         var $selected_task = $('#task_name').val();
-        updateSelect2('/index.php?r=network/assigntask/ajax-update-workers&task_name=' + $selected_task, 'worker_list');
+        var $update_url    = $('#worker_list').data('update-url');
+        updateSelect2($update_url + '&task_name=' + $selected_task, 'worker_list');
     }
 
     /** Remove errors after modal close */

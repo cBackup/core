@@ -65,6 +65,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'options'       => ['style' => 'width:14%']
                                 ],
                                 [
+                                    'attribute'     => 'ip',
+                                    'options'       => ['style' => 'width:9%'],
+                                    'enableSorting' => false
+                                ],
+                                [
                                     'attribute'     => 'sysobject_id',
                                     'options'       => ['style' => 'width:20%'],
                                     'enableSorting' => false

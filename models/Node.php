@@ -116,9 +116,10 @@ class Node extends ActiveRecord
             [['mac'], 'match', 'pattern' => '/^[A-F0-9]{12}$/m', 'message' => Yii::t('app', 'Wrong MAC address specified')],
             [['mac'], 'string', 'max' => 12],
             [['auth_template_name'], 'string', 'max' => 64],
-            [['hostname', 'prepend_location', 'location', 'contact', 'sys_description'], 'string', 'max' => 255],
+            [['hostname', 'prepend_location', 'location', 'contact'], 'string', 'max' => 255],
+            [['sys_description'], 'string', 'max' => 1024],
             [['serial'], 'string', 'max' => 45],
-            [['ip', 'mac'], 'unique'],
+            [['ip'], 'unique'],
             [['credential_id'], 'required', 'when' => function($model) {/** @var $model Node*/ return empty ($model->network_id); }],
             [['credential_id'], 'exist', 'skipOnError' => true, 'targetClass' => Credential::className(), 'targetAttribute' => ['credential_id' => 'id']],
             [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::className(), 'targetAttribute' => ['auth_template_name' => 'name']],
@@ -311,7 +312,7 @@ class Node extends ActiveRecord
      *
      * @param $data
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
     public static function createOrUpdateNode($data)
     {
@@ -337,48 +338,43 @@ class Node extends ActiveRecord
         $transaction = Yii::$app->db->beginTransaction();
         $changes     = $node->getDirtyAttributes();
 
-        if(!empty($changes)) {
+        if ($node->validate()) {
 
-            $node->modified    = date('Y-m-d H:i:s');
-            $node->last_seen   = date('Y-m-d H:i:s');
-            $success = $node->save();
+            if (!empty($changes)) {
 
-            /*
-             * Log write
-             */
-            if($success) {
+                $node->modified  = date('Y-m-d H:i:s');
+                $node->last_seen = date('Y-m-d H:i:s');
+                $success = $node->save();
 
-                $logNode = new LogNode();
-                $logNode->severity = 'INFO';
-                $logNode->node_id  = $node->getPrimaryKey();
-
-                if($isNewNode) {
-                    $logNode->action  = 'CREATE';
-                    $logNode->message = 'Node has been created.' . PHP_EOL . 'Data - ' . PHP_EOL .
-                        'ip: ' . $data['ip'] . PHP_EOL .
-                        'hostname: ' . $data['location'] . PHP_EOL;
-                }
-                else {
-                    $logNode->action  = 'UPDATE';
-                    $logNode->message = 'Node data has been updated.' . PHP_EOL . 'New data - ' . PHP_EOL;
-                    foreach($changes as $key => $value) {
-                        $logNode->message .= $key . ': ' . $value . PHP_EOL;
+                /** Write Log */
+                if ($success) {
+                    if ($isNewNode) {
+                        $message = "Node has been created.\nData -\nip: {$data['ip']}\nhostname: {$data['location']}";
+                        Yii::info([$message, $node->getPrimaryKey(), 'CREATE'], 'node.writeLog');
+                    } else {
+                        $message = "Node data has been updated.\nNew data -\n";
+                        foreach ($changes as $key => $value) {
+                            $message .= "{$key}: {$value}\n";
+                        }
+                        Yii::info([$message, $node->getPrimaryKey(), 'UPDATE'], 'node.writeLog');
                     }
                 }
 
-                $success = $logNode->save();
+            } else {
+                $node->last_seen = date('Y-m-d H:i:s');
+                $success = $node->save();
             }
-        }
-        else {
-            $node->last_seen   = date('Y-m-d H:i:s');
-            $success = $node->save();
-        }
 
-        if($success) {
-            $transaction->commit();
-        }
-        else {
-            $transaction->rollBack();
+            if ($success) {
+                $transaction->commit();
+            }
+            else {
+                $transaction->rollBack();
+            }
+
+        } else {
+            $node_errors = implode("\n", array_map(function ($a) { return implode("\n", $a);}, $node->getErrors()));
+            throw new \Exception("\n{$node_errors}");
         }
 
         return $success;

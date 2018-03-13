@@ -33,7 +33,7 @@ use yii\widgets\Pjax;
 app\assets\Select2Asset::register($this);
 app\assets\LaddaAsset::register($this);
 
-$this->title = Yii::t('network', 'Assign task :: {0} with worker :: {1}', [$searchModel->task_name, $searchModel->worker_name]);
+$this->title = Yii::t('network', 'Assign task [{0}] with worker [{1}]', [$searchModel->task_name, $searchModel->worker_name]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Processes')];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Task assignments')];
 

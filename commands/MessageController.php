@@ -20,6 +20,7 @@
 namespace app\commands;
 
 use Yii;
+use yii\console\ExitCode;
 use yii\helpers\Console;
 use yii\helpers\VarDumper;
 use yii\helpers\FileHelper;
@@ -101,14 +102,14 @@ class MessageController extends \yii\console\controllers\MessageController
 
             if (file_put_contents("$dir/{$file}.php", $content) === false) {
                 $this->stdout("Translation was NOT saved.\n\n", Console::FG_RED);
-                return self::EXIT_CODE_ERROR;
+                return ExitCode::UNSPECIFIED_ERROR;
             }
 
             $this->stdout("Translation saved.\n\n", Console::FG_GREEN);
 
         }
 
-        return self::EXIT_CODE_NORMAL;
+        return ExitCode::OK;
 
     }
 
@@ -133,7 +134,7 @@ class MessageController extends \yii\console\controllers\MessageController
         }
         catch (\Exception $e) {
             $this->stdout($e->getMessage());
-            return self::EXIT_CODE_ERROR;
+            return ExitCode::UNSPECIFIED_ERROR;
         }
 
         foreach ($messages as $message) {
@@ -174,7 +175,7 @@ class MessageController extends \yii\console\controllers\MessageController
             echo "No duplicated keys found\n";
         }
 
-        return self::EXIT_CODE_NORMAL;
+        return ExitCode::OK;
 
     }
 
@@ -324,7 +325,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
             if (array_keys($existingMessages) === $messages && (!$sort || array_keys($rawExistingMessages) === $messages)) {
                 $this->stdout("Nothing new in \"$category\" category... Nothing to save.\n\n", Console::FG_GREEN);
-                return self::EXIT_CODE_NORMAL;
+                return ExitCode::OK;
             }
 
             unset($rawExistingMessages);
@@ -392,11 +393,11 @@ class MessageController extends \yii\console\controllers\MessageController
 
         if (file_put_contents($fileName, $content) === false) {
             $this->stdout("Translation was NOT saved.\n\n", Console::FG_RED);
-            return self::EXIT_CODE_ERROR;
+            return ExitCode::UNSPECIFIED_ERROR;
         }
 
         $this->stdout("Translation saved.\n\n", Console::FG_GREEN);
-        return self::EXIT_CODE_NORMAL;
+        return ExitCode::OK;
 
     }
 

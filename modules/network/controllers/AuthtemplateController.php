@@ -24,8 +24,9 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\DeviceAuthTemplate;
+use app\models\JobGlobalVariable;
 use app\models\search\DeviceAuthTemplateSearch;
 
 
@@ -116,7 +117,8 @@ class AuthtemplateController extends Controller
         }
 
         return $this->render('_form', [
-            'model' => $model
+            'model' => $model,
+            'vars'  => JobGlobalVariable::find()->select(['description'])->where(['like', 'var_name', '%%SEQ'])->indexBy('var_name')->asArray()->column()
         ]);
 
     }
@@ -152,7 +154,8 @@ class AuthtemplateController extends Controller
         }
 
         return $this->render('_form', [
-            'model' => $model
+            'model' => $model,
+            'vars'  => JobGlobalVariable::find()->select(['description'])->where(['like', 'var_name', '%%SEQ'])->indexBy('var_name')->asArray()->column()
         ]);
 
     }
@@ -175,7 +178,8 @@ class AuthtemplateController extends Controller
             $class   = 'success';
             $message = Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->name);
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->name);
             $message.= '<br>'.$e->getMessage();
@@ -205,7 +209,9 @@ class AuthtemplateController extends Controller
                 'status' => 'success',
                 'msg'    => Yii::t('app', 'Record <b>{0}</b> has been successfully deleted.', $model->name)
             ];
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $response = [
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->name)

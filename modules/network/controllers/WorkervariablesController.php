@@ -25,7 +25,7 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\JobGlobalVariable;
 use app\models\search\JobGlobalVariableSearch;
 
@@ -134,6 +134,13 @@ class WorkervariablesController extends Controller
 
         $model = $this->findModel($id);
 
+        /** Prevent user from editing protected variables */
+        if ($model->protected == 1) {
+            \Y::flashAndRedirect('warning',
+                Yii::t('network', 'Permanent system variables can not be edited'), '/network/workervariables/list'
+            );
+        }
+
         if (isset($_POST['JobGlobalVariable'])) {
 
             if ($model->load(Yii::$app->request->post())) {
@@ -170,6 +177,12 @@ class WorkervariablesController extends Controller
 
         $model = $this->findModel($id);
 
+        /** Prevent user from deleting protected variables */
+        if ($model->protected == 1) {
+            \Y::flash('warning', Yii::t('network', 'Permanent system variables can not be deleted'));
+            return $this->redirect(['/network/workervariables/list']);
+        }
+
         try {
             if ($model->delete()) {
                 $class   = 'success';
@@ -182,7 +195,8 @@ class WorkervariablesController extends Controller
                 );
             }
         }
-        catch (\Exception $e) {
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $class   = 'danger';
             $message = Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->var_name);
             $message.= '<br>'.$e->getMessage();
@@ -206,6 +220,14 @@ class WorkervariablesController extends Controller
 
         $model = $this->findModel($id);
 
+        /** Prevent user from deleting protected variables */
+        if ($model->protected == 1) {
+            return Json::encode([
+                'status' => 'warning',
+                'msg'    => Yii::t('network', 'Permanent system variables can not be deleted')
+            ]);
+        }
+
         try {
             if ($model->delete()) {
                 $response = [
@@ -221,7 +243,9 @@ class WorkervariablesController extends Controller
                     )
                 ];
             }
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             return Json::encode([
                 'status' => 'error',
                 'msg'    => Yii::t('app', 'An error occurred while deleting record <b>{0}</b>.', $model->var_name)

@@ -21,14 +21,16 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 
 
 /**
  * This is the model class for table "{{%job_global_variable}}".
  *
- * @property integer $id
+ * @property int $id
  * @property string $var_name
  * @property string $var_value
+ * @property int $protected
  * @property string $description
  */
 class JobGlobalVariable extends ActiveRecord
@@ -63,6 +65,7 @@ class JobGlobalVariable extends ActiveRecord
             [['var_name'], 'in', 'not' => true, 'range' => Job::find()->select('command_var')->column(),
                 'message' => Yii::t('network', 'Variable <b>{value}</b> is worker variable.')
             ],
+            [['protected'], 'integer'],
             [['var_name'], 'string', 'max' => 128],
             [['var_value', 'description'], 'string', 'max' => 255],
             [['description'], 'default', 'value' => null],
@@ -78,6 +81,7 @@ class JobGlobalVariable extends ActiveRecord
             'id'          => Yii::t('app', 'ID'),
             'var_name'    => Yii::t('network', 'Variable Name'),
             'var_value'   => Yii::t('network', 'Variable Value'),
+            'protected'   => Yii::t('network', 'Protected'),
             'description' => Yii::t('app', 'Description'),
         ];
     }
@@ -101,6 +105,45 @@ class JobGlobalVariable extends ActiveRecord
         }
 
         return $delete;
+    }
+
+    /**
+     * Get variable name styled
+     *
+     * @return string
+     */
+    public function getVarNameStyled()
+    {
+        $warning = '';
+        $link    = Html::a($this->var_name, ['edit', 'id' => $this->id], [
+            'data-pjax' => '0',
+            'title'     => Yii::t('app', 'Edit')
+        ]);
+
+        /** Show warning if variable is protected */
+        if ($this->protected == 1) {
+            $link    = $this->var_name;
+            $warning = Html::tag('i', '', [
+                'class'               => 'fa fa-lock margin-r-5 text-danger',
+                'style'               => 'cursor: help;',
+                'data-toggle'         => 'tooltip',
+                'data-placement'      => 'bottom',
+                'data-original-title' => Yii::t('network', 'System variable')
+            ]);
+        }
+
+        return $warning . $link;
+    }
+
+    /**
+     * Check for unprotected variables
+     *
+     * @return bool
+     */
+    public static function hasUnprotectedVar()
+    {
+        $unprotected = static::find()->where(['protected' => '0']);
+        return ($unprotected->exists()) ? true : false;
     }
 
 }

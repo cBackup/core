@@ -22,7 +22,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Json;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\widgets\ServiceWidget;
 use app\models\Node;
 use app\models\OutBackup;
@@ -89,9 +89,9 @@ class SiteController extends Controller
         $dashb_stats['disk_free']  = @disk_free_space(Yii::$app->params['dataPath']);
 
         return $this->render('index',[
-            'scheduler_logs'  => LogScheduler::find()->limit(13)->orderBy('time DESC')->asArray()->all(),
-            'node_logs'       => LogNode::find()->limit(13)->orderBy('time DESC')->asArray()->all(),
-            'system_logs'     => LogSystem::find()->limit(13)->orderBy('time DESC')->asArray()->all(),
+            'scheduler_logs'  => LogScheduler::find()->limit(13)->orderBy('id DESC')->asArray()->all(),
+            'node_logs'       => LogNode::find()->limit(13)->orderBy('id DESC')->asArray()->all(),
+            'system_logs'     => LogSystem::find()->limit(13)->orderBy('id DESC')->asArray()->all(),
             'orphan_count'    => Node::getOrphans(true),
             'dataProvider'    => $dataProvider,
             'dashboard_stats' => $dashb_stats,

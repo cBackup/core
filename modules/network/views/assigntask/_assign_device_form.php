@@ -34,8 +34,8 @@ app\assets\TaskAsset::register($this);
 /** @noinspection PhpUndefinedFieldInspection */
 $action = $this->context->action->id;
 
-$page_name   = ($action == 'assign-device-task') ? Yii::t('network', 'Assign task to device') : Yii::t('network', 'Edit device assignment');
-$this->title = Yii::t('app', 'Task assignments');
+$page_name   = ($action == 'assign-device-task') ? Yii::t('network', 'Assign worker to device') : Yii::t('network', 'Edit device assignment');
+$this->title = Yii::t('app', 'Worker assignments');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Processes')];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Task assignments'), 'url' => ['/network/assigntask/list']];
 $this->params['breadcrumbs'][] = ['label' => $page_name];
@@ -100,7 +100,8 @@ $this->params['breadcrumbs'][] = ['label' => $page_name];
                             'options' => [
                                 'id'               => 'worker_list',
                                 'class'            => 'select2',
-                                'data-placeholder' => Yii::t('network', 'Choose worker')
+                                'data-placeholder' => Yii::t('network', 'Choose worker'),
+                                'data-update-url'  => Url::to(['/network/assigntask/ajax-update-workers'])
                             ],
                             'pluginOptions' => [
                                 'depends'     => ['task_name'],

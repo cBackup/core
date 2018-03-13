@@ -24,7 +24,7 @@ use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\Controller;
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\Setting;
 use app\modules\cds\models\Cds;
 

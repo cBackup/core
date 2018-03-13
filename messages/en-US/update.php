@@ -15,6 +15,7 @@ $lang = array(
     'Error while creating SQL dump' => 'Error while creating SQL dump',
     'Finish update errors' => 'Finish update errors',
     'Finishing update process' => 'Finishing update process',
+    'If you have nginx or running web server with another user:group - adjust corresponding data' => 'If you have nginx or running web server with another user:group - adjust corresponding data',
     'Initialize updater' => 'Initialize updater',
     'Install updates' => 'Install updates',
     'Installed cBackup version' => 'Installed cBackup version',

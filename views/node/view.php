@@ -504,7 +504,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <table class="table">
                         <?php if(isset($data->device->tasksHasDevices) && !empty($data->device->tasksHasDevices)): ?>
                             <tr>
-                                <th colspan="5" class="bg-info"><?= Yii::t('node', 'Device-related tasks') ?></th>
+                                <th colspan="5" class="bg-info"><?= Yii::t('node', 'Device-related workers') ?></th>
                             </tr>
                             <tr>
                                 <th><?= Yii::t('network', 'Task') ?></th>
@@ -550,8 +550,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php foreach ($data->tasksHasNodes as $model): ?>
                         <tr>
                             <td><?= Html::a($model->task_name, ['/network/task/edit', 'name' => $model->task_name], []) ?></td>
-                            <td><?= isset($model->worker->name) ? $model->worker->name : '' ?></td>
-                            <td><?= isset($model->worker->protocol->name) ? strtoupper($model->worker->protocol->name) : '' ?></td>
+                            <td><?= isset($model->worker->name) ? $model->worker->name : Yii::t('app', 'inherited') ?></td>
+                            <td><?= isset($model->worker->protocol->name) ? strtoupper($model->worker->protocol->name) : Yii::t('app', 'inherited') ?></td>
                             <td><?= isset($model->taskName->destination->name) ? $model->taskName->destination->name : '' ?></td>
                             <td class="narrow text-right">
                                 <?php
@@ -782,7 +782,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             $conf_exists = Html::tag('i', '', [
                                                 'class'               => 'fa fa-warning text-danger cursor-question',
-                                                'title'               => Yii::t('node', 'File not found'),
+                                                'title'               => Yii::t('node', 'Configuration not found'),
                                                 'data-toggle'         => 'tooltip',
                                                 'data-placement'      => 'right',
                                             ]);
@@ -828,30 +828,40 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-clipboard-action' => 'copy'
                                         ]);
 
-                                        echo Html::a('<i class="fa fa-book"></i> ' . Yii::t('app', 'History'), '#diff_content', [
-                                            'id'          => 'show_history',
-                                            'class'       => 'btn btn-xs btn-default margin-r-5 ' . "{$disabled} {$com_status}",
-                                            'data-toggle' => "collapse",
-                                            'data-parent' => '#accordion',
-                                            'data-url'    => Url::to(['ajax-load-file-diff']),
-                                            'data-params' => json_encode([
-                                                'node_id' => $data->id,
-                                                'hash'    => $com_hash,
-                                            ])
-                                        ]);
+                                        if ($task_info->put == 'file') {
+                                            echo Html::a('<i class="fa fa-book"></i> ' . Yii::t('app', 'History'), '#diff_content', [
+                                                'id'          => 'show_history',
+                                                'class'       => 'btn btn-xs btn-default margin-r-5 ' . "{$disabled} {$com_status}",
+                                                'data-toggle' => "collapse",
+                                                'data-parent' => '#accordion',
+                                                'data-url'    => Url::to(['ajax-load-file-diff']),
+                                                'data-params' => json_encode([
+                                                    'node_id' => $data->id,
+                                                    'hash'    => $com_hash,
+                                                ])
+                                            ]);
+                                        }
 
-                                        echo Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Download'), null, [
-                                            'class'       => 'btn btn-xs btn-default ' . $disabled,
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#download_modal',
-                                        ])
+                                        echo Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Download'), Url::to(['ajax-download',
+                                            'id'   => $data->id,
+                                            'put'  => $task_info->put,
+                                            'hash' => null
+                                        ]), [
+                                            'class'         => 'btn btn-xs btn-default ' . $disabled,
+                                            'title'         => Yii::t('app', 'Download'),
+                                            'data-dismiss'  => 'modal',
+                                            'data-toggle'   => 'modal',
+                                            'data-target'   => '#download_modal',
+                                            'data-backdrop' => 'static',
+                                            'data-keyboard' => 'false'
+                                        ]);
                                     ?>
                                 </td>
                             </tr>
                         </table>
                     <?php else: ?>
                         <div class="callout callout-info" style="margin: 10px;">
-                            <p><?= Yii::t('node', 'File not found') ?></p>
+                            <p><?= Yii::t('node', 'Configuration not found') ?></p>
                         </div>
                     <?php endif; ?>
 
@@ -922,24 +932,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-light-blue-active">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title"><?= Yii::t('app', 'Choose end of line format') ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title"><?= Yii::t('app', 'Wait...') ?></h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <?php
-                            echo Html::a('&nbsp;&nbsp;LF&nbsp;&nbsp;', ['download', 'id' => $data->id], [
-                                'class'   => 'btn btn-primary pull-left',
-                                'onclick' => '(function() { $("#download_modal").modal("hide"); })();'
-                            ]);
-                            echo Html::a('CRLF', ['download', 'id' => $data->id, 'crlf' => true], [
-                                'class'   => 'btn btn-primary pull-right',
-                                'onclick' => '(function() { $("#download_modal").modal("hide"); })();'
-                            ]);
-                        ?>
-                    </div>
-                </div>
+                <span style="margin-left: 24%;"><?= Html::img('@web/img/modal_loading.gif', ['alt' => Yii::t('app', 'Loading...')]) ?></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('app', 'Close') ?></button>
             </div>
         </div>
     </div>
@@ -981,10 +982,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <td class="hide-overflow"><?= $log[1] ?></td>
                                             <td><?= $log[2] ?></td>
                                             <td><?= preg_replace("/(\s+\+\d*)/i", '', $log[3]) ?></td>
-                                            <td>
+                                            <td style="white-space: nowrap">
                                                 <?php
-                                                    echo Html::a('<i class="fa fa-eye"></i>', null, [
-                                                        'id'          => 'reload_history',
+                                                    echo Html::a('<i class="fa fa-save"></i>', Url::to(['ajax-download',
+                                                        'id'   => $data->id,
+                                                        'put'  => $task_info->put,
+                                                        'hash' => $log[0],
+                                                    ]), [
+                                                        'style'         => 'cursor:pointer;',
+                                                        'title'         => Yii::t('app', 'Download'),
+                                                        'data-dismiss'  => 'modal',
+                                                        'data-toggle'   => 'modal',
+                                                        'data-target'   => '#download_modal',
+                                                        'data-backdrop' => 'static',
+                                                        'data-keyboard' => 'false'
+                                                    ]);
+                                                    echo '&nbsp;';
+                                                    echo Html::a('<i class="fa fa-eye"></i>', 'javascript:;', [
+                                                        'class'       => 'reload_history',
                                                         'data-url'    => Url::to(['ajax-load-file-diff']),
                                                         'style'       => 'cursor:pointer;',
                                                         'title'       => Yii::t('app', 'View'),
@@ -992,7 +1007,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'node_id' => $data->id,
                                                             'hash'    => $log[0],
                                                         ])
-                                                    ])
+                                                    ]);
                                                 ?>
                                             </td>
                                         </tr>

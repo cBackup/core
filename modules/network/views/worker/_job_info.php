@@ -82,6 +82,12 @@
                 </tr>
             <?php endif; ?>
         <?php endif; ?>
+        <?php if (strcasecmp($data->worker->get, 'snmp') != 0): ?>
+            <tr>
+                <th><?= Yii::t('network', 'CLI custom prompt') ?></th>
+                <td><?= (!empty($data->cli_custom_prompt)) ? $data->cli_custom_prompt : Yii::t('yii', '(not set)') ?></td>
+            </tr>
+        <?php endif; ?>
         <tr>
             <th><?= Yii::t('app', 'Description') ?></th>
             <td><?= (!empty($data->description)) ? $data->description : Yii::t('yii', '(not set)') ?></td>

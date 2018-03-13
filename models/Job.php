@@ -34,6 +34,7 @@ use \yii\helpers\ArrayHelper;
  * @property integer $sequence_id
  * @property string $command_value
  * @property string $command_var
+ * @property string $cli_custom_prompt
  * @property string $snmp_request_type
  * @property string $snmp_set_value
  * @property string $snmp_set_value_type
@@ -76,7 +77,7 @@ class Job extends ActiveRecord
     {
         return [
             [['name', 'worker_id', 'command_value'], 'required'],
-            [['name', 'command_value', 'command_var', 'snmp_set_value', 'description'], 'filter', 'filter' => 'trim'],
+            [['name', 'command_value', 'command_var', 'cli_custom_prompt', 'snmp_set_value', 'description'], 'filter', 'filter' => 'trim'],
             [['command_var'], 'filter', 'filter' => 'strtoupper'],
             [['command_value'], 'filter', 'filter' => function ($value) {
                 return preg_replace_callback('/%%\w+%%/', function ($matches) { return strtoupper($matches[0]); }, $value);
@@ -92,7 +93,7 @@ class Job extends ActiveRecord
             ],
             [['worker_id', 'sequence_id', 'timeout', 'enabled'], 'integer'],
             [['timeout'], 'integer', 'min' => 1, 'max' => 60000],
-            [['name', 'command_value', 'command_var', 'snmp_set_value', 'table_field', 'description'], 'string', 'max' => 255],
+            [['name', 'command_value', 'command_var', 'cli_custom_prompt', 'snmp_set_value', 'table_field', 'description'], 'string', 'max' => 255],
             [['snmp_request_type', 'snmp_set_value_type'], 'string', 'max' => 32],
             [['snmp_request_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpRequestTypes::className(), 'targetAttribute' => ['snmp_request_type' => 'name']],
             [['snmp_set_value_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpTypes::className(), 'targetAttribute' => ['snmp_set_value_type' => 'name']],
@@ -114,7 +115,8 @@ class Job extends ActiveRecord
             [['command_var'], 'isWorkerVariableUsed', 'skipOnEmpty' => false],
             [['command_value'], 'workerVariableExists'],
             [['command_value'], 'isWorkerJobPositionCorrect'],
-            [['timeout', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'table_field', 'command_var', 'description'], 'default', 'value' => null],
+            [['command_value'], 'isKeySeqOnePerCommand'],
+            [['timeout', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'table_field', 'command_var', 'cli_custom_prompt', 'description'], 'default', 'value' => null],
             [['after_job'], 'safe'],
         ];
     }
@@ -131,6 +133,7 @@ class Job extends ActiveRecord
             'sequence_id'         => Yii::t('network', 'Sequence'),
             'command_value'       => Yii::t('network', 'Command'),
             'command_var'         => Yii::t('network', 'Command variable'),
+            'cli_custom_prompt'   => Yii::t('network', 'CLI custom prompt'),
             'snmp_request_type'   => Yii::t('network', 'SNMP request type'),
             'snmp_set_value'      => Yii::t('network', 'SNMP value'),
             'snmp_set_value_type' => Yii::t('network', 'SNMP value type'),
@@ -140,6 +143,24 @@ class Job extends ActiveRecord
             'description'         => Yii::t('app', 'Description'),
             'after_job'           => Yii::t('network', 'After job')
         ];
+    }
+
+    /**
+     * Check if key sequence is one per line and not surrounded by other commands
+     *
+     * @param $attribute
+     */
+    public function isKeySeqOnePerCommand($attribute)
+    {
+        $matches = [];
+        preg_match_all('/%%SEQ.*?%%/im', $this->command_value, $matches);
+
+        if (count($matches[0]) > 1) {
+            $this->addError($attribute, Yii::t('network', 'Only one key sequence is allowed per command'));
+        }
+        elseif (count($matches[0]) == 1 && !preg_match('/^%%SEQ\(\w+\)%%$/im', $this->command_value)) {
+            $this->addError($attribute, Yii::t('network', 'Key sequence must be used exclusively'));
+        }
     }
 
     /**
@@ -387,7 +408,7 @@ class Job extends ActiveRecord
     {
 
         $jobs = (new Query())
-            ->select(['sequence_id', 'command_value', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'timeout', 'table_field', 'command_var'])
+            ->select(['sequence_id', 'command_value', 'cli_custom_prompt', 'snmp_request_type', 'snmp_set_value', 'snmp_set_value_type', 'timeout', 'table_field', 'command_var'])
             ->from('{{%job}}')
             ->where(['worker_id' => $worker_id, 'enabled' => '1'])
             ->orderBy('sequence_id')

@@ -19,7 +19,7 @@
 
 namespace app\controllers;
 
-use app\filters\AjaxFilter;
+use yii\filters\AjaxFilter;
 use app\models\Config;
 use app\models\Exclusion;
 use app\models\NodeAltInterfaceActions;
@@ -81,6 +81,7 @@ class NodeController extends Controller
                 'class' => AjaxFilter::className(),
                 'only'  => [
                     'inquire',
+                    'ajax-download',
                     'ajax-load-config',
                     'ajax-load-file-diff',
                     'ajax-set-auth-template',
@@ -90,7 +91,6 @@ class NodeController extends Controller
                     'ajax-backup-node',
                     'ajax-set-node-credentials',
                     'ajax-protect-node',
-
                 ]
             ]
         ];
@@ -290,10 +290,11 @@ class NodeController extends Controller
     }
 
 
-    /**
-     * @param  int $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
+    /** @noinspection PhpUndefinedClassInspection
+     *  @param  int $id
+     *  @return \yii\web\Response
+     *  @throws NotFoundHttpException
+     *  @throws \Throwable
      */
     public function actionDelete($id)
     {
@@ -349,7 +350,7 @@ class NodeController extends Controller
             }
         }
 
-        return Html::tag('pre', $response);
+        return Html::tag('pre', Html::encode($response));
 
     }
 
@@ -407,25 +408,68 @@ class NodeController extends Controller
 
     /**
      * @param  $id
+     * @param  string $put
+     * @param  string|null $hash
      * @param  bool $crlf
      * @return Response
      * @throws \yii\web\RangeNotSatisfiableHttpException
+     * @throws \yii\base\ExitException
      */
-    public function actionDownload($id, $crlf = false)
+    public function actionDownload($id, $put, $hash = null, $crlf = false)
     {
 
-        $file_path = $path_to_file = \Y::param('dataPath') . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . "{$id}.txt";
-        $config    = file_get_contents($file_path);
+        $config = '';
+        $suffix = null;
+
+        /** Get configuration backup based on put */
+        if(!empty($hash)) {
+
+            $meta   = Node::getCommitMetaData($hash);
+            $config = Node::getBackupGitVersion($id, $hash);
+
+            if( array_key_exists(3, $meta) ) {
+                $suffix = preg_replace(['/:/', '/[^\d|\-]/'], ['-', '_'], $meta[3]);
+                $suffix = ".".substr($suffix, 0, -7);
+            }
+
+        }
+        elseif ($put == 'file') {
+            $file_path = \Y::param('dataPath') . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . "{$id}.txt";
+            $config    = file_get_contents($file_path);
+        }
+        elseif ($put == 'db') {
+            $config = OutBackup::find()->select('config')->where(['node_id' => $id])->scalar();
+        }
+        else {
+            \Y::flashAndRedirect('warning', Yii::t('node', 'Unknown backup destination passed'), 'node/view', ['id' => $id]);
+            Yii::$app->end();
+        }
 
         if( isset($crlf) && $crlf == true ) {
             $config = preg_replace('~\R~u', "\r\n", $config);
         }
 
-        return Yii::$app->response->sendContentAsFile($config, "$id.conf.txt", [
+        return Yii::$app->response->sendContentAsFile($config, "$id.conf{$suffix}.txt", [
             'mimeType' => 'text/plain',
             'inline'   => false,
         ]);
 
+    }
+
+
+    /**
+     * @param  int         $id
+     * @param  string      $put
+     * @param  string|null $hash
+     * @return string
+     */
+    public function actionAjaxDownload($id, $put, $hash = null)
+    {
+        return $this->renderPartial('_download_modal', [
+            'id'   => $id,
+            'put'  => $put,
+            'hash' => $hash
+        ]);
     }
 
 

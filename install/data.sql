@@ -37,6 +37,14 @@ INSERT INTO `task` (`name`,`put`,`table`,`task_type`,`yii_command`,`protected`,`
 INSERT INTO `schedule_type` (`name`) VALUES
   ('scheduled'), ('manual'), ('manual_single_node');
 
+INSERT INTO `job_global_variable` (`id`, `var_name`, `var_value`, `protected`, `description`) VALUES
+  (NULL, '%%SEQ(CTRLY)%%', '', 1, 'Emulates CTRL+Y key press'),
+  (NULL, '%%SEQ(CTRLC)%%', '', 1, 'Emulates CTRL+C key press'),
+  (NULL, '%%SEQ(CTRLZ)%%', '', 1, 'Emulates CTRL+Z key press'),
+  (NULL, '%%SEQ(ESC)%%',   '', 1, 'Emulates ESC key press'),
+  (NULL, '%%SEQ(SPACE)%%', '', 1, 'Emulates SPACE key press'),
+  (NULL, '%%SEQ(ENTER)%%', '', 1, 'Emulates ENTER key press');
+
 -- ------------------------------------------------------------------------------------------------
 -- Logging
 -- ------------------------------------------------------------------------------------------------
@@ -129,7 +137,15 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 INSERT INTO `vendor` (`name`) VALUES
   ('Arris'),
   ('Cisco'),
-  ('D-link'),
+  ('Dlink'),
   ('Extreme'),
   ('Mikrotik'),
+  ('Nortel'),
   ('Zyxel');
+
+-- ------------------------------------------------------------------------------------------------
+-- Migrations, assures the consistency of updates
+-- ------------------------------------------------------------------------------------------------
+INSERT INTO `migration` (`version`, `apply_time`) VALUES
+  ('m000000_000000_base', 1482837094),
+  ('m180307_110508_____1_1_0_release', 1520553600);

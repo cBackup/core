@@ -155,7 +155,7 @@ class CoreController extends Controller
      *
      * @return array
      * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
     public function actionSetDiscoveryResult(): array
     {
@@ -211,29 +211,55 @@ class CoreController extends Controller
          */
         $deviceId = DeviceAttributes::find()
             ->select(['device_id'])
-            ->where(['sysobject_id' => $data['sysobject_id'], 'hw' => $data['hw'], 'sys_description' => $data['sys_description']])
-            ->scalar();
+            ->where([
+                'sysobject_id'    => $data['sysobject_id'],
+                'hw'              => $data['hw'],
+                'sys_description' => $data['sys_description']
+            ])->scalar()
+        ;
 
-        /** Add new device attributes */
-        if(empty($deviceId)) {
-            $success = DeviceAttributesUnknown::addNewAttributes($data['sysobject_id'], $data['hw'], $data['sys_description']);
-        }
-        /** Create-update node */
-        else {
-            $data['device_id'] = $deviceId;
-            $success = Node::createOrUpdateNode($data);
-            if($success) {
-                $success = AltInterface::updateInterfaces($data['ip'], $ips);
+        try {
+
+            /** Add new device attributes */
+            if (empty($deviceId)) {
+                $attributes = [
+                    'ip'              => $data['ip'],
+                    'sysobject_id'    => $data['sysobject_id'],
+                    'hw'              => $data['hw'],
+                    'sys_description' => $data['sys_description']
+                ];
+
+                $success = DeviceAttributesUnknown::addNewAttributes($attributes);
+
+                if (!$success) {
+                    $error = "\nAn error occurred while adding new device attributes.\nIP: {$data['ip']}\nHostname: {$data['hostname']}";
+                    throw new \Exception($error);
+                }
+
             }
-        }
+            /** Create-update node */
+            else {
 
-        if($success) {
-            Yii::$app->response->statusCode = 201;
-            return [];
-        }
-        else {
+                $data['device_id'] = $deviceId;
+                $success           = Node::createOrUpdateNode($data);
+
+                if ($success) {
+                    $success = AltInterface::updateInterfaces($data['ip'], $ips);
+                }
+
+            }
+
+            if ($success) {
+                Yii::$app->response->statusCode = 201;
+                return [];
+            } else {
+                Yii::$app->response->statusCode = 500;
+                return ApiHelper::getResponseBodyByCode(500);
+            }
+
+        } catch (\Exception $e) {
             Yii::$app->response->statusCode = 500;
-            return ApiHelper::getResponseBodyByCode(500);
+            return ApiHelper::getResponseBodyByCode(500, $e->getMessage());
         }
 
     }
@@ -508,6 +534,13 @@ class CoreController extends Controller
             return false;
         }
 
+        /** Stop processing script if git is not initialized */
+        if (!Config::isGitRepo()) {
+            $message  = "Backup git repository is not initialized. To use git commit please initialize it in 'System settings'\nSchedule id: {$sched_id}";
+            Yii::warning([$message, $schedule_id, 'GIT COMMIT'], 'scheduler.writeLog');
+            return false;
+        }
+
         /** Execute git commands */
         try {
 
@@ -724,7 +757,9 @@ class CoreController extends Controller
 
             return true;
 
-        } catch (\Exception $e) {
+        }
+        /** @noinspection PhpUndefinedClassInspection */
+        catch (\Throwable $e) {
             $message = "An error occurred while deleting node\nSchedule id: {$sched_id}\nException:\n{$e->getMessage()}";
             Yii::error([$message, $schedule_id, 'NODE PROCESSING'], 'scheduler.writeLog');
             return false;
@@ -941,12 +976,12 @@ class CoreController extends Controller
 
         $data   = Yii::$app->request->getBodyParams();
         $errors = [
-            'put'      => 'Data destination is not set. Cannot save result.',
-            'table'    => 'Target table is not set. Cannot save result.',
-            'data'     => 'Empty data. Cannot save result.',
-            'nodeId'   => 'Node id is not set. Cannot save result.',
-            'taskName' => 'Task name is not set. Cannot recognize task directory.',
-            'hash'     => 'Hash is not set. Cannot save result.',
+            'put'      => 'Data destination is not set. Can not save result.',
+            'table'    => 'Target table is not set. Can not save result.',
+            'data'     => 'Empty data. Can not save result.',
+            'nodeId'   => 'Node id is not set. Can not save result.',
+            'taskName' => 'Task name is not set. Can not recognize task directory.',
+            'hash'     => 'Hash is not set. Can not save result.',
         ];
 
         /*
@@ -976,19 +1011,35 @@ class CoreController extends Controller
                 if( !file_exists($storagePath)) {
                     if( !mkdir($storagePath, 0755, true) ) {
                         Yii::$app->response->statusCode = 500;
-                        return ApiHelper::getResponseBodyByCode(500, "Cannot create directory $storagePath.");
+                        return ApiHelper::getResponseBodyByCode(500, "Can not create directory $storagePath.");
                     }
                 }
 
                 /*
                  * Writing file
                  */
+                $f_error = null;
                 $toWrite = $this->module->output->getFileData($data['data']);
+                $f_name  = $storagePath . DIRECTORY_SEPARATOR . $data['nodeId'] . '.txt';
 
-                if(!@file_put_contents($storagePath . DIRECTORY_SEPARATOR . $data['nodeId'] . '.txt', $toWrite)) {
+                set_error_handler(
+                    function(/** @noinspection PhpUnusedParameterInspection */$errno, $errstr, $errfile, $errline, array $errcontext) use (&$f_error) {
+                        $f_error = (!empty($errstr)) ? $errstr : "Can not write file";
+                    }
+                );
+
+                $f_write = file_put_contents($f_name, $toWrite);
+
+                if($f_write === false) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, "Cannot create directory $storagePath.");
+                    return ApiHelper::getResponseBodyByCode(500, $f_error);
                 }
+                elseif($f_write === 0) {
+                    Yii::$app->response->statusCode = 500;
+                    return ApiHelper::getResponseBodyByCode(500, "Empty file $f_name created. Check 'Workers and Jobs' for warnings.");
+                }
+
+                restore_error_handler();
 
                 /** @noinspection PhpUndefinedFieldInspection
                  *  @var ActiveRecord $outputModel
@@ -999,12 +1050,12 @@ class CoreController extends Controller
 
                 if(!$outputModel->validate()) {
                     Yii::$app->response->statusCode = 422;
-                    return ApiHelper::getResponseBodyByCode(422, 'Cannot update result hash.');
+                    return ApiHelper::getResponseBodyByCode(422, 'Can not update result hash.');
                 }
 
                 if(!$outputModel->save()) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, 'Cannot update result hash. Check your data.');
+                    return ApiHelper::getResponseBodyByCode(500, 'Can not update result hash. Check your data.');
                 }
 
                 /*
@@ -1027,11 +1078,11 @@ class CoreController extends Controller
 
                 if(!$outputModel->validate()) {
                     Yii::$app->response->statusCode = 422;
-                    return ApiHelper::getResponseBodyByCode(422, 'Cannot save to database. Data validation is failed.');
+                    return ApiHelper::getResponseBodyByCode(422, 'Can not save to database. Data validation is failed.');
                 }
                 if(!$outputModel->save()) {
                     Yii::$app->response->statusCode = 500;
-                    return ApiHelper::getResponseBodyByCode(500, 'Cannot save to database. DB error. Check your data.');
+                    return ApiHelper::getResponseBodyByCode(500, 'Can not save to database. DB error. Check your data.');
                 }
 
                 // Success

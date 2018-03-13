@@ -28,6 +28,7 @@ use yii\helpers\Html;
  * This is the model class for table "{{%device_attributes_unknown}}".
  *
  * @property integer $id
+ * @property string $ip
  * @property string $sysobject_id
  * @property string $hw
  * @property string $sys_description
@@ -52,7 +53,10 @@ class DeviceAttributesUnknown extends ActiveRecord
     {
         return [
             [['created'], 'safe'],
-            [['sysobject_id', 'hw', 'sys_description'], 'string', 'max' => 255],
+            [['ip'], 'string', 'max' => 15],
+            [['sysobject_id', 'hw'], 'string', 'max' => 255],
+            [['sys_description'], 'string', 'max' => 1024],
+            [['sysobject_id'], 'unique', 'targetAttribute' => ['sysobject_id', 'hw', 'sys_description'], 'message' => Yii::t('network', 'Such combination of device attributes already exists!')],
         ];
     }
 
@@ -63,6 +67,7 @@ class DeviceAttributesUnknown extends ActiveRecord
     {
         return [
             'id'              => Yii::t('app', 'ID'),
+            'ip'              => Yii::t('app', 'Ip'),
             'sysobject_id'    => Yii::t('network', 'System OID'),
             'hw'              => Yii::t('network', 'Hardware rev.'),
             'sys_description' => Yii::t('network', 'System descr.'),
@@ -70,57 +75,57 @@ class DeviceAttributesUnknown extends ActiveRecord
         ];
     }
 
+
     /**
-     * Create new attributes if not exist
-     *
-     * @param $sysobject_id
-     * @param $hw
-     * @param $sys_description
+     * @param  array $attributes
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
-    public static function addNewAttributes($sysobject_id, $hw, $sys_description)
+    public static function addNewAttributes(array $attributes)
     {
-        $success = true;
 
-        $unknownDeviceId = DeviceAttributesUnknown::find()->select(['id'])->where(['sysobject_id' => $sysobject_id, 'hw' => $hw, 'sys_description' => $sys_description])->scalar();
+        $success       = true;
+        $unknownDevice = DeviceAttributesUnknown::find()->select(['id'])->where([
+            'sysobject_id'    => $attributes['sysobject_id'],
+            'hw'              => $attributes['hw'],
+            'sys_description' => $attributes['sys_description']
+        ]);
 
-        if(empty($unknownDeviceId)) {
+        if(!$unknownDevice->exists()) {
 
-            $transaction = Yii::$app->db->beginTransaction();
+            /** Create new device attributes */
+            $deviceAttributesUnknown = new DeviceAttributesUnknown($attributes);
+            $transaction             = Yii::$app->db->beginTransaction();
 
-            /*
-             * Create new device attributes
-             */
-            $deviceAttributesUnknown = new DeviceAttributesUnknown();
-            $deviceAttributesUnknown->sysobject_id = $sysobject_id;
-            $deviceAttributesUnknown->hw = $hw;
-            $deviceAttributesUnknown->sys_description = $sys_description;
+            try {
 
-            $success = $deviceAttributesUnknown->save();
+                $success = $deviceAttributesUnknown->save();
 
-            if($success) {
-                $unknownDeviceId = $deviceAttributesUnknown->getPrimaryKey();
+                if ($success) {
+                    $unknownDeviceId   = $deviceAttributesUnknown->getPrimaryKey();
+                    $messages          = new Messages();
+                    $messages->message = 'New device model found. ' . Html::a("Click here", ['/network/device/unknown-list', 'DeviceAttributesUnknownSearch[id]' => $unknownDeviceId]);
+                    $success           = $messages->save();
+                }
 
-                /*
-                 * Create message
-                 */
-                $messages = new Messages();
-                $messages->message = 'New device model found. ' .
-                    Html::a("Click here", ['/network/device/unknown-list', 'DeviceAttributesUnknownSearch[id]' => $unknownDeviceId]);
+                if ($success) {
+                    $transaction->commit();
+                }
+                else {
+                    $transaction->rollBack();
+                }
 
-                $success = $messages->save();
             }
-
-            if($success) {
-                $transaction->commit();
-            }
-            else {
+            catch (\Exception $e) {
                 $transaction->rollBack();
+                $error = "\nNode IP: {$attributes['ip']}\nAn error occurred while adding new device attributes. {$e->getMessage()}";
+                throw new \Exception($error);
             }
+
         }
 
         return $success;
 
     }
+
 }
