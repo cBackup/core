@@ -26,7 +26,9 @@ chmod +x /opt/cbackup/bin/cbackup.jar
 chmod +x /opt/cbackup/yii
 chmod 775 /opt/cbackup/bin
 chown -R www-data:www-data /opt/cbackup
-chown syslog:adm /var/log/cbackup
+if `getent passwd syslog > /dev/null 2>&1` && `getent group adm > /dev/null 2>&1` ; then
+    chown syslog:adm /var/log/cbackup
+fi
 
 # Enable site in apache
 if [ ! -f /etc/apache2/sites-enabled/cbackup.conf ]; then

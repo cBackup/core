@@ -55,9 +55,9 @@ DROP TABLE IF EXISTS `auth_item`;
 CREATE TABLE `auth_item` (
   `name` varchar(64) NOT NULL,
   `type` int(11) NOT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
   `rule_name` varchar(64) DEFAULT NULL,
-  `data` text,
+  `data` text DEFAULT NULL,
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`name`),
@@ -93,7 +93,7 @@ DROP TABLE IF EXISTS `auth_rule`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_rule` (
   `name` varchar(64) NOT NULL,
-  `data` text,
+  `data` text DEFAULT NULL,
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`name`)
@@ -130,12 +130,12 @@ CREATE TABLE `credential` (
   `ssh_password` varchar(128) DEFAULT NULL,
   `snmp_read` varchar(128) DEFAULT NULL,
   `snmp_set` varchar(128) DEFAULT NULL,
-  `snmp_version` tinyint(1) NOT NULL DEFAULT '1',
+  `snmp_version` tinyint(1) NOT NULL DEFAULT 1,
   `snmp_encryption` varchar(128) DEFAULT NULL,
   `enable_password` varchar(128) DEFAULT NULL,
-  `port_telnet` smallint(5) unsigned DEFAULT '23',
-  `port_ssh` smallint(5) unsigned DEFAULT '22',
-  `port_snmp` smallint(5) unsigned DEFAULT '161',
+  `port_telnet` smallint(5) unsigned DEFAULT 23,
+  `port_ssh` smallint(5) unsigned DEFAULT 22,
+  `port_snmp` smallint(5) unsigned DEFAULT 161,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -172,10 +172,11 @@ CREATE TABLE `device_attributes` (
   `device_id` int(11) NOT NULL,
   `sysobject_id` varchar(255) DEFAULT NULL,
   `hw` varchar(255) DEFAULT NULL,
-  `sys_description` varchar(255) DEFAULT NULL,
+  `sys_description` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_snmp` (`sysobject_id`,`hw`,`sys_description`),
   KEY `device_attributes_device1` (`device_id`),
+  KEY `ix_snmp` (`sysobject_id`,`hw`),
+  KEY `ix_descr` (`sys_description`),
   CONSTRAINT `device_attributes_device1` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -189,12 +190,14 @@ DROP TABLE IF EXISTS `device_attributes_unknown`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `device_attributes_unknown` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(15) DEFAULT NULL,
   `sysobject_id` varchar(255) DEFAULT NULL,
   `hw` varchar(255) DEFAULT NULL,
-  `sys_description` varchar(255) DEFAULT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sys_description` varchar(1024) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_snmp` (`sysobject_id`,`hw`,`sys_description`)
+  KEY `ix_snmp` (`sysobject_id`,`hw`),
+  KEY `ix_descr` (`sys_description`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -241,12 +244,13 @@ CREATE TABLE `job` (
   `sequence_id` int(11) NOT NULL,
   `command_value` varchar(255) NOT NULL,
   `command_var` varchar(255) DEFAULT NULL,
+  `cli_custom_prompt` varchar(255) DEFAULT NULL,
   `snmp_request_type` varchar(32) DEFAULT NULL,
   `snmp_set_value` varchar(255) DEFAULT NULL,
   `snmp_set_value_type` varchar(32) DEFAULT NULL,
   `timeout` int(11) DEFAULT NULL,
   `table_field` varchar(255) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_job_task_id_idx` (`worker_id`),
@@ -272,6 +276,7 @@ CREATE TABLE `job_global_variable` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `var_name` varchar(128) NOT NULL,
   `var_value` varchar(255) NOT NULL,
+  `protected` tinyint(1) NOT NULL DEFAULT 0,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -314,7 +319,7 @@ DROP TABLE IF EXISTS `log_mailer`;
 CREATE TABLE `log_mailer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` varchar(128) DEFAULT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
   `severity` varchar(32) NOT NULL,
   `action` varchar(45) DEFAULT NULL,
   `event_task_id` int(11) DEFAULT NULL,
@@ -339,7 +344,7 @@ DROP TABLE IF EXISTS `log_node`;
 CREATE TABLE `log_node` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `userid` varchar(128) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
   `node_id` int(11) DEFAULT NULL,
   `severity` varchar(32) NOT NULL DEFAULT 'INFO',
   `action` varchar(45) DEFAULT NULL,
@@ -365,7 +370,7 @@ DROP TABLE IF EXISTS `log_scheduler`;
 CREATE TABLE `log_scheduler` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` varchar(128) DEFAULT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
   `severity` varchar(32) NOT NULL DEFAULT 'INFO',
   `schedule_type` varchar(32) NOT NULL DEFAULT 'scheduled',
   `schedule_id` int(11) DEFAULT NULL,
@@ -397,7 +402,7 @@ DROP TABLE IF EXISTS `log_system`;
 CREATE TABLE `log_system` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `userid` varchar(128) DEFAULT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
   `severity` varchar(32) NOT NULL DEFAULT 'INFO',
   `action` varchar(45) DEFAULT NULL,
   `message` text NOT NULL,
@@ -420,8 +425,8 @@ DROP TABLE IF EXISTS `mailer_events`;
 CREATE TABLE `mailer_events` (
   `name` varchar(128) NOT NULL,
   `subject` varchar(255) DEFAULT NULL,
-  `template` text,
-  `recipients` text,
+  `template` text DEFAULT NULL,
+  `recipients` text DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -440,7 +445,7 @@ CREATE TABLE `mailer_events_tasks` (
   `status` varchar(64) NOT NULL DEFAULT 'new',
   `subject` varchar(255) NOT NULL,
   `body` text NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `fk_event_tasks_statuses1` (`status`),
   KEY `fk_event_tasks_events1` (`event_name`),
@@ -472,7 +477,7 @@ DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
   `approved` timestamp NULL DEFAULT NULL,
   `approved_by` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -507,7 +512,7 @@ CREATE TABLE `network` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `credential_id` int(11) NOT NULL,
   `network` varchar(18) NOT NULL,
-  `discoverable` tinyint(1) NOT NULL DEFAULT '1',
+  `discoverable` tinyint(1) NOT NULL DEFAULT 1,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `source_UNIQUE` (`network`),
@@ -531,20 +536,19 @@ CREATE TABLE `node` (
   `device_id` int(11) NOT NULL,
   `auth_template_name` varchar(64) DEFAULT NULL,
   `mac` varchar(12) DEFAULT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
   `modified` timestamp NULL DEFAULT NULL,
   `last_seen` timestamp NULL DEFAULT NULL,
-  `manual` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `manual` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `hostname` varchar(255) DEFAULT NULL,
   `serial` varchar(45) DEFAULT NULL,
   `prepend_location` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `contact` varchar(255) DEFAULT NULL,
-  `sys_description` varchar(255) DEFAULT NULL,
-  `protected` tinyint(1) NOT NULL DEFAULT '0',
+  `sys_description` varchar(1024) DEFAULT NULL,
+  `protected` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `node_ip_unique` (`ip`),
-  UNIQUE KEY `mac_UNIQUE` (`mac`),
   KEY `fk_devices_device_models_idx` (`device_id`),
   KEY `fk_node_credentials1` (`credential_id`),
   KEY `fk_node_network1` (`network_id`),
@@ -567,10 +571,10 @@ DROP TABLE IF EXISTS `out_backup`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `out_backup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
   `node_id` int(11) NOT NULL,
   `hash` varchar(255) NOT NULL,
-  `config` longtext,
+  `config` longtext DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `out_backup_node_id_unique` (`node_id`),
   CONSTRAINT `fk_out_backup_node1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -586,7 +590,7 @@ DROP TABLE IF EXISTS `out_stp`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `out_stp` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
   `node_id` int(11) NOT NULL,
   `hash` varchar(255) NOT NULL,
   `node_mac` varchar(255) DEFAULT NULL,
@@ -611,10 +615,10 @@ CREATE TABLE `plugin` (
   `author` varchar(255) NOT NULL,
   `version` varchar(32) NOT NULL,
   `access` varchar(64) DEFAULT 'admin',
-  `enabled` tinyint(1) DEFAULT '0',
+  `enabled` tinyint(1) DEFAULT 0,
   `widget` varchar(255) DEFAULT NULL,
   `metadata` text NOT NULL,
-  `params` text,
+  `params` text DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`name`),
   KEY `fk_plugin1` (`access`),
@@ -729,7 +733,7 @@ CREATE TABLE `task` (
   `table` varchar(255) DEFAULT NULL,
   `task_type` varchar(32) NOT NULL DEFAULT 'node_task',
   `yii_command` varchar(255) DEFAULT NULL,
-  `protected` tinyint(1) NOT NULL DEFAULT '0',
+  `protected` tinyint(1) NOT NULL DEFAULT 0,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`name`) USING BTREE,
   KEY `ix_destination` (`put`,`name`),
@@ -824,7 +828,7 @@ CREATE TABLE `user` (
   `access_token` varchar(128) DEFAULT NULL,
   `fullname` varchar(128) NOT NULL,
   `email` varchar(128) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`userid`),
   UNIQUE KEY `email` (`email`),
   KEY `ix_user` (`access_token`,`enabled`)
