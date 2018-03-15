@@ -266,7 +266,7 @@ $this->registerJs(/** @lang JavaScript */
 
 <!-- Form modal -->
 <div id="form_modal" class="modal fade">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

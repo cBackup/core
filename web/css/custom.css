@@ -448,6 +448,11 @@ table.log-table tr:hover {
     background: #d2d6de;
 }
 
+/* xtra large modal */
+.modal-xl {
+    width: 1140px;
+}
+
 /* Custom label position */
 .link-label-small.label {
     text-align: center;
