@@ -19,10 +19,23 @@
  * @var $database string
  */
 
+use yii\web\View;
+
 $this->title = Yii::t('update', 'cBackup update');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'System' )];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('update', 'cBackup update')];
 
+$this->registerJs(/** @lang JavaScript */"
+    
+    var path = $('#path');
+    var span = $('.path');
+    span.text(path.val());
+    
+    path.keyup(function() {
+        span.text(path.val());
+    });
+    
+", View::POS_READY);
 ?>
 
 <div class="row">
@@ -34,7 +47,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('update', 'cBackup update')]
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-12">
                         <form style="margin: 0 1em;">
                             <label for="path"><?= Yii::t('update', 'Path to your cBackup installation') ?></label>
                             <input id="path" type="text" class="form-control" value="<?= Yii::$app->basePath ?>">
