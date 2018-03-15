@@ -74,7 +74,7 @@ use yii\helpers\Html;
 </div>
 
 <div class="nav-tabs-custom box box-default">
-    <ul class="nav nav-tabs nav-justified ui-sortable-handle" style="margin-top: -3px">
+    <ul class="nav nav-tabs nav-justified ui-sortable-handle tabs-scroll disable-multirow" style="margin-top: -3px">
         <li><a href="#ssh_mikrotik" data-toggle="tab">SSH Mikrotik</a></li>
         <li><a href="#ssh_cisco" data-toggle="tab">SSH Cisco</a></li>
         <li><a href="#ssh_hp" data-toggle="tab">SSH HP</a></li>

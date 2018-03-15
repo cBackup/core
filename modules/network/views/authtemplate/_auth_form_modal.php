@@ -25,6 +25,7 @@ use app\helpers\FormHelper;
  * @var $this          yii\web\View
  * @var $model         app\models\DeviceAuthTemplate
  * @var $form          yii\bootstrap\ActiveForm
+ * @var $vars          array
  */
 ?>
 
@@ -85,7 +86,7 @@ use app\helpers\FormHelper;
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <?= $this->render('_help_view', ['collapsed' => true]) ?>
+                    <?= $this->render('_help_view', ['collapsed' => true, 'vars' => $vars]) ?>
                 </div>
             </div>
         </div>

@@ -263,6 +263,7 @@ class AuthtemplateController extends Controller
 
         return $this->renderPartial('_auth_form_modal', [
             'model' => $model,
+            'vars'  => JobGlobalVariable::find()->select(['description'])->where(['like', 'var_name', '%%SEQ'])->indexBy('var_name')->asArray()->column()
         ]);
 
     }
