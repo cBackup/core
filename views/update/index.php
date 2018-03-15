@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('update', 'cBackup update')]
                         <hr>
                         <ol>
                             <li>
-                                <?= Yii::t('update', 'Backup everything') ?> <br>
+                                <?= Yii::t('update', 'Backup everything') ?>, <?= Yii::t('update', 'or better make full system snapshot') ?> <br>
                                 $ <code>tar czf /opt/backup-$(date +%Y-%m-%d).tar.gz -C <span class="path">-C /opt/cbackup</span> .</code>
                                 <br>
                                 $ <code>mysqldump -u <?= Yii::$app->db->username ?> -p <?= $database ?> | gzip > /opt/backup-$(date +%Y-%m-%d).sql.gz</code>
@@ -61,8 +61,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('update', 'cBackup update')]
                                 <br><br>
                             </li>
                             <li>
-                                <?= Yii::t('update', 'Stop the service') ?> <br>
-                                $ <code>sudo systemctl stop cbackup</code>
+                                <?= Yii::t('update', 'Stop the service') ?><br>
+                                <?= Yii::t('update', 'In case of systemd use') ?> <code>sudo systemctl stop cbackup</code><br>
+                                <?= Yii::t('update', 'In case of SysVinit use') ?> <code>sudo service cbackup stop</code>
                                 <br><br>
                             </li>
                             <li>
@@ -84,6 +85,12 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('update', 'cBackup update')]
                             <li>
                                 <?= Yii::t('update', 'Update database') ?> <br>
                                 $ <code><span class="path">/opt/cbackup</span>/yii migrate</code>
+                                <br><br>
+                            </li>
+                            <li>
+                                <?= Yii::t('update', 'Flush cache and runtime resources') ?> <br>
+                                $ <code><span class="path">/opt/cbackup</span>/yii cache/flush-all</code><br>
+                                $ <code><span class="path">/opt/cbackup</span>/yii asset/flush-all</code>
                                 <br><br>
                             </li>
                             <li>

@@ -28,8 +28,9 @@ use yii\console\Exception;
 
 
 /**
- * Extension of base message extractor to generate messages in format suitable for Transifex
+ * Extracts messages to be translated from source files and provides some validation as well
  * To generate message files, use command line `./yii message/extract messages/config.php`
+ * To extract sources for en, use command line `./yii message/source`
  *
  * @package app\commands
  */

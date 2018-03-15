@@ -16,6 +16,7 @@ $lang = array(
     'Choose node credentials' => 'Выбрать реквизиты узла',
     'Clear node credentials' => 'Очистить реквизиты узла',
     'Close subnet list' => 'Закрыть список сетей',
+    'Configuration not found' => 'Конфигурация не найдена',
     'Credential ID' => 'ID реквизитов',
     'Credential source' => 'Источник реквизитов',
     'Delete node' => 'Удалить узел',
@@ -60,6 +61,7 @@ $lang = array(
     'This IP is listed in exclusions' => 'Этот IP числится в исключениях',
     'This is the list of nodes not assigned to any task. If node exists in exclusion list, node will not appear in orphans list. Please note that although this interface allows to assign node to a specific task, this is not the most efficient way to do it. If you have more than 5 orphans please use "Advanced node assign" interface.' => 'Вы видите список узлов, которые не связаны ни с одной задачей. Если узел упомянут в списке исключений, в данном списке он уже не появится. Обратите внимание, что несмотря на то, что вы можете назначать задачи и в этом интерфейсе, гораздо удобнее это делать не здесь. Если в списке слева вы видите более 5 узлов, мы рекомендуем использовать режим "расширенного назначения задач".',
     'This node is marked as protected' => 'Данный узел помечен, как защищённый',
+    'Unknown backup destination passed' => 'Передано неизвестное назначение бэкапа',
     'Unprotect node' => 'Снять защиту',
     'Worker for task "backup" is not set. Please set worker directly to node or via device.' => 'Не назначен обработчик для задачи "резервное копирование". Пожалуйста, назначьте обработчик напрямую или через интерфейс устройств.',
 );

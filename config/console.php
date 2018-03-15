@@ -43,6 +43,9 @@ $config = [
         'message' => [
             'class' => 'app\commands\MessageController',
         ],
+        'asset' => [
+            'class' => 'app\commands\AssetController',
+        ],
     ],
 
     'modules' => [

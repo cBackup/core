@@ -16,6 +16,7 @@ $lang = array(
     'Choose node credentials' => 'Choose node credentials',
     'Clear node credentials' => 'Clear node credentials',
     'Close subnet list' => 'Close subnet list',
+    'Configuration not found' => 'Configuration not found',
     'Credential ID' => 'Credential ID',
     'Credential source' => 'Credential source',
     'Delete node' => 'Delete node',
@@ -60,6 +61,7 @@ $lang = array(
     'This IP is listed in exclusions' => 'This IP is listed in exclusions',
     'This is the list of nodes not assigned to any task. If node exists in exclusion list, node will not appear in orphans list. Please note that although this interface allows to assign node to a specific task, this is not the most efficient way to do it. If you have more than 5 orphans please use "Advanced node assign" interface.' => 'This is the list of nodes not assigned to any task. If node exists in exclusion list, node will not appear in orphans list. Please note that although this interface allows to assign node to a specific task, this is not the most efficient way to do it. If you have more than 5 orphans please use "Advanced node assign" interface.',
     'This node is marked as protected' => 'This node is marked as protected',
+    'Unknown backup destination passed' => 'Unknown backup destination passed',
     'Unprotect node' => 'Unprotect node',
     'Worker for task "backup" is not set. Please set worker directly to node or via device.' => 'Worker for task "backup" is not set. Please set worker directly to node or via device.',
 );

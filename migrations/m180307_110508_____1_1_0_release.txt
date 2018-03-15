@@ -1,6 +1,0 @@
-m180124_190935_job_add_field
-m180130_060558_sysdescrtext
-m180203_145806_alter_device_attributes_unknown
-m180223_074249_nonuniquemac
-m180224_074418_gloval_var_alter
-m180226_145020_nortel
