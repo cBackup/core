@@ -29,7 +29,7 @@ use app\helpers\FormHelper;
  */
 ?>
 
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-xl">
     <div class="modal-content">
         <div class="modal-header modal-default">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
