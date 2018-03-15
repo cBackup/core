@@ -68,6 +68,6 @@ class WorkerProtocol extends ActiveRecord
      */
     public function getWorkers()
     {
-        return $this->hasMany(Worker::className(), ['get' => 'name']);
+        return $this->hasMany(Worker::class, ['get' => 'name']);
     }
 }

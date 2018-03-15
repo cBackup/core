@@ -108,8 +108,8 @@ class Task extends ActiveRecord
             [['put'], 'string', 'max' => 16],
             [['name'], 'unique'],
             [['task_type'], 'string', 'max' => 32],
-            [['put'], 'exist', 'skipOnError' => true, 'targetClass' => TaskDestination::className(), 'targetAttribute' => ['put' => 'name']],
-            [['task_type'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['task_type' => 'name']],
+            [['put'], 'exist', 'skipOnError' => true, 'targetClass' => TaskDestination::class, 'targetAttribute' => ['put' => 'name']],
+            [['task_type'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::class, 'targetAttribute' => ['task_type' => 'name']],
             [['put', 'table', 'description', 'yii_command'], 'default', 'value' => null]
         ];
     }
@@ -137,7 +137,7 @@ class Task extends ActiveRecord
      */
     public function getSchedule()
     {
-        return $this->hasOne(Schedule::className(), ['task_name' => 'name']);
+        return $this->hasOne(Schedule::class, ['task_name' => 'name']);
     }
 
     /**
@@ -145,7 +145,7 @@ class Task extends ActiveRecord
      */
     public function getDestination()
     {
-        return $this->hasOne(TaskDestination::className(), ['name' => 'put']);
+        return $this->hasOne(TaskDestination::class, ['name' => 'put']);
     }
 
     /**
@@ -153,7 +153,7 @@ class Task extends ActiveRecord
      */
     public function getTaskType()
     {
-        return $this->hasOne(TaskType::className(), ['name' => 'task_type']);
+        return $this->hasOne(TaskType::class, ['name' => 'task_type']);
     }
 
     /**
@@ -161,7 +161,7 @@ class Task extends ActiveRecord
      */
     public function getTasksHasDevices()
     {
-        return $this->hasMany(TasksHasDevices::className(), ['task_name' => 'name']);
+        return $this->hasMany(TasksHasDevices::class, ['task_name' => 'name']);
     }
 
     /**
@@ -169,7 +169,7 @@ class Task extends ActiveRecord
      */
     public function getTasksHasNodes()
     {
-        return $this->hasMany(TasksHasNodes::className(), ['task_name' => 'name']);
+        return $this->hasMany(TasksHasNodes::class, ['task_name' => 'name']);
     }
 
     /**
@@ -177,7 +177,7 @@ class Task extends ActiveRecord
      */
     public function getWorkers()
     {
-        return $this->hasMany(Worker::className(), ['task_name' => 'name']);
+        return $this->hasMany(Worker::class, ['task_name' => 'name']);
     }
 
     /**

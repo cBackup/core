@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Device auth template
 $this->params['breadcrumbs'][] = ['label' => $page_name];
 
 // Because firefox has 9 years of open bug with unsupported 'background-attachment: local' for textareas
-$this->registerJsFile('/js/plugins/autosize.min.js', ['depends' => \app\assets\AlphaAsset::className()]);
+$this->registerJsFile('/js/plugins/autosize.min.js', ['depends' => \app\assets\AlphaAsset::class]);
 $this->registerJs(/** @lang JavaScript */"autosize($('textarea'));");
 ?>
 

@@ -75,7 +75,7 @@ $this->registerJs(
                     <div class="row">
                         <div class="col-md-12">
                             <?php
-                                echo $form->field($model, 'schedule_cron', ['enableLabel' => false])->widget(CronUI::classname(), [
+                                echo $form->field($model, 'schedule_cron', ['enableLabel' => false])->widget(CronUI::class, [
                                     'options'       => ['class' => 'form-control'],
                                     'pluginOptions' => [
                                         'dropDownMultiple'   => true,

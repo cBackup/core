@@ -52,7 +52,7 @@ class CredentialController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -61,14 +61,14 @@ class CredentialController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                     'ajax-test' => ['post'],
                 ],
             ],
             'ajaxonly' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-add-credential',
                     'ajax-get-credentials',

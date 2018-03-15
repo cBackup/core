@@ -60,7 +60,7 @@ class OutBackup extends ActiveRecord
             [['config'], 'string'],
             [['hash'], 'string', 'max' => 255],
             [['node_id'], 'unique'],
-            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::className(), 'targetAttribute' => ['node_id' => 'id']],
+            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::class, 'targetAttribute' => ['node_id' => 'id']],
             [['config'], 'default', 'value' => null],
         ];
     }
@@ -84,7 +84,7 @@ class OutBackup extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
     /**
@@ -96,7 +96,7 @@ class OutBackup extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'time',
                 'updatedAtAttribute' => 'time',
                 'value' => new Expression('NOW()'),

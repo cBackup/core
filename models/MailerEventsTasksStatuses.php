@@ -66,7 +66,7 @@ class MailerEventsTasksStatuses extends ActiveRecord
      */
     public function getMailerEventsTasks()
     {
-        return $this->hasMany(MailerEventsTasks::className(), ['status' => 'name']);
+        return $this->hasMany(MailerEventsTasks::class, ['status' => 'name']);
     }
 
     /**

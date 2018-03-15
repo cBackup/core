@@ -53,7 +53,7 @@ class ScheduleMail extends ActiveRecord
             [['event_name'], 'string', 'max' => 128],
             [['schedule_cron'], 'string', 'max' => 255],
             [['event_name'], 'unique'],
-            [['event_name'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEvents::className(), 'targetAttribute' => ['event_name' => 'name']],
+            [['event_name'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEvents::class, 'targetAttribute' => ['event_name' => 'name']],
         ];
     }
 
@@ -74,7 +74,7 @@ class ScheduleMail extends ActiveRecord
      */
     public function getEventName()
     {
-        return $this->hasOne(MailerEvents::className(), ['name' => 'event_name']);
+        return $this->hasOne(MailerEvents::class, ['name' => 'event_name']);
     }
 
     /**

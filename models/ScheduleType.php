@@ -48,6 +48,6 @@ class ScheduleType extends ActiveRecord
      */
     public function getLogSchedulers()
     {
-        return $this->hasMany(LogScheduler::className(), ['schedule_type' => 'name']);
+        return $this->hasMany(LogScheduler::class, ['schedule_type' => 'name']);
     }
 }

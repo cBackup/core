@@ -66,6 +66,6 @@ class TaskType extends ActiveRecord
      */
     public function getTasks()
     {
-        return $this->hasMany(Task::className(), ['task_type' => 'name']);
+        return $this->hasMany(Task::class, ['task_type' => 'name']);
     }
 }

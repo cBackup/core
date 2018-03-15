@@ -20,12 +20,8 @@
 namespace app\controllers;
 
 use Yii;
-use yii\helpers\FileHelper;
 use yii\web\Controller;
-use yii\helpers\Json;
 use yii\filters\AccessControl;
-use yii\filters\AjaxFilter;
-use app\components\Updater;
 
 
 /**
@@ -41,23 +37,13 @@ class UpdateController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
                 ],
-            ],
-            'ajax' => [
-                'class' => AjaxFilter::className(),
-                'only'  => [
-                    'ajax-check-updates',
-                    'ajax-lock-system',
-                    'ajax-update-core',
-                    'ajax-cleanup',
-                    'ajax-update-database'
-                ]
             ],
         ];
     }
@@ -71,220 +57,9 @@ class UpdateController extends Controller
      */
     public function actionIndex()
     {
-
-        $dbname = Yii::$app->db->createCommand("SELECT DATABASE()")->queryScalar();
-        $giturl = Updater::getGitUrl();
-
-        try {
-
-            $updater = new Updater();
-
-            return $this->render('index', [
-                'origin_info' => $updater->getOriginVersion(),
-                'environment' => true,
-                'database'    => $dbname,
-                'giturl'      => $giturl,
-                'message'     => null,
-                'service'     => $updater->getServiceStatus()
-            ]);
-
-        } catch (\Exception $e) {
-            return $this->render('index', [
-                'origin_info' => null,
-                'environment' => false,
-                'database'    => $dbname,
-                'giturl'      => $giturl,
-                'message'     => $e->getMessage(),
-                'service'     => null
-            ]);
-        }
-
-    }
-
-
-    /**
-     * @return \yii\web\Response
-     * @throws \yii\base\ErrorException
-     */
-    public function actionInit()
-    {
-
-        try {
-            (new Updater())->initGitRepo();
-        }
-        catch (\Exception $e) {
-            \Y::flash('danger', $e->getMessage());
-            FileHelper::removeDirectory(Yii::$app->basePath.'/.git');
-        }
-        finally {
-            return $this->redirect(['index']);
-        }
-
-    }
-
-
-    /**
-     * Check for new system updates
-     *
-     * @return string
-     */
-    public function actionAjaxCheckUpdates()
-    {
-
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $response = ['status' => 'error', 'msg' => Yii::t('app', 'An error occurred while processing your request')];
-
-        try {
-            $updater = new Updater();
-            $updater->checkForUpdates();
-
-            $response = [
-                'status' => 'success',
-                'msg'    => Yii::t('app', 'Action successfully finished')
-            ];
-
-        } catch (\Exception $e) {
-            $response = [
-                'status' => 'error',
-                'msg'    => $e->getMessage()
-            ];
-        }
-
-        return Json::encode($response);
-
-    }
-
-
-    /**
-     * Create update lock file for locking Web UI
-     *
-     * @param  bool $lock
-     * @return string
-     */
-    public function actionAjaxLockSystem($lock)
-    {
-
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $response = ['status' => 'false'];
-
-        try {
-
-            $path = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'update.lock';
-
-            if ($lock) {
-                file_put_contents($path, date('d.m.Y H:i:s'));
-            } else {
-                unlink($path);
-            }
-
-            $response = ['status' => 'true'];
-
-        } catch (\Exception $e) {
-            $response = [
-                'status' => 'false',
-                'msg'    => nl2br(preg_replace('/^\h*\v+/m', '', $e->getMessage()))
-            ];
-        }
-
-        return Json::encode($response);
-
-    }
-
-
-    /**
-     * Update web core files from GIT repo
-     *
-     * @return string
-     */
-    public function actionAjaxUpdateCore()
-    {
-
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $response = ['status' => 'false'];
-
-        try {
-
-            $updater = new Updater();
-            $updater->updateFiles();
-            $response = ['status' => 'true'];
-
-        } catch (\Exception $e) {
-            $response = [
-                'status' => 'false',
-                'msg'    => nl2br(preg_replace('/^\h*\v+/m', '', $e->getMessage()))
-            ];
-        }
-
-        return Json::encode($response);
-
-    }
-
-
-    /**
-     * Update database
-     *
-     * @return string
-     */
-    public function actionAjaxUpdateDatabase()
-    {
-
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $response = ['status' => 'false'];
-
-        try {
-
-            $updater = new Updater();
-            if ($updater->updateDatabase()) {
-                $response = ['status' => 'true'];
-            }
-
-        } catch (\Exception $e) {
-            $response = [
-                'status' => 'false',
-                'msg'    => nl2br(preg_replace('/^\h*\v+/m', '', $e->getMessage()))
-            ];
-        }
-
-        return Json::encode($response);
-
-    }
-
-
-    /**
-     * @return string
-     */
-    public function actionAjaxCleanup()
-    {
-
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $response = ['status' => 'false'];
-
-        try {
-
-            if (!Yii::$app->cache->flush()) {
-                throw new \Exception('Unable to flush cache');
-            }
-
-            $directories = glob(Yii::$app->assetManager->basePath . '/*', GLOB_ONLYDIR);
-
-            foreach ($directories as $directory) {
-                if (is_dir($directory)) {
-                    FileHelper::removeDirectory($directory);
-                }
-            }
-
-            @unlink(Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'old_version.txt');
-            $response = ['status' => 'true'];
-
-        } catch (\Exception $e) {
-            $response = [
-                'status' => 'false',
-                'msg'    => nl2br(preg_replace('/^\h*\v+/m', '', $e->getMessage()))
-            ];
-        }
-
-        return Json::encode($response);
-
+        return $this->render('index', [
+            'database'    => Yii::$app->db->createCommand("SELECT DATABASE()")->queryScalar(),
+        ]);
     }
 
 }

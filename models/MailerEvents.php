@@ -109,7 +109,7 @@ class MailerEvents extends ActiveRecord
      */
     public function getMailerEventsTasks()
     {
-        return $this->hasMany(MailerEventsTasks::className(), ['event_name' => 'name']);
+        return $this->hasMany(MailerEventsTasks::class, ['event_name' => 'name']);
     }
 
     /**
@@ -117,7 +117,7 @@ class MailerEvents extends ActiveRecord
      */
     public function getScheduleMail()
     {
-        return $this->hasOne(ScheduleMail::className(), ['event_name' => 'name']);
+        return $this->hasOne(ScheduleMail::class, ['event_name' => 'name']);
     }
 
     /**

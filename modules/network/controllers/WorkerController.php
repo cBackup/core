@@ -54,7 +54,7 @@ class WorkerController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -63,7 +63,7 @@ class WorkerController extends Controller
                 ],
             ],
             'ajaxonly' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-add-worker',
                     'ajax-edit-worker',

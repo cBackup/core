@@ -114,7 +114,7 @@ class Plugin extends ActiveRecord
             [['author', 'widget', 'description'], 'string', 'max' => 255],
             [['version'], 'string', 'max' => 32],
             [['name'], 'unique'],
-            [['access'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::className(), 'targetAttribute' => ['access' => 'name']],
+            [['access'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::class, 'targetAttribute' => ['access' => 'name']],
             [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'zip', 'on' => 'validate_file'],
             [['params', 'widget', 'description'], 'default', 'value' => null]
         ];
@@ -143,7 +143,7 @@ class Plugin extends ActiveRecord
      */
     public function getPluginAccess()
     {
-        return $this->hasOne(AuthItem::className(), ['name' => 'access']);
+        return $this->hasOne(AuthItem::class, ['name' => 'access']);
     }
 
     /**

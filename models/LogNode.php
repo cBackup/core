@@ -86,9 +86,9 @@ class LogNode extends ActiveRecord
             [['userid'], 'string', 'max' => 128],
             [['severity'], 'string', 'max' => 32],
             [['action'], 'string', 'max' => 45],
-            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::className(), 'targetAttribute' => ['node_id' => 'id']],
-            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::className(), 'targetAttribute' => ['severity' => 'name']],
-            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userid' => 'userid']],
+            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::class, 'targetAttribute' => ['node_id' => 'id']],
+            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::class, 'targetAttribute' => ['severity' => 'name']],
+            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'userid']],
         ];
     }
 
@@ -117,7 +117,7 @@ class LogNode extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
     /**
@@ -125,7 +125,7 @@ class LogNode extends ActiveRecord
      */
     public function getSeverity0()
     {
-        return $this->hasOne(Severity::className(), ['name' => 'severity']);
+        return $this->hasOne(Severity::class, ['name' => 'severity']);
     }
 
     /**
@@ -133,7 +133,7 @@ class LogNode extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['userid' => 'userid']);
+        return $this->hasOne(User::class, ['userid' => 'userid']);
     }
 
     /**
@@ -145,7 +145,7 @@ class LogNode extends ActiveRecord
     {
         return [
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'userid',
                 'updatedByAttribute' => false,
             ],

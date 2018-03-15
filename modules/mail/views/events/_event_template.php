@@ -126,7 +126,7 @@ $this->registerJs(
                     <div class="row">
                         <div class="col-md-12">
                             <?php
-                                echo $form->field($model, 'template')->widget(TinyMce::className(), [
+                                echo $form->field($model, 'template')->widget(TinyMce::class, [
                                     'options'  => ['rows' => 6],
                                     'language' => strtok(\Yii::$app->language, '-'),
                                     'clientOptions' => [

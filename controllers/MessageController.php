@@ -49,7 +49,7 @@ class MessageController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -58,7 +58,7 @@ class MessageController extends Controller
                 ],
             ],
             'ajaxonly' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-approve',
                     'ajax-update-widget'

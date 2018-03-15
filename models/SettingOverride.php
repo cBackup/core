@@ -55,8 +55,8 @@ class SettingOverride extends ActiveRecord
             [['key'], 'string', 'max' => 64],
             [['userid'], 'string', 'max' => 128],
             [['value'], 'string', 'max' => 255],
-            [['key'], 'exist', 'skipOnError' => true, 'targetClass' => Setting::className(), 'targetAttribute' => ['key' => 'key']],
-            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userid' => 'userid']],
+            [['key'], 'exist', 'skipOnError' => true, 'targetClass' => Setting::class, 'targetAttribute' => ['key' => 'key']],
+            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'userid']],
             ['value', 'match', 'pattern' => '/^[a-z]{2}\-[A-Z]{2}$/', 'when' => function($model) {  return $model->key == 'language'; }],
             ['value', 'boolean', 'when' => function($model) {  return $model->key == 'sidebar_collapsed'; }],
         ];
@@ -79,7 +79,7 @@ class SettingOverride extends ActiveRecord
      */
     public function getKey0()
     {
-        return $this->hasOne(Setting::className(), ['key' => 'key']);
+        return $this->hasOne(Setting::class, ['key' => 'key']);
     }
 
     /**
@@ -87,7 +87,7 @@ class SettingOverride extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['userid' => 'userid']);
+        return $this->hasOne(User::class, ['userid' => 'userid']);
     }
 
 }

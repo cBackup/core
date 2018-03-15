@@ -44,7 +44,7 @@ class PluginController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -53,7 +53,7 @@ class PluginController extends Controller
                 ],
             ],
             'ajax' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-install-plugin',
                     'ajax-switch-mode',

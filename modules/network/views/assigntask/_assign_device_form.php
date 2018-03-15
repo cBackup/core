@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = ['label' => $page_name];
                                         </div>
                                     </div>
                                 '
-                        ])->widget(DepDrop::classname(), [
+                        ])->widget(DepDrop::class, [
                             'options' => [
                                 'id'               => 'worker_list',
                                 'class'            => 'select2',

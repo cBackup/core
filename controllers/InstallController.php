@@ -23,7 +23,6 @@ use app\components\NetSsh;
 use app\helpers\SystemHelper;
 use app\models\Config;
 use app\models\Install;
-use app\components\Updater;
 use Yii;
 use yii\db\Connection;
 use yii\db\Exception;
@@ -386,15 +385,6 @@ class InstallController extends Controller
                     // init backup data directory as git repository
                     Config::runRepositoryInit('cBackup Service', $email, $git, $path);
 
-                    // init cbackup installation as git repository for updates
-                    if( !YII_ENV_DEV && $internet ) {
-                        try {
-                            (new Updater())->initGitRepo();
-                        } catch (\Exception $e) {
-                            FileHelper::removeDirectory(Yii::$app->basePath.DIRECTORY_SEPARATOR.'.git');
-                        }
-                    }
-
                     Yii::$app->session->set('complete', 3);
                     return $this->redirect(['finalize']);
 
@@ -406,7 +396,6 @@ class InstallController extends Controller
 
                 // Rollback
                 file_put_contents("{$cfg}db.php", $file_db);
-                FileHelper::removeDirectory(Yii::$app->basePath.DIRECTORY_SEPARATOR.'.git');
                 FileHelper::removeDirectory($path.DIRECTORY_SEPARATOR.'backup'.DIRECTORY_SEPARATOR.'.git');
                 Yii::$app->session->addFlash('danger', $e->getMessage());
                 return $this->redirect(['integrity']);

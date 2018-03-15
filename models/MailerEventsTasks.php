@@ -77,8 +77,8 @@ class MailerEventsTasks extends ActiveRecord
             [['event_name'], 'string', 'max' => 128],
             [['status'], 'string', 'max' => 64],
             [['subject'], 'string', 'max' => 255],
-            [['event_name'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEvents::className(), 'targetAttribute' => ['event_name' => 'name']],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEventsTasksStatuses::className(), 'targetAttribute' => ['status' => 'name']],
+            [['event_name'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEvents::class, 'targetAttribute' => ['event_name' => 'name']],
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEventsTasksStatuses::class, 'targetAttribute' => ['status' => 'name']],
         ];
     }
 
@@ -105,7 +105,7 @@ class MailerEventsTasks extends ActiveRecord
      */
     public function getLogMailers()
     {
-        return $this->hasMany(LogMailer::className(), ['event_task_id' => 'id']);
+        return $this->hasMany(LogMailer::class, ['event_task_id' => 'id']);
     }
 
     /**
@@ -113,7 +113,7 @@ class MailerEventsTasks extends ActiveRecord
      */
     public function getEventName()
     {
-        return $this->hasOne(MailerEvents::className(), ['name' => 'event_name']);
+        return $this->hasOne(MailerEvents::class, ['name' => 'event_name']);
     }
 
     /**
@@ -121,7 +121,7 @@ class MailerEventsTasks extends ActiveRecord
      */
     public function getEventStatus()
     {
-        return $this->hasOne(MailerEventsTasksStatuses::className(), ['name' => 'status']);
+        return $this->hasOne(MailerEventsTasksStatuses::class, ['name' => 'status']);
     }
 
     /**

@@ -45,7 +45,7 @@ class OutcustomController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -54,7 +54,7 @@ class OutcustomController extends Controller
                 ],
             ],
             'ajaxonly' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-render-search',
                     'ajax-render-grid'

@@ -68,9 +68,9 @@ class TasksHasDevices extends ActiveRecord
             [['device_id', 'worker_id'], 'integer'],
             [['task_name'], 'string', 'max' => 255],
             [['device_id'], 'unique', 'targetAttribute' => ['task_name', 'device_id'], 'message' => Yii::t('network', 'Such device-task combination already exists!')],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
-            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_name' => 'name']],
-            [['worker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Worker::className(), 'targetAttribute' => ['worker_id' => 'id']],
+            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::class, 'targetAttribute' => ['device_id' => 'id']],
+            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_name' => 'name']],
+            [['worker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Worker::class, 'targetAttribute' => ['worker_id' => 'id']],
         ];
     }
 
@@ -94,7 +94,7 @@ class TasksHasDevices extends ActiveRecord
      */
     public function getDevice()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(Device::class, ['id' => 'device_id']);
     }
 
     /**
@@ -102,7 +102,7 @@ class TasksHasDevices extends ActiveRecord
      */
     public function getTaskName()
     {
-        return $this->hasOne(Task::className(), ['name' => 'task_name']);
+        return $this->hasOne(Task::class, ['name' => 'task_name']);
     }
 
     /**
@@ -110,6 +110,6 @@ class TasksHasDevices extends ActiveRecord
      */
     public function getWorker()
     {
-        return $this->hasOne(Worker::className(), ['id' => 'worker_id']);
+        return $this->hasOne(Worker::class, ['id' => 'worker_id']);
     }
 }

@@ -55,7 +55,7 @@ class NodeController extends Controller
          * To return JSON format
          */
         $behaviors['contentNegotiator'] = [
-            'class'   => ContentNegotiator::className(),
+            'class'   => ContentNegotiator::class,
             'formats' => [
                 'application/json'  => Response::FORMAT_JSON,
                 'charset'           => 'UTF-8',
@@ -66,15 +66,15 @@ class NodeController extends Controller
          * Authentication
          */
         $behaviors['authenticator'] = [
-            'class' => CompositeAuth::className(),
+            'class' => CompositeAuth::class,
             'authMethods' => [
-                HttpBearerAuth::className(),
+                HttpBearerAuth::class,
                 [
-                    'class' => QueryParamAuth::className(),
+                    'class' => QueryParamAuth::class,
                     'tokenParam' => 'token'
                 ],
                 [
-                    'class' => HttpBasicAuth::className(),
+                    'class' => HttpBasicAuth::class,
                     'auth'  => function($username, $password) {
 
                         $user = User::findOne(['userid' => $username, 'enabled' => 1]);
@@ -93,7 +93,7 @@ class NodeController extends Controller
          * Access rules
          */
         $behaviors['access'] = [
-            'class' => AccessControl::className(),
+            'class' => AccessControl::class,
             'rules' => [
                 [
                     'allow'   => true,
@@ -104,7 +104,7 @@ class NodeController extends Controller
         ];
 
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'list'      => ['get'],
                 'get'       => ['get'],

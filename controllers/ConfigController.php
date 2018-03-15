@@ -45,7 +45,7 @@ class ConfigController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -54,7 +54,7 @@ class ConfigController extends Controller
                 ],
             ],
             'ajax' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-init-repo',
                     'ajax-reinit-git-settings'

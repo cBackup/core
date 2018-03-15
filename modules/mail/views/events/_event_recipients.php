@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = ['label' => $page_name];
                         'class'    => 'form-control',
                         'readonly' => true
                     ]);
-                    echo $form->field($model, 'recipients', ['errorOptions' => ['encode' => false]])->widget(JqueryTagsInput::className(), [
+                    echo $form->field($model, 'recipients', ['errorOptions' => ['encode' => false]])->widget(JqueryTagsInput::class, [
                         'clientOptions' => [
                             'width'       => '100%',
                             'height'      => 'auto',

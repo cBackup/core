@@ -73,7 +73,7 @@ class Setting extends ActiveRecord
      */
     public function getSettingOverrides()
     {
-        return $this->hasMany(SettingOverride::className(), ['key' => 'key']);
+        return $this->hasMany(SettingOverride::class, ['key' => 'key']);
     }
 
     /**
@@ -81,7 +81,7 @@ class Setting extends ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['userid' => 'userid'])->viaTable('{{%setting_override}}', ['key' => 'key']);
+        return $this->hasMany(User::class, ['userid' => 'userid'])->viaTable('{{%setting_override}}', ['key' => 'key']);
     }
 
     /**

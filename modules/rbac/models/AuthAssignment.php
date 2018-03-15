@@ -96,7 +96,7 @@ class AuthAssignment extends ActiveRecord
             [['user_id'], 'required'],
             [['created_at'], 'integer'],
             [['item_name', 'user_id'], 'string', 'max' => 64],
-            [['item_name'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::className(), 'targetAttribute' => ['item_name' => 'name']],
+            [['item_name'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::class, 'targetAttribute' => ['item_name' => 'name']],
             [['roles', 'permissions'], 'default', 'value' => []],
         ];
     }
@@ -122,7 +122,7 @@ class AuthAssignment extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['userid' => 'user_id']);
+        return $this->hasOne(User::class, ['userid' => 'user_id']);
     }
 
     /**
@@ -130,7 +130,7 @@ class AuthAssignment extends ActiveRecord
      */
     public function getItemName()
     {
-        return $this->hasOne(AuthItem::className(), ['name' => 'item_name']);
+        return $this->hasOne(AuthItem::class, ['name' => 'item_name']);
     }
 
     /**

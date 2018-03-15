@@ -131,7 +131,7 @@ class Credential extends ActiveRecord
      */
     public function getNetworks()
     {
-        return $this->hasMany(Network::className(), ['credential_id' => 'id']);
+        return $this->hasMany(Network::class, ['credential_id' => 'id']);
     }
 
     /**
@@ -139,7 +139,7 @@ class Credential extends ActiveRecord
      */
     public function getNodes()
     {
-        return $this->hasMany(Node::className(), ['credential_id' => 'id']);
+        return $this->hasMany(Node::class, ['credential_id' => 'id']);
     }
 
     /**

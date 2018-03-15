@@ -1,6 +1,6 @@
 Package:        cbackup
 Provides:       cbackup
-Version:        1.1.1
+Version:        1.1.2
 Maintainer:     cBackup Team <info@cbackup.me>
 Architecture:   all
 Section:        admin

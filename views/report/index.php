@@ -27,7 +27,7 @@ $this->title = Yii::t('app', 'Reports');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Administration' )];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reports' )];
 
-$this->registerJsFile('@web/plugins/flot/0.8.3/jquery.flot.pie.min.js', ['depends' => \app\assets\FlotAsset::className()]);
+$this->registerJsFile('@web/plugins/flot/0.8.3/jquery.flot.pie.min.js', ['depends' => \app\assets\FlotAsset::class]);
 $this->registerJs(/** @lang JavaScript */"
 var data = [
 	{ label: 'Free space',  data: ".$disk['free']."},
