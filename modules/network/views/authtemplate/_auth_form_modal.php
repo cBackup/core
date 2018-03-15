@@ -25,10 +25,11 @@ use app\helpers\FormHelper;
  * @var $this          yii\web\View
  * @var $model         app\models\DeviceAuthTemplate
  * @var $form          yii\bootstrap\ActiveForm
+ * @var $vars          array
  */
 ?>
 
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-xl">
     <div class="modal-content">
         <div class="modal-header modal-default">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -85,7 +86,7 @@ use app\helpers\FormHelper;
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <?= $this->render('_help_view', ['collapsed' => true]) ?>
+                    <?= $this->render('_help_view', ['collapsed' => true, 'vars' => $vars]) ?>
                 </div>
             </div>
         </div>

@@ -32,6 +32,7 @@ use app\helpers\FormHelper;
 app\assets\Select2Asset::register($this);
 app\assets\i18nextAsset::register($this);
 app\assets\LaddaAsset::register($this);
+app\assets\ScrollingTabsAsset::register($this);
 
 /** @noinspection PhpUndefinedFieldInspection */
 $action      = $this->context->action->id;
@@ -41,6 +42,9 @@ $this->title = Yii::t('app', 'Devices');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Inventory' )];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Devices'), 'url' => ['/network/device/list']];
 $this->params['breadcrumbs'][] = ['label' => $page_name];
+
+// Because firefox has 9 years of open bug with unsupported 'background-attachment: local' for textareas
+$this->registerJsFile('/js/plugins/autosize.min.js', ['depends' => \app\assets\AlphaAsset::className()]);
 
 $this->registerJs(/** @lang JavaScript */
     "
@@ -105,6 +109,27 @@ $this->registerJs(/** @lang JavaScript */
             /** Remove errors after modal close */
             toast.find('.toast-error').fadeOut(1000, function() { $(this).remove(); });
         
+        });
+        
+        /** Modal shown event handler */
+        $(document).on('shown.bs.modal', '.modal', function () {
+            
+            var tabs = $('.tabs-scroll');
+            
+            /** Destroy plugin to prevet tabs duplicating */
+            tabs.scrollingTabs('destroy');
+            
+            /** Init tab scroll */
+            tabs.scrollingTabs({
+                disableScrollArrowsOnFullyScrolled: true,
+                scrollToTabEdge: true
+            }).on('ready.scrtabs', function() {
+                $('.tabs-scroll').find('li > a').css({color: '#444', 'padding-top': '15px'})
+            });
+            
+            /** Auto resize textarea */
+            autosize($('textarea'));
+            
         });
         
     "
@@ -241,7 +266,7 @@ $this->registerJs(/** @lang JavaScript */
 
 <!-- Form modal -->
 <div id="form_modal" class="modal fade">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
