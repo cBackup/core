@@ -73,6 +73,6 @@ class Vendor extends ActiveRecord
      */
     public function getDevices()
     {
-        return $this->hasMany(Device::className(), ['vendor' => 'name']);
+        return $this->hasMany(Device::class, ['vendor' => 'name']);
     }
 }

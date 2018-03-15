@@ -81,9 +81,9 @@ class TasksHasNodes extends ActiveRecord
             [['node_id', 'worker_id'], 'integer'],
             [['task_name'], 'string', 'max' => 255],
             [['node_id'], 'unique', 'targetAttribute' => ['node_id', 'task_name'], 'message' => Yii::t('network', 'Such node-task combination already exists!')],
-            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::className(), 'targetAttribute' => ['node_id' => 'id']],
-            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_name' => 'name']],
-            [['worker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Worker::className(), 'targetAttribute' => ['worker_id' => 'id']],
+            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::class, 'targetAttribute' => ['node_id' => 'id']],
+            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_name' => 'name']],
+            [['worker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Worker::class, 'targetAttribute' => ['worker_id' => 'id']],
         ];
     }
 
@@ -108,7 +108,7 @@ class TasksHasNodes extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
     /**
@@ -116,7 +116,7 @@ class TasksHasNodes extends ActiveRecord
      */
     public function getTaskName()
     {
-        return $this->hasOne(Task::className(), ['name' => 'task_name']);
+        return $this->hasOne(Task::class, ['name' => 'task_name']);
     }
 
     /**
@@ -124,7 +124,7 @@ class TasksHasNodes extends ActiveRecord
      */
     public function getWorker()
     {
-        return $this->hasOne(Worker::className(), ['id' => 'worker_id']);
+        return $this->hasOne(Worker::class, ['id' => 'worker_id']);
     }
 
     /**

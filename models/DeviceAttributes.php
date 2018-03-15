@@ -62,7 +62,7 @@ class DeviceAttributes extends ActiveRecord
             [['device_id'], 'integer'],
             [['sysobject_id', 'hw'], 'string', 'max' => 255],
             [['sys_description'], 'string', 'max' => 1024],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
+            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::class, 'targetAttribute' => ['device_id' => 'id']],
             [['sysobject_id', 'hw', 'sys_description'], 'default', 'value' => null],
             [['sysobject_id'], 'unique', 'targetAttribute' => ['sysobject_id', 'hw', 'sys_description'], 'message' => Yii::t('network', 'Such combination of device attributes already exists!')],
             [['unkn_id'], 'safe'],
@@ -88,6 +88,6 @@ class DeviceAttributes extends ActiveRecord
      */
     public function getDevice()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(Device::class, ['id' => 'device_id']);
     }
 }

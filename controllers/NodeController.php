@@ -70,7 +70,7 @@ class NodeController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete'                    => ['post'],
                     'inquire'                   => ['post'],
@@ -78,7 +78,7 @@ class NodeController extends Controller
                 ],
             ],
             'ajaxonly' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'inquire',
                     'ajax-download',

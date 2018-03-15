@@ -121,11 +121,11 @@ class Node extends ActiveRecord
             [['serial'], 'string', 'max' => 45],
             [['ip'], 'unique'],
             [['credential_id'], 'required', 'when' => function($model) {/** @var $model Node*/ return empty ($model->network_id); }],
-            [['credential_id'], 'exist', 'skipOnError' => true, 'targetClass' => Credential::className(), 'targetAttribute' => ['credential_id' => 'id']],
-            [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::className(), 'targetAttribute' => ['auth_template_name' => 'name']],
+            [['credential_id'], 'exist', 'skipOnError' => true, 'targetClass' => Credential::class, 'targetAttribute' => ['credential_id' => 'id']],
+            [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::class, 'targetAttribute' => ['auth_template_name' => 'name']],
             [['ip'], 'subnetValidation', 'when' => function($model) {/** @var $model Node*/ return !empty($model->network_id); }],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
-            [['network_id'], 'exist', 'skipOnError' => true, 'targetClass' => Network::className(), 'targetAttribute' => ['network_id' => 'id']],
+            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::class, 'targetAttribute' => ['device_id' => 'id']],
+            [['network_id'], 'exist', 'skipOnError' => true, 'targetClass' => Network::class, 'targetAttribute' => ['network_id' => 'id']],
             [['mac', 'serial', 'hostname', 'location', 'contact', 'sys_description', 'auth_template_name', 'prepend_location'], 'default', 'value' => null]
         ];
     }
@@ -178,7 +178,7 @@ class Node extends ActiveRecord
      */
     public function getAltInterfaces()
     {
-        return $this->hasMany(AltInterface::className(), ['node_id' => 'id']);
+        return $this->hasMany(AltInterface::class, ['node_id' => 'id']);
     }
 
     /**
@@ -186,7 +186,7 @@ class Node extends ActiveRecord
      */
     public function getLogNodes()
     {
-        return $this->hasMany(LogNode::className(), ['node_id' => 'id']);
+        return $this->hasMany(LogNode::class, ['node_id' => 'id']);
     }
 
     /**
@@ -194,7 +194,7 @@ class Node extends ActiveRecord
      */
     public function getLogSchedulers()
     {
-        return $this->hasMany(LogScheduler::className(), ['node_id' => 'id']);
+        return $this->hasMany(LogScheduler::class, ['node_id' => 'id']);
     }
 
     /**
@@ -202,7 +202,7 @@ class Node extends ActiveRecord
      */
     public function getAuthTemplateName()
     {
-        return $this->hasOne(DeviceAuthTemplate::className(), ['name' => 'auth_template_name']);
+        return $this->hasOne(DeviceAuthTemplate::class, ['name' => 'auth_template_name']);
     }
 
     /**
@@ -210,7 +210,7 @@ class Node extends ActiveRecord
      */
     public function getCredential()
     {
-        return $this->hasOne(Credential::className(), ['id' => 'credential_id']);
+        return $this->hasOne(Credential::class, ['id' => 'credential_id']);
     }
 
     /**
@@ -218,7 +218,7 @@ class Node extends ActiveRecord
      */
     public function getDevice()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(Device::class, ['id' => 'device_id']);
     }
 
     /**
@@ -226,7 +226,7 @@ class Node extends ActiveRecord
      */
     public function getNetwork()
     {
-        return $this->hasOne(Network::className(), ['id' => 'network_id']);
+        return $this->hasOne(Network::class, ['id' => 'network_id']);
     }
 
     /**
@@ -234,7 +234,7 @@ class Node extends ActiveRecord
      */
     public function getOutBackups()
     {
-        return $this->hasMany(OutBackup::className(), ['node_id' => 'id']);
+        return $this->hasMany(OutBackup::class, ['node_id' => 'id']);
     }
 
     /**
@@ -242,7 +242,7 @@ class Node extends ActiveRecord
      */
     public function getOutStps()
     {
-        return $this->hasMany(OutStp::className(), ['node_id' => 'id']);
+        return $this->hasMany(OutStp::class, ['node_id' => 'id']);
     }
 
     /**
@@ -250,7 +250,7 @@ class Node extends ActiveRecord
      */
     public function getTasksHasNodes()
     {
-        return $this->hasMany(TasksHasNodes::className(), ['node_id' => 'id']);
+        return $this->hasMany(TasksHasNodes::class, ['node_id' => 'id']);
     }
 
     /**

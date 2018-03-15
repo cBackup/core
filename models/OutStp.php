@@ -62,7 +62,7 @@ class OutStp extends ActiveRecord
             [['node_id'], 'integer'],
             [['hash', 'node_mac', 'root_port', 'root_mac', 'bridge_mac'], 'string', 'max' => 255],
             [['node_id'], 'unique'],
-            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::className(), 'targetAttribute' => ['node_id' => 'id']],
+            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::class, 'targetAttribute' => ['node_id' => 'id']],
             [['root_mac', 'root_port', 'bridge_mac'], 'default', 'value' => null],
         ];
     }
@@ -87,7 +87,7 @@ class OutStp extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
     /**
@@ -99,7 +99,7 @@ class OutStp extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'time',
                 'updatedAtAttribute' => 'time',
                 'value' => new Expression('NOW()'),

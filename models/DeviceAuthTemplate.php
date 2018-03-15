@@ -137,7 +137,7 @@ class DeviceAuthTemplate extends ActiveRecord
      */
     public function getDevices()
     {
-        return $this->hasMany(Device::className(), ['auth_template_name' => 'name']);
+        return $this->hasMany(Device::class, ['auth_template_name' => 'name']);
     }
 
     /**
@@ -145,6 +145,6 @@ class DeviceAuthTemplate extends ActiveRecord
      */
     public function getNodes()
     {
-        return $this->hasMany(Node::className(), ['auth_template_name' => 'name']);
+        return $this->hasMany(Node::class, ['auth_template_name' => 'name']);
     }
 }

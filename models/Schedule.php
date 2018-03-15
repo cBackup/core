@@ -55,7 +55,7 @@ class Schedule extends ActiveRecord
             [['task_name', 'schedule_cron'], 'required'],
             [['task_name', 'schedule_cron'], 'string', 'max' => 255],
             [['task_name'], 'unique'],
-            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_name' => 'name']],
+            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_name' => 'name']],
         ];
     }
 
@@ -76,7 +76,7 @@ class Schedule extends ActiveRecord
      */
     public function getLogSchedulers()
     {
-        return $this->hasMany(LogScheduler::className(), ['schedule_id' => 'id']);
+        return $this->hasMany(LogScheduler::class, ['schedule_id' => 'id']);
     }
 
     /**
@@ -84,7 +84,7 @@ class Schedule extends ActiveRecord
      */
     public function getTaskName()
     {
-        return $this->hasOne(Task::className(), ['name' => 'task_name']);
+        return $this->hasOne(Task::class, ['name' => 'task_name']);
     }
 
     /**

@@ -95,9 +95,9 @@ class Job extends ActiveRecord
             [['timeout'], 'integer', 'min' => 1, 'max' => 60000],
             [['name', 'command_value', 'command_var', 'cli_custom_prompt', 'snmp_set_value', 'table_field', 'description'], 'string', 'max' => 255],
             [['snmp_request_type', 'snmp_set_value_type'], 'string', 'max' => 32],
-            [['snmp_request_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpRequestTypes::className(), 'targetAttribute' => ['snmp_request_type' => 'name']],
-            [['snmp_set_value_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpTypes::className(), 'targetAttribute' => ['snmp_set_value_type' => 'name']],
-            [['worker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Worker::className(), 'targetAttribute' => ['worker_id' => 'id']],
+            [['snmp_request_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpRequestTypes::class, 'targetAttribute' => ['snmp_request_type' => 'name']],
+            [['snmp_set_value_type'], 'exist', 'skipOnError' => true, 'targetClass' => JobSnmpTypes::class, 'targetAttribute' => ['snmp_set_value_type' => 'name']],
+            [['worker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Worker::class, 'targetAttribute' => ['worker_id' => 'id']],
             [['snmp_set_value_type'], 'required', 'when' => function($model) {/** @var $model Job */
                 return ($model->snmp_request_type == 'set');
             }],
@@ -277,7 +277,7 @@ class Job extends ActiveRecord
      */
     public function getSnmpRequestType()
     {
-        return $this->hasOne(JobSnmpRequestTypes::className(), ['name' => 'snmp_request_type']);
+        return $this->hasOne(JobSnmpRequestTypes::class, ['name' => 'snmp_request_type']);
     }
 
     /**
@@ -285,7 +285,7 @@ class Job extends ActiveRecord
      */
     public function getSnmpSetValueType()
     {
-        return $this->hasOne(JobSnmpTypes::className(), ['name' => 'snmp_set_value_type']);
+        return $this->hasOne(JobSnmpTypes::class, ['name' => 'snmp_set_value_type']);
     }
 
     /**
@@ -293,7 +293,7 @@ class Job extends ActiveRecord
      */
     public function getWorker()
     {
-        return $this->hasOne(Worker::className(), ['id' => 'worker_id']);
+        return $this->hasOne(Worker::class, ['id' => 'worker_id']);
     }
 
     /**

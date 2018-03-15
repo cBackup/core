@@ -71,6 +71,6 @@ class JobSnmpTypes extends ActiveRecord
      */
     public function getJobs()
     {
-        return $this->hasMany(Job::className(), ['snmp_set_value_type' => 'name']);
+        return $this->hasMany(Job::class, ['snmp_set_value_type' => 'name']);
     }
 }

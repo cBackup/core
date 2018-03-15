@@ -71,7 +71,7 @@ class Severity extends ActiveRecord
      */
     public function getLogMailers()
     {
-        return $this->hasMany(LogMailer::className(), ['severity' => 'name']);
+        return $this->hasMany(LogMailer::class, ['severity' => 'name']);
     }
 
     /**
@@ -79,7 +79,7 @@ class Severity extends ActiveRecord
      */
     public function getLogNodes()
     {
-        return $this->hasMany(LogNode::className(), ['severity' => 'name']);
+        return $this->hasMany(LogNode::class, ['severity' => 'name']);
     }
 
     /**
@@ -87,7 +87,7 @@ class Severity extends ActiveRecord
      */
     public function getLogSchedulers()
     {
-        return $this->hasMany(LogScheduler::className(), ['severity' => 'name']);
+        return $this->hasMany(LogScheduler::class, ['severity' => 'name']);
     }
 
     /**
@@ -95,7 +95,7 @@ class Severity extends ActiveRecord
      */
     public function getLogSystems()
     {
-        return $this->hasMany(LogSystem::className(), ['severity' => 'name']);
+        return $this->hasMany(LogSystem::class, ['severity' => 'name']);
     }
 
 }

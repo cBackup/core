@@ -79,9 +79,9 @@ class LogMailer extends ActiveRecord
             [['userid'], 'string', 'max' => 128],
             [['severity'], 'string', 'max' => 32],
             [['action'], 'string', 'max' => 45],
-            [['event_task_id'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEventsTasks::className(), 'targetAttribute' => ['event_task_id' => 'id']],
-            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::className(), 'targetAttribute' => ['severity' => 'name']],
-            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userid' => 'userid']],
+            [['event_task_id'], 'exist', 'skipOnError' => true, 'targetClass' => MailerEventsTasks::class, 'targetAttribute' => ['event_task_id' => 'id']],
+            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::class, 'targetAttribute' => ['severity' => 'name']],
+            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'userid']],
         ];
     }
 
@@ -109,7 +109,7 @@ class LogMailer extends ActiveRecord
      */
     public function getEventTask()
     {
-        return $this->hasOne(MailerEventsTasks::className(), ['id' => 'event_task_id']);
+        return $this->hasOne(MailerEventsTasks::class, ['id' => 'event_task_id']);
     }
 
     /**
@@ -117,7 +117,7 @@ class LogMailer extends ActiveRecord
      */
     public function getSeverity0()
     {
-        return $this->hasOne(Severity::className(), ['name' => 'severity']);
+        return $this->hasOne(Severity::class, ['name' => 'severity']);
     }
 
     /**
@@ -125,7 +125,7 @@ class LogMailer extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['userid' => 'userid']);
+        return $this->hasOne(User::class, ['userid' => 'userid']);
     }
 
     /**

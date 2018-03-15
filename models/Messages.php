@@ -58,7 +58,7 @@ class Messages extends ActiveRecord
             [['message'], 'string'],
             [['created', 'approved'], 'safe'],
             [['approved_by'], 'string', 'max' => 128],
-            [['approved_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['approved_by' => 'userid']],
+            [['approved_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['approved_by' => 'userid']],
             [['approved', 'approved_by'], 'default', 'value' => null]
         ];
     }
@@ -82,7 +82,7 @@ class Messages extends ActiveRecord
      */
     public function getApprovedBy()
     {
-        return $this->hasOne(User::className(), ['userid' => 'approved_by']);
+        return $this->hasOne(User::class, ['userid' => 'approved_by']);
     }
 
     /**
@@ -94,7 +94,7 @@ class Messages extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created',
                 'updatedAtAttribute' => false,
                 'value' => new Expression('NOW()'),

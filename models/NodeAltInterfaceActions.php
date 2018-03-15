@@ -91,7 +91,7 @@ class NodeAltInterfaceActions extends Model
     {
 
         if(!method_exists($this, $this->action_type)) {
-            throw new \RuntimeException('Undefined method ' . self::className() .'::'. $this->action_type.'()');
+            throw new \RuntimeException('Undefined method ' . self::class .'::'. $this->action_type.'()');
         }
 
         return $this->{$this->action_type}();

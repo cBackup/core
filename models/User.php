@@ -112,7 +112,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAuthAssignments()
     {
-        return $this->hasMany(AuthAssignment::className(), ['user_id' => 'userid']);
+        return $this->hasMany(AuthAssignment::class, ['user_id' => 'userid']);
     }
 
     /**
@@ -120,7 +120,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getItemNames()
     {
-        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('{{%auth_assignment}}', ['user_id' => 'userid']);
+        return $this->hasMany(AuthItem::class, ['name' => 'item_name'])->viaTable('{{%auth_assignment}}', ['user_id' => 'userid']);
     }
 
     /**
@@ -128,7 +128,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getLogMailers()
     {
-        return $this->hasMany(LogMailer::className(), ['userid' => 'userid']);
+        return $this->hasMany(LogMailer::class, ['userid' => 'userid']);
     }
 
     /**
@@ -136,7 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getLogNodes()
     {
-        return $this->hasMany(LogNode::className(), ['userid' => 'userid']);
+        return $this->hasMany(LogNode::class, ['userid' => 'userid']);
     }
 
     /**
@@ -144,7 +144,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getLogSchedulers()
     {
-        return $this->hasMany(LogScheduler::className(), ['userid' => 'userid']);
+        return $this->hasMany(LogScheduler::class, ['userid' => 'userid']);
     }
 
     /**
@@ -152,7 +152,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getLogSystems()
     {
-        return $this->hasMany(LogSystem::className(), ['userid' => 'userid']);
+        return $this->hasMany(LogSystem::class, ['userid' => 'userid']);
     }
 
     /**
@@ -160,7 +160,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getMessages()
     {
-        return $this->hasMany(Messages::className(), ['approved_by' => 'userid']);
+        return $this->hasMany(Messages::class, ['approved_by' => 'userid']);
     }
 
     /**
@@ -168,7 +168,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getSettingOverrides()
     {
-        return $this->hasMany(SettingOverride::className(), ['userid' => 'userid']);
+        return $this->hasMany(SettingOverride::class, ['userid' => 'userid']);
     }
 
     /**
@@ -176,7 +176,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getKeys()
     {
-        return $this->hasMany(Setting::className(), ['key' => 'key'])->viaTable('{{%setting_override}}', ['userid' => 'userid']);
+        return $this->hasMany(Setting::class, ['key' => 'key'])->viaTable('{{%setting_override}}', ['userid' => 'userid']);
     }
 
     /**

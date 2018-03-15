@@ -40,7 +40,7 @@ class JobController extends Controller
     {
         return [
             'ajaxonly' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-get-jobs'
                 ]

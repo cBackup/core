@@ -90,11 +90,11 @@ class LogScheduler extends ActiveRecord
             [['userid'], 'string', 'max' => 128],
             [['severity', 'schedule_type'], 'string', 'max' => 32],
             [['action'], 'string', 'max' => 45],
-            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::className(), 'targetAttribute' => ['node_id' => 'id']],
-            [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::className(), 'targetAttribute' => ['schedule_id' => 'id']],
-            [['schedule_type'], 'exist', 'skipOnError' => true, 'targetClass' => ScheduleType::className(), 'targetAttribute' => ['schedule_type' => 'name']],
-            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::className(), 'targetAttribute' => ['severity' => 'name']],
-            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userid' => 'userid']],
+            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::class, 'targetAttribute' => ['node_id' => 'id']],
+            [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::class, 'targetAttribute' => ['schedule_id' => 'id']],
+            [['schedule_type'], 'exist', 'skipOnError' => true, 'targetClass' => ScheduleType::class, 'targetAttribute' => ['schedule_type' => 'name']],
+            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::class, 'targetAttribute' => ['severity' => 'name']],
+            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'userid']],
             [['node_id', 'schedule_id'], 'default', 'value' => null],
         ];
     }
@@ -125,7 +125,7 @@ class LogScheduler extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
     /**
@@ -133,7 +133,7 @@ class LogScheduler extends ActiveRecord
      */
     public function getSchedule()
     {
-        return $this->hasOne(Schedule::className(), ['id' => 'schedule_id']);
+        return $this->hasOne(Schedule::class, ['id' => 'schedule_id']);
     }
 
     /**
@@ -141,7 +141,7 @@ class LogScheduler extends ActiveRecord
      */
     public function getScheduleType()
     {
-        return $this->hasOne(ScheduleType::className(), ['name' => 'schedule_type']);
+        return $this->hasOne(ScheduleType::class, ['name' => 'schedule_type']);
     }
 
     /**
@@ -149,7 +149,7 @@ class LogScheduler extends ActiveRecord
      */
     public function getSeverity0()
     {
-        return $this->hasOne(Severity::className(), ['name' => 'severity']);
+        return $this->hasOne(Severity::class, ['name' => 'severity']);
     }
 
     /**
@@ -157,7 +157,7 @@ class LogScheduler extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['userid' => 'userid']);
+        return $this->hasOne(User::class, ['userid' => 'userid']);
     }
 
     /**
@@ -169,7 +169,7 @@ class LogScheduler extends ActiveRecord
     {
         return [
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'userid',
                 'updatedByAttribute' => false,
             ],

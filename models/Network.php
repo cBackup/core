@@ -67,7 +67,7 @@ class Network extends ActiveRecord
             [['description'], 'string', 'max' => 255],
             [['network'], 'unique'],
             [['network'], 'checkSubnet'],
-            [['credential_id'], 'exist', 'skipOnError' => true, 'targetClass' => Credential::className(), 'targetAttribute' => ['credential_id' => 'id']],
+            [['credential_id'], 'exist', 'skipOnError' => true, 'targetClass' => Credential::class, 'targetAttribute' => ['credential_id' => 'id']],
             [['description'], 'default', 'value' => null]
         ];
     }
@@ -117,7 +117,7 @@ class Network extends ActiveRecord
      */
     public function getCredential()
     {
-        return $this->hasOne(Credential::className(), ['id' => 'credential_id']);
+        return $this->hasOne(Credential::class, ['id' => 'credential_id']);
     }
 
     /**
@@ -125,7 +125,7 @@ class Network extends ActiveRecord
      */
     public function getNodes()
     {
-        return $this->hasMany(Node::className(), ['network_id' => 'id']);
+        return $this->hasMany(Node::class, ['network_id' => 'id']);
     }
 
     /**

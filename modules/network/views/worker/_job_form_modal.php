@@ -112,7 +112,7 @@ if ($action == 'ajax-edit-job') {
                         <?php if ($snmp_view): ?>
                             <div class="col-md-3">
                                 <?php
-                                    echo $form->field($model, 'snmp_request_type')->widget(ToggleButtonGroup::classname(), [
+                                    echo $form->field($model, 'snmp_request_type')->widget(ToggleButtonGroup::class, [
                                         'type'         => 'radio',
                                         'labelOptions' => ['class' => 'btn-primary', 'style' => 'width:57px'],
                                         'items'        => $request_types

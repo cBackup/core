@@ -39,7 +39,7 @@ $this->title = Yii::t('app', 'System settings');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Administration' )];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'System settings')];
 
-$this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\AlphaAsset::className()]);
+$this->registerJsFile('@web/js/config/script.js', ['depends' => \app\assets\AlphaAsset::class]);
 
 ?>
 

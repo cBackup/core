@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'     => 'auth_template_name',
                             ],
                             [
-                                'class'    => \yii\grid\ActionColumn::className(),
+                                'class'    => \yii\grid\ActionColumn::class,
                                 'template' =>'{edit} {delete}',
                                 'buttons'  => [
                                     'edit' => function (/** @noinspection PhpUnusedParameterInspection */$url, $model) { /** @var $model \app\models\Device */

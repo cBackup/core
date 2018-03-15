@@ -43,7 +43,7 @@ class CdsController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -52,7 +52,7 @@ class CdsController extends Controller
                 ],
             ],
             'ajax' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-render-grid',
                     'ajax-get-install-file',

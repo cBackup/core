@@ -101,8 +101,8 @@ class Worker extends ActiveRecord
             [['name'], 'unique'],
             [['name', 'task_name', 'description'], 'string', 'max' => 255],
             [['get'], 'string', 'max' => 16],
-            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_name' => 'name']],
-            [['get'], 'exist', 'skipOnError' => true, 'targetClass' => WorkerProtocol::className(), 'targetAttribute' => ['get' => 'name']],
+            [['task_name'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_name' => 'name']],
+            [['get'], 'exist', 'skipOnError' => true, 'targetClass' => WorkerProtocol::class, 'targetAttribute' => ['get' => 'name']],
             [['description'], 'default', 'value' => null],
         ];
     }
@@ -132,7 +132,7 @@ class Worker extends ActiveRecord
      */
     public function getJobs()
     {
-        return $this->hasMany(Job::className(), ['worker_id' => 'id']);
+        return $this->hasMany(Job::class, ['worker_id' => 'id']);
     }
 
     /**
@@ -140,7 +140,7 @@ class Worker extends ActiveRecord
      */
     public function getSortedJobs()
     {
-        return $this->hasMany(Job::className(), ['worker_id' => 'id'])->orderBy(['sequence_id' => SORT_ASC, 'id' => SORT_ASC]);
+        return $this->hasMany(Job::class, ['worker_id' => 'id'])->orderBy(['sequence_id' => SORT_ASC, 'id' => SORT_ASC]);
     }
 
     /**
@@ -148,7 +148,7 @@ class Worker extends ActiveRecord
      */
     public function getTasksHasDevices()
     {
-        return $this->hasMany(TasksHasDevices::className(), ['worker_id' => 'id']);
+        return $this->hasMany(TasksHasDevices::class, ['worker_id' => 'id']);
     }
 
     /**
@@ -156,7 +156,7 @@ class Worker extends ActiveRecord
      */
     public function getTasksHasNodes()
     {
-        return $this->hasMany(TasksHasNodes::className(), ['worker_id' => 'id']);
+        return $this->hasMany(TasksHasNodes::class, ['worker_id' => 'id']);
     }
 
     /**
@@ -164,7 +164,7 @@ class Worker extends ActiveRecord
      */
     public function getTaskName()
     {
-        return $this->hasOne(Task::className(), ['name' => 'task_name']);
+        return $this->hasOne(Task::class, ['name' => 'task_name']);
     }
 
     /**
@@ -172,7 +172,7 @@ class Worker extends ActiveRecord
      */
     public function getProtocol()
     {
-        return $this->hasOne(WorkerProtocol::className(), ['name' => 'get']);
+        return $this->hasOne(WorkerProtocol::class, ['name' => 'get']);
     }
 
     /**

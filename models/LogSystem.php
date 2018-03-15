@@ -78,8 +78,8 @@ class LogSystem extends ActiveRecord
             [['userid'], 'string', 'max' => 128],
             [['severity'], 'string', 'max' => 32],
             [['action'], 'string', 'max' => 45],
-            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::className(), 'targetAttribute' => ['severity' => 'name']],
-            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userid' => 'userid']],
+            [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => Severity::class, 'targetAttribute' => ['severity' => 'name']],
+            [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'userid']],
         ];
     }
 
@@ -106,7 +106,7 @@ class LogSystem extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['userid' => 'userid']);
+        return $this->hasOne(User::class, ['userid' => 'userid']);
     }
 
     /**
@@ -114,7 +114,7 @@ class LogSystem extends ActiveRecord
      */
     public function getSeverity0()
     {
-        return $this->hasOne(Severity::className(), ['name' => 'severity']);
+        return $this->hasOne(Severity::class, ['name' => 'severity']);
     }
 
     /**
@@ -126,7 +126,7 @@ class LogSystem extends ActiveRecord
     {
         return [
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'userid',
                 'updatedByAttribute' => false,
             ],

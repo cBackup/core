@@ -54,7 +54,7 @@ class AltInterface extends ActiveRecord
             [['node_id', 'ip'], 'required'],
             [['node_id'], 'integer'],
             [['ip'], 'string', 'max' => 15],
-            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::className(), 'targetAttribute' => ['node_id' => 'id']],
+            [['node_id'], 'exist', 'skipOnError' => true, 'targetClass' => Node::class, 'targetAttribute' => ['node_id' => 'id']],
         ];
     }
 
@@ -75,7 +75,7 @@ class AltInterface extends ActiveRecord
      */
     public function getNode()
     {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
 

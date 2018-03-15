@@ -76,7 +76,7 @@ class CoreController extends Controller
          * To return JSON format
          */
         $behaviors['contentNegotiator'] = [
-            'class'   => ContentNegotiator::className(),
+            'class'   => ContentNegotiator::class,
             'formats' => [
                 'application/json'  => Response::FORMAT_JSON,
                 'charset'           => 'UTF-8',
@@ -87,14 +87,14 @@ class CoreController extends Controller
          * Authentication
          */
         $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::className(),
+            'class' => HttpBearerAuth::class,
         ];
 
         /*
          * Access rules
          */
         $behaviors['access'] = [
-            'class' => AccessControl::className(),
+            'class' => AccessControl::class,
             'rules' => [
                 [
                     'allow'   => true,
@@ -104,7 +104,7 @@ class CoreController extends Controller
         ];
 
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'set-schedule-log'          => ['post'],
                 'set-system-log'            => ['post'],

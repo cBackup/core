@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
  */
 $this->title = Yii::t('install', 'System parameters setup');
 
-$this->registerJsFile('@web/../plugins/jstz/1.0.7/jstz.min.js', ['depends' => \app\assets\InstallAsset::className()]);
+$this->registerJsFile('@web/../plugins/jstz/1.0.7/jstz.min.js', ['depends' => \app\assets\InstallAsset::class]);
 
 /** @noinspection JSUnusedLocalSymbols */
 $this->registerJs(/** @lang JavaScript */'

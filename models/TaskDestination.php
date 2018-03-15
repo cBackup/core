@@ -71,6 +71,6 @@ class TaskDestination extends ActiveRecord
      */
     public function getTasks()
     {
-        return $this->hasMany(Task::className(), ['put' => 'name']);
+        return $this->hasMany(Task::class, ['put' => 'name']);
     }
 }

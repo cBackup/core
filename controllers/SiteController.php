@@ -45,7 +45,7 @@ class SiteController extends Controller
     {
         return [
             'ajax' => [
-                'class' => AjaxFilter::className(),
+                'class' => AjaxFilter::class,
                 'only'  => [
                     'ajax-render-service',
                     'ajax-run-service'

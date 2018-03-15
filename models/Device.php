@@ -67,8 +67,8 @@ class Device extends ActiveRecord
             [['model'], 'filter', 'filter' => 'trim'],
             [['vendor', 'auth_template_name'], 'string', 'max' => 64],
             [['model'], 'string', 'max' => 128],
-            [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::className(), 'targetAttribute' => ['auth_template_name' => 'name']],
-            [['vendor'], 'exist', 'skipOnError' => true, 'targetClass' => Vendor::className(), 'targetAttribute' => ['vendor' => 'name']],
+            [['auth_template_name'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceAuthTemplate::class, 'targetAttribute' => ['auth_template_name' => 'name']],
+            [['vendor'], 'exist', 'skipOnError' => true, 'targetClass' => Vendor::class, 'targetAttribute' => ['vendor' => 'name']],
             [['vendor', 'model'], 'unique', 'targetAttribute' => ['vendor', 'model'], 'message' => 'The combination of Vendor and Model has already been taken.'],
             [['model'], 'match', 'pattern' => '/^[a-z](?!.*[\-_]{2,})[\w\-]*/i',
                 'message' => Yii::t('network', 'Device name should start with letter, contain only a-z, 0-9 and non-repeating hyphens and/or underscores')
@@ -95,7 +95,7 @@ class Device extends ActiveRecord
      */
     public function getAuthTemplateName()
     {
-        return $this->hasOne(DeviceAuthTemplate::className(), ['name' => 'auth_template_name']);
+        return $this->hasOne(DeviceAuthTemplate::class, ['name' => 'auth_template_name']);
     }
 
     /**
@@ -103,7 +103,7 @@ class Device extends ActiveRecord
      */
     public function getVendorName()
     {
-        return $this->hasOne(Vendor::className(), ['name' => 'vendor']);
+        return $this->hasOne(Vendor::class, ['name' => 'vendor']);
     }
 
     /**
@@ -111,7 +111,7 @@ class Device extends ActiveRecord
      */
     public function getDeviceAttributes()
     {
-        return $this->hasMany(DeviceAttributes::className(), ['device_id' => 'id']);
+        return $this->hasMany(DeviceAttributes::class, ['device_id' => 'id']);
     }
 
     /**
@@ -119,7 +119,7 @@ class Device extends ActiveRecord
      */
     public function getNodes()
     {
-        return $this->hasMany(Node::className(), ['device_id' => 'id']);
+        return $this->hasMany(Node::class, ['device_id' => 'id']);
     }
 
     /**
@@ -127,6 +127,6 @@ class Device extends ActiveRecord
      */
     public function getTasksHasDevices()
     {
-        return $this->hasMany(TasksHasDevices::className(), ['device_id' => 'id']);
+        return $this->hasMany(TasksHasDevices::class, ['device_id' => 'id']);
     }
 }

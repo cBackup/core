@@ -171,7 +171,7 @@ class OutCustom extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'time',
                 'updatedAtAttribute' => 'time',
                 'value' => new Expression('NOW()'),
