@@ -6,7 +6,7 @@
 Summary:        cBackup Network Equipment Configuration Backup
 Name:           cbackup
 Provides:       cbackup
-Version:        1.1.0
+Version:        1.1.1
 Release:        1%{?dist}
 License:        AGPLv3
 URL:            http://cbackup.me
