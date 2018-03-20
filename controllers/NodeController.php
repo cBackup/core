@@ -480,7 +480,7 @@ class NodeController extends Controller
     public function actionInquire()
     {
 
-        $ipaddr        = Yii::$app->request->post('ip');
+        $ipaddr        = trim(Yii::$app->request->post('ip'));
         $credential_id = intval(Yii::$app->request->post('cid'));
         $network_id    = intval(Yii::$app->request->post('nid'));
 
