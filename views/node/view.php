@@ -162,11 +162,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]);
                                     }
 
-                                    if (!is_null($data->credential_id)) {
+                                    if (!empty($data->credential_id)) {
                                         $credential_text = $data->credential->name;
                                     }
 
-                                    echo Html::a($credential_text, 'javascript:void(0);', ['id' => 'show_credentials_tab']);
+                                    if(!isset($credential_text) || empty($credential_text)) {
+                                        echo '<span class="text-danger">'.Yii::t('node', 'Unexpected error - assign correct credentials').'</span>';
+                                    }
+                                    else {
+                                        echo Html::a($credential_text, 'javascript:void(0);', ['id' => 'show_credentials_tab']);
+                                    }
                                 ?>
                             </div>
                             <div id="credentials_select" class="hidden">
