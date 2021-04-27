@@ -21,6 +21,7 @@ namespace app\modules\v2\controllers;
 
 use app\helpers\ApiHelper;
 use app\models\Node;
+use app\models\OutBackup;
 use app\models\OutStp;
 use Yii;
 use yii\rest\Controller;
@@ -97,7 +98,7 @@ class NodeController extends Controller
             'rules' => [
                 [
                     'allow'   => true,
-                    'actions' => ['search', 'list', 'get', 'get-nodes', 'lookup', 'get-stp', 'interim'],
+                    'actions' => ['search', 'list', 'get', 'get-nodes', 'lookup', 'get-stp', 'interim', 'download-backup'],
                     'roles'   => ['APIReader', 'admin'],
                 ],
             ],
@@ -106,13 +107,14 @@ class NodeController extends Controller
         $behaviors['verbs'] = [
             'class' => VerbFilter::class,
             'actions' => [
-                'list'      => ['get'],
-                'get'       => ['get'],
-                'get-nodes' => ['get'],
-                'get-stp'   => ['get'],
-                'interim'   => ['post'],
-                'search'    => ['post'],
-                'lookup'    => ['post'],
+                'list'            => ['get'],
+                'get'             => ['get'],
+                'get-nodes'       => ['get'],
+                'get-stp'         => ['get'],
+                'interim'         => ['post'],
+                'search'          => ['post'],
+                'lookup'          => ['post'],
+                'download-backup' => ['get'],
             ],
         ];
 
@@ -357,6 +359,56 @@ class NodeController extends Controller
         $nodes = $query->asArray()->all();
 
         return $nodes;
+
+    }
+    
+     /**
+     * @param  $id
+     * @param  string $put
+     * @param  string|null $hash
+     * @param  bool $crlf
+     * @return Response
+     * @throws \yii\web\RangeNotSatisfiableHttpException
+     * @throws \yii\base\ExitException
+     */
+    public function actionDownload($id, $put, $hash = null, $crlf = false)
+    {
+
+        $config = '';
+        $suffix = null;
+
+        /** Get configuration backup based on put */
+        if(!empty($hash)) {
+
+            $meta   = Node::getCommitMetaData($hash);
+            $config = Node::getBackupGitVersion($id, $hash);
+
+            if( array_key_exists(3, $meta) ) {
+                $suffix = preg_replace(['/:/', '/[^\d|\-]/'], ['-', '_'], $meta[3]);
+                $suffix = ".".substr($suffix, 0, -7);
+            }
+
+        }
+        elseif ($put == 'file') {
+            $file_path = \Y::param('dataPath') . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . "{$id}.txt";
+            $config    = file_get_contents($file_path);
+        }
+        elseif ($put == 'db') {
+            $config = OutBackup::find()->select('config')->where(['node_id' => $id])->scalar();
+        }
+        else {
+            \Y::flashAndRedirect('warning', Yii::t('node', 'Unknown backup destination passed'), 'node/view', ['id' => $id]);
+            Yii::$app->end();
+        }
+
+        if( isset($crlf) && $crlf == true ) {
+            $config = preg_replace('~\R~u', "\r\n", $config);
+        }
+
+        return Yii::$app->response->sendContentAsFile($config, "$id.conf{$suffix}.txt", [
+            'mimeType' => 'text/plain',
+            'inline'   => false,
+        ]);
 
     }
 
